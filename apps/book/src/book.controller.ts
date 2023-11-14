@@ -8,33 +8,35 @@ import {
   Post,
 } from '@nestjs/common';
 import { BookService } from './book.service';
+import { CreateBookDto, ReadBookDto } from './dto/book.dto';
+import { Book } from './schemas/book.schema';
 
 @Controller('books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get()
-  findAll(): string {
+  findAll(): Promise<ReadBookDto[]> {
     return this.bookService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): string {
+  findOne(@Param('id') id: string): Promise<Book> {
     return this.bookService.findOne(id);
   }
 
   @Patch(':id')
-  updateOne(@Param('id') id: string): string {
-    return this.bookService.updateOne(id);
+  updateOne(@Param('id') id: string, @Body() createBookDto: CreateBookDto) {
+    return this.bookService.updateOne(id, createBookDto);
   }
 
   @Post()
-  create(@Body() obj): string {
-    return this.bookService.create(obj);
+  create(@Body() createBookDto: CreateBookDto) {
+    return this.bookService.create(createBookDto);
   }
 
   @Delete(':id')
-  deleteOne(@Param('id') id: string): string {
+  deleteOne(@Param('id') id: string) {
     return this.bookService.deleteOne(id);
   }
 }
