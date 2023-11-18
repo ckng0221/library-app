@@ -3,8 +3,6 @@ import { AbstractDocument } from '../../../../libs/common/database/abstract.sche
 
 @Schema({ versionKey: false })
 export class Book extends AbstractDocument {
-  // _id: string;
-
   @Prop({ required: true })
   title: string;
 

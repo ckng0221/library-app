@@ -27,9 +27,9 @@ export class BookController {
   @Patch(':id')
   updateOne(
     @Param('id') id: string,
-    @Body() createBookDto: CreateBookDto,
+    @Body() updateBookDto: Partial<CreateBookDto>,
   ): Promise<ReadBookDto> {
-    return this.bookService.updateOne(id, createBookDto);
+    return this.bookService.updateOne(id, updateBookDto);
   }
 
   @Post()

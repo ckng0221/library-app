@@ -18,9 +18,9 @@ export class BookService {
 
   async updateOne(
     id: string,
-    createBookDto: CreateBookDto,
+    updateBookDto: Partial<CreateBookDto>,
   ): Promise<ReadBookDto> {
-    return this.bookModel.findByIdAndUpdate(id, createBookDto, {
+    return this.bookModel.findByIdAndUpdate(id, updateBookDto, {
       new: true,
     });
   }
