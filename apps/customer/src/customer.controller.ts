@@ -8,7 +8,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { CustomerService } from './customer.service';
-import { CreateCustomerDto, ReadCustomerDto } from './dto/customer.dto';
+import {
+  CreateCustomerDto,
+  ReadCustomerDto,
+  UpdateCustomerDto,
+} from './dto/customer.dto';
 
 @Controller('customers')
 export class CustomerController {
@@ -27,7 +31,7 @@ export class CustomerController {
   @Patch(':id')
   updateOne(
     @Param('id') id: string,
-    @Body() updateCustomerDto: Partial<CreateCustomerDto>,
+    @Body() updateCustomerDto: UpdateCustomerDto,
   ): Promise<ReadCustomerDto> {
     return this.customerService.updateOne(id, updateCustomerDto);
   }

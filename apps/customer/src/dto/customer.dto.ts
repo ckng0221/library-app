@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { Types } from 'mongoose';
 export class CustomerDto {
@@ -24,6 +24,8 @@ export class CustomerDto {
 }
 
 export class CreateCustomerDto extends CustomerDto {}
+
+export class UpdateCustomerDto extends PartialType(CustomerDto) {}
 
 export class ReadCustomerDto extends CustomerDto {
   @ApiProperty()

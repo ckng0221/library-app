@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDocument } from '../../../../libs/common/database/abstract.schema';
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class Book extends AbstractDocument {
   @Prop({ required: true })
   title: string;

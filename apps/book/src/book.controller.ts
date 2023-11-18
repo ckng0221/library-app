@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { BookService } from './book.service';
-import { CreateBookDto, ReadBookDto } from './dto/book.dto';
+import { CreateBookDto, ReadBookDto, UpdateBookDto } from './dto/book.dto';
 
 @Controller('books')
 export class BookController {
@@ -27,7 +27,7 @@ export class BookController {
   @Patch(':id')
   updateOne(
     @Param('id') id: string,
-    @Body() updateBookDto: Partial<CreateBookDto>,
+    @Body() updateBookDto: UpdateBookDto,
   ): Promise<ReadBookDto> {
     return this.bookService.updateOne(id, updateBookDto);
   }

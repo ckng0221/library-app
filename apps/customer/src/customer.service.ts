@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateCustomerDto, ReadCustomerDto } from './dto/customer.dto';
+import {
+  CreateCustomerDto,
+  ReadCustomerDto,
+  UpdateCustomerDto,
+} from './dto/customer.dto';
 import { Customer } from './schemas/customer.schema';
 
 @Injectable()
@@ -20,7 +24,7 @@ export class CustomerService {
 
   async updateOne(
     id: string,
-    updateCustomerDto: Partial<CreateCustomerDto>,
+    updateCustomerDto: UpdateCustomerDto,
   ): Promise<ReadCustomerDto> {
     return this.customerModel.findByIdAndUpdate(id, updateCustomerDto, {
       new: true,
