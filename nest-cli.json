@@ -3,7 +3,8 @@
   "collection": "@nestjs/schematics",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true
+    "webpack": true,
+    "plugins": ["@nestjs/swagger"]
   },
   "monorepo": true,
   "projects": {
