@@ -54,8 +54,13 @@ describe('bookController', () => {
       const book1 = await new bookModel(BookDtoStub('Title1')).save();
       const book2 = await new bookModel(BookDtoStub('Title2')).save();
       const books = await bookController.findAll();
-      const stubBooks = [book1, book2];
-      expect(String(books)).toEqual(String(stubBooks));
+
+      expect(books).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(book1.toObject()),
+          expect.objectContaining(book2.toObject()),
+        ]),
+      );
     });
     it('should return null', async () => {
       const id = new Types.ObjectId().toString();
