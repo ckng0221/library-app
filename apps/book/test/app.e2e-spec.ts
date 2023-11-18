@@ -63,11 +63,9 @@ describe('BookController (e2e)', () => {
     return request(app.getHttpServer()).patch('/books/1').expect(200);
   });
   it('/books/{id} (DELETE)', () => {
-    return request(app.getHttpServer())
-      .delete('/books/1')
-      .expect(200)
-      .then((res) => {
-        console.log(res.body);
-      });
+    return request(app.getHttpServer()).delete('/books/1').expect(200);
+    // .then((res) => {
+    //   // console.log(res.body);
+    // });
   });
 });
