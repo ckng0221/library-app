@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-
+import { Types } from 'mongoose';
 export class BookDto {
   @IsString()
   @IsNotEmpty()
@@ -31,5 +31,5 @@ export class CreateBookDto extends BookDto {}
 
 export class ReadBookDto extends BookDto {
   @ApiProperty()
-  _id: string;
+  _id: Types.ObjectId;
 }
