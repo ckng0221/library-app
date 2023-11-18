@@ -5,6 +5,7 @@ on:
     branches: ['*']
     paths:
       - 'apps/book/**'
+      - '.github/workflows/book-ci.yml'
 
 env:
   SERVICE: book
