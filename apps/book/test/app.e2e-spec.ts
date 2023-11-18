@@ -1,71 +1,82 @@
-import { Test } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { getModelToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { Connection, Model, connect } from 'mongoose';
 import * as request from 'supertest';
-import { BookModule } from './../src/book.module';
+import { BookController } from '../src/book.controller';
 import { BookService } from '../src/book.service';
+import { Book, BookSchema } from '../src/schemas/book.schema';
+import { INestApplication } from '@nestjs/common';
+import { BookDtoStub } from '../src/dto/book.dto.stub';
 
-describe('BookController (e2e)', () => {
+describe('Book (e2e)', () => {
   let app: INestApplication;
 
-  let fakeBookDb = [
-    { id: 1, name: 'book1', author: 'author1' },
-    { id: 2, name: 'book2', author: 'author2' },
-    { id: 3, name: 'book3', author: 'author3' },
-  ];
+  let mongod: MongoMemoryServer;
+  let mongoConnection: Connection;
+  let bookModel: Model<Book>;
+  let testBook: any;
 
-  const bookService = {
-    findAll: () => fakeBookDb,
-    findOne: (id) => fakeBookDb.find((x) => x.id == id),
-    create: (obj) => {
-      fakeBookDb.push(obj);
-      return obj;
-    },
-    deleteOne: (id) => {
-      fakeBookDb = fakeBookDb.filter((x) => x.id != id);
-      return '';
-    },
-    updateOne: (id, obj) => {
-      const book = fakeBookDb.find((x) => x.id == id);
-      obj;
-
-      return book;
-    },
-  };
-
-  beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [BookModule],
-    })
-      .overrideProvider(BookService)
-      .useValue(bookService)
-      .compile();
+  beforeAll(async () => {
+    mongod = await MongoMemoryServer.create();
+    const uri = mongod.getUri();
+    mongoConnection = (await connect(uri)).connection;
+    bookModel = mongoConnection.model(Book.name, BookSchema);
+    const moduleRef: TestingModule = await Test.createTestingModule({
+      controllers: [BookController],
+      providers: [
+        BookService,
+        { provide: getModelToken(Book.name), useValue: bookModel },
+      ],
+    }).compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
+
+    testBook = await new bookModel(BookDtoStub('test-book')).save();
+  });
+
+  afterAll(async () => {
+    await mongoConnection.dropDatabase();
+    await mongoConnection.close();
+    await mongod.stop();
+  });
+
+  beforeEach(async () => {
+    testBook = await new bookModel(BookDtoStub('test-book')).save();
+  });
+
+  afterEach(async () => {
+    const collections = mongoConnection.collections;
+    for (const key in collections) {
+      const collection = collections[key];
+      await collection.deleteMany({});
+    }
   });
 
   it('/books (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/books')
-      .expect(200)
-      .expect(bookService.findAll());
+    return request(app.getHttpServer()).get('/books').expect(200);
   });
   it('/books (POST)', () => {
     return request(app.getHttpServer())
       .post('/books')
-      .send({ id: 4, name: 'book4', author: 'author4' })
+      .send({ title: 'book4', author: 'author4' })
       .expect(201);
   });
   it('/books/{id} (GET)', () => {
-    return request(app.getHttpServer()).get('/books/1').expect(200);
+    return request(app.getHttpServer())
+      .get(`/books/${testBook._id}`)
+      .expect(200);
   });
   it('/books/{id} (PATCH)', () => {
-    return request(app.getHttpServer()).patch('/books/1').expect(200);
+    return request(app.getHttpServer())
+      .patch(`/books/${testBook._id}`)
+      .send({ title: 'updated-book' })
+      .expect(200);
   });
   it('/books/{id} (DELETE)', () => {
-    return request(app.getHttpServer()).delete('/books/1').expect(200);
-    // .then((res) => {
-    //   // console.log(res.body);
-    // });
+    return request(app.getHttpServer())
+      .delete(`/books/${testBook._id}`)
+      .expect(200);
   });
 });

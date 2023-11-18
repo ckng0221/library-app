@@ -1,71 +1,82 @@
-import { Test } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { getModelToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { Connection, Model, connect } from 'mongoose';
 import * as request from 'supertest';
-import { CustomerModule } from './../src/customer.module';
+import { CustomerController } from '../src/customer.controller';
 import { CustomerService } from '../src/customer.service';
+import { Customer, CustomerSchema } from '../src/schemas/customer.schema';
+import { INestApplication } from '@nestjs/common';
+import { CustomerDtoStub } from '../src/dto/customer.dto.stub';
 
-describe('CustomerController (e2e)', () => {
+describe('Customer (e2e)', () => {
   let app: INestApplication;
 
-  let fakeCustomerDb = [
-    { id: 1, name: 'customer1', author: 'author1' },
-    { id: 2, name: 'customer2', author: 'author2' },
-    { id: 3, name: 'customer3', author: 'author3' },
-  ];
+  let mongod: MongoMemoryServer;
+  let mongoConnection: Connection;
+  let customerModel: Model<Customer>;
+  let testCustomer: any;
 
-  const customerService = {
-    findAll: () => fakeCustomerDb,
-    findOne: (id) => fakeCustomerDb.find((x) => x.id == id),
-    create: (obj) => {
-      fakeCustomerDb.push(obj);
-      return obj;
-    },
-    deleteOne: (id) => {
-      fakeCustomerDb = fakeCustomerDb.filter((x) => x.id != id);
-      return '';
-    },
-    updateOne: (id, obj) => {
-      const customer = fakeCustomerDb.find((x) => x.id == id);
-      obj;
-
-      return customer;
-    },
-  };
-
-  beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [CustomerModule],
-    })
-      .overrideProvider(CustomerService)
-      .useValue(customerService)
-      .compile();
+  beforeAll(async () => {
+    mongod = await MongoMemoryServer.create();
+    const uri = mongod.getUri();
+    mongoConnection = (await connect(uri)).connection;
+    customerModel = mongoConnection.model(Customer.name, CustomerSchema);
+    const moduleRef: TestingModule = await Test.createTestingModule({
+      controllers: [CustomerController],
+      providers: [
+        CustomerService,
+        { provide: getModelToken(Customer.name), useValue: customerModel },
+      ],
+    }).compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
   });
 
+  afterAll(async () => {
+    await mongoConnection.dropDatabase();
+    await mongoConnection.close();
+    await mongod.stop();
+  });
+
+  beforeEach(async () => {
+    testCustomer = await new customerModel(
+      CustomerDtoStub('test-customer'),
+    ).save();
+  });
+
+  afterEach(async () => {
+    const collections = mongoConnection.collections;
+    for (const key in collections) {
+      const collection = collections[key];
+      await collection.deleteMany({});
+    }
+  });
+
   it('/customers (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/customers')
-      .expect(200)
-      .expect(customerService.findAll());
+    return request(app.getHttpServer()).get('/customers').expect(200);
   });
   it('/customers (POST)', () => {
     return request(app.getHttpServer())
       .post('/customers')
-      .send({ id: 4, name: 'customer4', author: 'author4' })
+      .send({ name: 'customer-test', email: 'test@email.com' })
       .expect(201);
   });
   it('/customers/{id} (GET)', () => {
-    return request(app.getHttpServer()).get('/customers/1').expect(200);
+    return request(app.getHttpServer())
+      .get(`/customers/${testCustomer._id}`)
+      .expect(200);
   });
   it('/customers/{id} (PATCH)', () => {
-    return request(app.getHttpServer()).patch('/customers/1').expect(200);
+    return request(app.getHttpServer())
+      .patch(`/customers/${testCustomer._id}`)
+      .send({ title: 'updated-customer' })
+      .expect(200);
   });
   it('/customers/{id} (DELETE)', () => {
-    return request(app.getHttpServer()).delete('/customers/1').expect(200);
-    // .then((res) => {
-    //   console.log(res.body);
-    // });
+    return request(app.getHttpServer())
+      .delete(`/customers/${testCustomer._id}`)
+      .expect(200);
   });
 });
