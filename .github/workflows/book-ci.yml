@@ -4,9 +4,9 @@ on:
   push:
     branches: ['*']
     paths-ignore:
-      - 'apps/borrowing'
-      - 'apps/customer'
-      - 'apps/payment'
+      - 'apps/borrowing/**'
+      - 'apps/customer/**'
+      - 'apps/payment/**'
 
 env:
   SERVICE: book
