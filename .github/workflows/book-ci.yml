@@ -3,10 +3,8 @@ name: Book-CI
 on:
   push:
     branches: ['*']
-    paths-ignore:
-      - 'apps/borrowing/**'
-      - 'apps/customer/**'
-      - 'apps/payment/**'
+    paths:
+      - 'apps/book/**'
 
 env:
   SERVICE: book
