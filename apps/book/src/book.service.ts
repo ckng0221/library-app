@@ -12,17 +12,20 @@ export class BookService {
     return this.bookModel.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<ReadBookDto> {
     return this.bookModel.findById(id);
   }
 
-  async updateOne(id: string, createBookDto: CreateBookDto) {
+  async updateOne(
+    id: string,
+    createBookDto: CreateBookDto,
+  ): Promise<ReadBookDto> {
     return this.bookModel.findByIdAndUpdate(id, createBookDto, {
       new: true,
     });
   }
 
-  async create(createBookDto: CreateBookDto): Promise<Book> {
+  async create(createBookDto: CreateBookDto): Promise<ReadBookDto> {
     const book = new this.bookModel(createBookDto);
     return book.save();
   }

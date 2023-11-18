@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto, ReadBookDto } from './dto/book.dto';
-import { Book } from './schemas/book.schema';
 
 @Controller('books')
 export class BookController {
@@ -21,17 +20,20 @@ export class BookController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Book> {
+  findOne(@Param('id') id: string): Promise<ReadBookDto> {
     return this.bookService.findOne(id);
   }
 
   @Patch(':id')
-  updateOne(@Param('id') id: string, @Body() createBookDto: CreateBookDto) {
+  updateOne(
+    @Param('id') id: string,
+    @Body() createBookDto: CreateBookDto,
+  ): Promise<ReadBookDto> {
     return this.bookService.updateOne(id, createBookDto);
   }
 
   @Post()
-  create(@Body() createBookDto: CreateBookDto) {
+  create(@Body() createBookDto: CreateBookDto): Promise<ReadBookDto> {
     return this.bookService.create(createBookDto);
   }
 
