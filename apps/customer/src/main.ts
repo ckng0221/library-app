@@ -13,6 +13,7 @@ async function bootstrap() {
     .build();
 
   console.log('test');
+  console.log('test');
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
