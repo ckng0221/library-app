@@ -51,8 +51,12 @@ describe('bookController', () => {
 
   describe('Find all', () => {
     it('should return all the saved objects', async () => {
-      const book1 = await new bookModel(BookDtoStub('Title1')).save();
-      const book2 = await new bookModel(BookDtoStub('Title2')).save();
+      const book1 = await new bookModel(
+        BookDtoStub({ title: 'Title1' }),
+      ).save();
+      const book2 = await new bookModel(
+        BookDtoStub({ title: 'Title2' }),
+      ).save();
       const books = await bookController.findAll();
 
       expect(books).toEqual(
@@ -66,6 +70,46 @@ describe('bookController', () => {
       const id = new Types.ObjectId().toString();
       const book = await bookController.findOne(id);
       expect(book).toBeNull();
+    });
+
+    describe('Search function', () => {
+      let book1: Partial<Book>;
+      let book2: Partial<Book>;
+      beforeEach(async () => {
+        book1 = {
+          title: 'Article',
+          author: 'Ng',
+          isbn: '222-3-16-148410-0',
+        };
+        book2 = {
+          title: 'Story',
+          author: 'CK',
+          isbn: '978-3-16-222222-0',
+        };
+
+        await new bookModel(BookDtoStub(book1)).save();
+        await new bookModel(BookDtoStub(book2)).save();
+      });
+      it('can search by title', async () => {
+        const bookObjs = await bookController.findAll({ search: 'article' });
+        const books = bookObjs.map((book) => book.title);
+        expect(books).toContain(book1.title);
+        expect(books.length).toBe(1);
+      });
+      it('can search by author', async () => {
+        const bookObjs = await bookController.findAll({ search: 'CK' });
+
+        const books = bookObjs.map((book) => book.author);
+        expect(books).toContain(book2.author);
+        expect(books.length).toBe(1);
+      });
+      it('can search by isbn', async () => {
+        const bookObjs = await bookController.findAll({
+          search: '978-3-16-148410-0',
+        });
+        const books = bookObjs.map((book) => book.isbn);
+        expect(books).toContain(book1.isbn);
+      });
     });
   });
 
@@ -85,7 +129,7 @@ describe('bookController', () => {
   describe('Update one', () => {
     it('should return the corresponding updated object', async () => {
       const updatedTitle = 'Titlte1-updated';
-      const book = await new bookModel(BookDtoStub('Title1')).save();
+      const book = await new bookModel(BookDtoStub({ title: 'Title1' })).save();
       const updatedBook = await bookController.updateOne(book._id.toString(), {
         title: updatedTitle,
       });
