@@ -8,8 +8,14 @@ import { Book } from './schemas/book.schema';
 export class BookService {
   constructor(@InjectModel(Book.name) private bookModel: Model<Book>) {}
 
-  async findAll(): Promise<ReadBookDto[]> {
-    return this.bookModel.find();
+  async findAll(query?: { search: string }): Promise<ReadBookDto[]> {
+    const searchString = query?.search || '';
+
+    const searchOption = searchString
+      ? { $text: { $search: searchString } }
+      : null;
+
+    return this.bookModel.find(searchOption);
   }
 
   async findOne(id: string): Promise<ReadBookDto> {

@@ -14,3 +14,4 @@ export class Customer extends AbstractDocument {
 }
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);
+CustomerSchema.index({ name: 'text', email: 'text' });

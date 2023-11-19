@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import {
@@ -13,14 +14,16 @@ import {
   ReadCustomerDto,
   UpdateCustomerDto,
 } from './dto/customer.dto';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('customers')
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Get()
-  findAll(): Promise<ReadCustomerDto[]> {
-    return this.customerService.findAll();
+  @ApiQuery({ name: 'search', required: false })
+  findAll(@Query() query?: { search: string }): Promise<ReadCustomerDto[]> {
+    return this.customerService.findAll(query);
   }
 
   @Get(':id')
