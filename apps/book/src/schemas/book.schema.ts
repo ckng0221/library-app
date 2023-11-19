@@ -17,3 +17,5 @@ export class Book extends AbstractDocument {
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
+
+BookSchema.index({ title: 'text', author: 'text', isbn: 'text' });

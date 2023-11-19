@@ -6,17 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto, ReadBookDto, UpdateBookDto } from './dto/book.dto';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get()
-  findAll(): Promise<ReadBookDto[]> {
-    return this.bookService.findAll();
+  @ApiQuery({ name: 'search', required: false })
+  findAll(@Query() query?: { search: string }): Promise<ReadBookDto[]> {
+    return this.bookService.findAll(query);
   }
 
   @Get(':id')
