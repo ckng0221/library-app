@@ -33,7 +33,7 @@ describe('Book (e2e)', () => {
     app = moduleRef.createNestApplication();
     await app.init();
 
-    testBook = await new bookModel(BookDtoStub('test-book')).save();
+    testBook = await new bookModel(BookDtoStub({ title: 'test-book' })).save();
   });
 
   afterAll(async () => {
@@ -43,7 +43,7 @@ describe('Book (e2e)', () => {
   });
 
   beforeEach(async () => {
-    testBook = await new bookModel(BookDtoStub('test-book')).save();
+    testBook = await new bookModel(BookDtoStub({ title: 'test-book' })).save();
   });
 
   afterEach(async () => {

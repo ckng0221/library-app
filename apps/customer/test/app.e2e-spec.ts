@@ -42,7 +42,7 @@ describe('Customer (e2e)', () => {
 
   beforeEach(async () => {
     testCustomer = await new customerModel(
-      CustomerDtoStub('test-customer'),
+      CustomerDtoStub({ name: 'test-customer' }),
     ).save();
   });
 
