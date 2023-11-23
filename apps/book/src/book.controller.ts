@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -11,6 +12,7 @@ import {
 import { BookService } from './book.service';
 import { CreateBookDto, ReadBookDto, UpdateBookDto } from './dto/book.dto';
 import { ApiQuery } from '@nestjs/swagger';
+import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
 
 @Controller('books')
 export class BookController {
@@ -23,13 +25,29 @@ export class BookController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ReadBookDto> {
+  findOne(
+    @Param(
+      'id',
+      new ObjectIdValidationPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+        errorMessage: 'ID not found',
+      }),
+    )
+    id: string,
+  ): Promise<ReadBookDto> {
     return this.bookService.findOne(id);
   }
 
   @Patch(':id')
   updateOne(
-    @Param('id') id: string,
+    @Param(
+      'id',
+      new ObjectIdValidationPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+        errorMessage: 'ID not found',
+      }),
+    )
+    id: string,
     @Body() updateBookDto: UpdateBookDto,
   ): Promise<ReadBookDto> {
     return this.bookService.updateOne(id, updateBookDto);
@@ -41,7 +59,16 @@ export class BookController {
   }
 
   @Delete(':id')
-  deleteOne(@Param('id') id: string) {
+  deleteOne(
+    @Param(
+      'id',
+      new ObjectIdValidationPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+        errorMessage: 'ID not found',
+      }),
+    )
+    id: string,
+  ) {
     return this.bookService.deleteOne(id);
   }
 }

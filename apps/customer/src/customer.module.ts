@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from '../../../libs/common/database/database.module';
 import { CustomerController } from './customer.controller';
 import { CustomerService } from './customer.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Customer, CustomerSchema } from './schemas/customer.schema';
+import { DatabaseModule } from '../../../libs/common/src/database/database.module';
 
 @Module({
   imports: [
