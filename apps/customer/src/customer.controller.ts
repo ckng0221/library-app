@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -15,6 +16,7 @@ import {
   UpdateCustomerDto,
 } from './dto/customer.dto';
 import { ApiQuery } from '@nestjs/swagger';
+import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
 
 @Controller('customers')
 export class CustomerController {
@@ -27,13 +29,29 @@ export class CustomerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ReadCustomerDto> {
+  findOne(
+    @Param(
+      'id',
+      new ObjectIdValidationPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+        errorMessage: 'Customer not found',
+      }),
+    )
+    id: string,
+  ): Promise<ReadCustomerDto> {
     return this.customerService.findOne(id);
   }
 
   @Patch(':id')
   updateOne(
-    @Param('id') id: string,
+    @Param(
+      'id',
+      new ObjectIdValidationPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+        errorMessage: 'Customer not found',
+      }),
+    )
+    id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ): Promise<ReadCustomerDto> {
     return this.customerService.updateOne(id, updateCustomerDto);
@@ -47,7 +65,16 @@ export class CustomerController {
   }
 
   @Delete(':id')
-  deleteOne(@Param('id') id: string) {
+  deleteOne(
+    @Param(
+      'id',
+      new ObjectIdValidationPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+        errorMessage: 'Customer not found',
+      }),
+    )
+    id: string,
+  ) {
     return this.customerService.deleteOne(id);
   }
 }
