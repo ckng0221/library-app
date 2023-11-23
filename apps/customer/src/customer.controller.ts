@@ -34,7 +34,7 @@ export class CustomerController {
       'id',
       new ObjectIdValidationPipe({
         errorHttpStatusCode: HttpStatus.NOT_FOUND,
-        errorMessage: 'Customer not found',
+        errorMessage: 'ID not found',
       }),
     )
     id: string,
@@ -48,7 +48,7 @@ export class CustomerController {
       'id',
       new ObjectIdValidationPipe({
         errorHttpStatusCode: HttpStatus.NOT_FOUND,
-        errorMessage: 'Customer not found',
+        errorMessage: 'ID not found',
       }),
     )
     id: string,
@@ -70,7 +70,7 @@ export class CustomerController {
       'id',
       new ObjectIdValidationPipe({
         errorHttpStatusCode: HttpStatus.NOT_FOUND,
-        errorMessage: 'Customer not found',
+        errorMessage: 'ID not found',
       }),
     )
     id: string,
