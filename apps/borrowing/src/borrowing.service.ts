@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -7,11 +7,13 @@ import {
   UpdateBorrowingDto,
 } from './dto/borrowing.dto';
 import { Borrowing } from './schemas/borrowing.schema';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class BorrowingService {
   constructor(
     @InjectModel(Borrowing.name) private borrowingModel: Model<Borrowing>,
+    @Inject('PAYMENT') private paymentClient: ClientProxy,
   ) {}
 
   async findAll(query = null): Promise<ReadBorrowingDto[]> {
@@ -40,8 +42,13 @@ export class BorrowingService {
   async create(
     createBorrowingDto: CreateBorrowingDto,
   ): Promise<ReadBorrowingDto> {
-    const borrowing = new this.borrowingModel(createBorrowingDto);
-    return borrowing.save();
+    const borrowing = await new this.borrowingModel(createBorrowingDto).save();
+
+    console.log(`Emitted payment for borrowing: ${borrowing._id}`);
+    this.paymentClient.emit('borrowing_created', {
+      borrowing,
+    });
+    return borrowing;
   }
 
   async deleteOne(id: string) {

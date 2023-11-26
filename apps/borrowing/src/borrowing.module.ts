@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Borrowing, BorrowingSchema } from './schemas/borrowing.schema';
 import { DatabaseModule } from '../../../libs/common/src/database/database.module';
 import { BorrowingController } from './borrowing.controller';
+import { RmqModule } from '../../../libs/common/src/rabbitmq/rmq.module';
 
 @Module({
   imports: [
@@ -16,6 +17,9 @@ import { BorrowingController } from './borrowing.controller';
     MongooseModule.forFeature([
       { name: Borrowing.name, schema: BorrowingSchema },
     ]),
+    RmqModule.register({
+      name: 'PAYMENT',
+    }),
   ],
   controllers: [BorrowingController],
   providers: [BorrowingService],
