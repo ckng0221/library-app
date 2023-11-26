@@ -14,6 +14,16 @@ export class BorrowingService {
     @InjectModel(Borrowing.name) private borrowingModel: Model<Borrowing>,
   ) {}
 
+  async findAll(query = null): Promise<ReadBorrowingDto[]> {
+    const searchString = query?.search || '';
+
+    const searchOption = searchString
+      ? { $text: { $search: searchString } }
+      : null;
+
+    return this.borrowingModel.find(searchOption);
+  }
+
   async findOne(id: string): Promise<ReadBorrowingDto> {
     return this.borrowingModel.findById(id);
   }

@@ -14,7 +14,7 @@ export class Borrowing extends AbstractDocument {
   customer_name: string;
 
   @Prop({ required: true })
-  books: [{ id: Types.ObjectId; name: string; returned_date: Date | null }];
+  books: [{ id: Types.ObjectId; name: string; returned_date?: Date | null }];
 
   @Prop()
   is_active: boolean;
@@ -27,3 +27,4 @@ export class Borrowing extends AbstractDocument {
 }
 
 export const BorrowingSchema = SchemaFactory.createForClass(Borrowing);
+BorrowingSchema.index({ customer_name: 'text' });

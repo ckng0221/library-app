@@ -17,7 +17,7 @@ export class BorrowingDto {
       { id: '6559783dc650b9e8939a0214', name: 'My Book', return_date: null },
     ],
   })
-  books: [{ id: Types.ObjectId; name: string; returned_date: Date | null }];
+  books: [{ id: Types.ObjectId; name: string; returned_date?: Date | null }];
 }
 
 export class CreateBorrowingDto extends BorrowingDto {}

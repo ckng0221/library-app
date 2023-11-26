@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { BorrowingService } from './borrowing.service';
 import {
@@ -14,11 +15,18 @@ import {
   ReadBorrowingDto,
   UpdateBorrowingDto,
 } from './dto/borrowing.dto';
+import { ApiQuery } from '@nestjs/swagger';
+
 import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
 
 @Controller('borrowings')
 export class BorrowingController {
   constructor(private readonly borrowingService: BorrowingService) {}
+  @Get()
+  @ApiQuery({ name: 'search', required: false })
+  findAll(@Query() query?: { search: string }): Promise<ReadBorrowingDto[]> {
+    return this.borrowingService.findAll(query);
+  }
 
   @Get(':id')
   findOne(
