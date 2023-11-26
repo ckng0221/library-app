@@ -43,6 +43,22 @@ describe('borrowingController', () => {
   });
 
   describe('Create borrowing', () => {
+    it('should return all the saved objects', async () => {
+      const borrowing1 = await new borrowingModel(
+        BorrowingDtoStub({ customer_name: 'Name1' }),
+      ).save();
+      const borrowing2 = await new borrowingModel(
+        BorrowingDtoStub({ customer_name: 'Name2' }),
+      ).save();
+      const borrowings = await borrowingController.findAll();
+      expect(borrowings).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(borrowing1.toObject()),
+          expect.objectContaining(borrowing2.toObject()),
+        ]),
+      );
+    });
+
     it('should return the saved object', async () => {
       const createdBorrowing =
         await borrowingController.create(BorrowingDtoStub());
