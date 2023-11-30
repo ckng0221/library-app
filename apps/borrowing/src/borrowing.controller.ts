@@ -18,6 +18,7 @@ import {
 import { ApiQuery } from '@nestjs/swagger';
 
 import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
+import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 
 @Controller('borrowings')
 export class BorrowingController {
@@ -42,6 +43,7 @@ export class BorrowingController {
     return this.borrowingService.findOne(id);
   }
 
+  // @EventPattern('payment_done')
   @Patch(':id')
   updateOne(
     @Param(
@@ -55,6 +57,16 @@ export class BorrowingController {
     @Body() updateBorrowingDto: UpdateBorrowingDto,
   ): Promise<ReadBorrowingDto> {
     return this.borrowingService.updateOne(id, updateBorrowingDto);
+  }
+
+  @EventPattern('payment_done')
+  async handlePaymentDone(@Payload() data: any, @Ctx() context: RmqContext) {
+    // this.borrowingService.updateOne(id, updateBorrowingDto);
+    // const paymentStatus = await this.paymentService.makePayment(data);
+    // this.rmqService.ack(context);
+    // return { data, paymentStatus };
+    console.log(data);
+    // console.log(context);
   }
 
   @Post()

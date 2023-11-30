@@ -15,7 +15,9 @@ import * as Joi from 'joi';
       }),
       envFilePath: './apps/payment/.env',
     }),
-    RmqModule,
+    RmqModule.register({
+      name: 'PAYMENT',
+    }),
   ],
   controllers: [PaymentController],
   providers: [PaymentService],

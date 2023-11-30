@@ -44,7 +44,7 @@ export class BorrowingService {
   ): Promise<ReadBorrowingDto> {
     const borrowing = await new this.borrowingModel(createBorrowingDto).save();
 
-    console.log(`Emitted payment for borrowing: ${borrowing._id}`);
+    console.log(`Emitted payment for borrowing_id: ${borrowing._id}`);
     this.paymentClient.emit('borrowing_created', {
       borrowing,
     });

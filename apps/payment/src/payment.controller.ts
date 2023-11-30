@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
-import { PaymentService } from './payment.service';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { RmqService } from '../../../libs/common/src/rabbitmq/rmq.service';
+import { PaymentService } from './payment.service';
 
 @Controller()
 export class PaymentController {
@@ -17,6 +17,7 @@ export class PaymentController {
   ) {
     const paymentStatus = await this.paymentService.makePayment(data);
     this.rmqService.ack(context);
+
     return { data, paymentStatus };
   }
 }

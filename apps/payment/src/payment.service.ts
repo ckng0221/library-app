@@ -1,6 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
-async function makeFakePayment(data: any, logger: Logger): Promise<string> {
+async function makeFakePayment(
+  data: any,
+  logger: Logger,
+): Promise<'success' | 'failed'> {
   logger.log('Redirecting to payment gateway...');
   logger.log('Performing payment...');
 
@@ -21,12 +25,30 @@ async function makeFakePayment(data: any, logger: Logger): Promise<string> {
 
 @Injectable()
 export class PaymentService {
+  constructor(@Inject('PAYMENT') private readonly paymentClient: ClientProxy) {}
+
   private readonly logger = new Logger(PaymentService.name);
 
   async makePayment(data: any) {
     this.logger.log(
       `Making payment for borrowing_id: ${data.borrowing._id}...`,
     );
-    return makeFakePayment(data, this.logger);
+    const paymentStatus = await makeFakePayment(data, this.logger);
+
+    if (paymentStatus === 'success') {
+      this.paymentClient.emit(
+        'payment_done',
+
+        JSON.stringify({
+          borrowing_id: data.borrowing._id,
+          status: paymentStatus,
+        }),
+      );
+      console.log(
+        `Emitted payment_done for borrowing_id: ${data.borrowing._id}`,
+      );
+    }
+
+    return paymentStatus;
   }
 }
