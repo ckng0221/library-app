@@ -22,6 +22,9 @@ export class Borrowing extends AbstractDocument {
   @Prop()
   borrowed_date: Date;
 
+  @Prop({ default: false })
+  is_payment_done: boolean;
+
   @Prop()
   closed_date: Date | null;
 }

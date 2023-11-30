@@ -9,16 +9,16 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
 import { BorrowingService } from './borrowing.service';
 import {
   CreateBorrowingDto,
   ReadBorrowingDto,
   UpdateBorrowingDto,
 } from './dto/borrowing.dto';
-import { ApiQuery } from '@nestjs/swagger';
 
+import { EventPattern, Payload } from '@nestjs/microservices';
 import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
-import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 
 @Controller('borrowings')
 export class BorrowingController {
@@ -60,13 +60,12 @@ export class BorrowingController {
   }
 
   @EventPattern('payment_done')
-  async handlePaymentDone(@Payload() data: any, @Ctx() context: RmqContext) {
-    // this.borrowingService.updateOne(id, updateBorrowingDto);
-    // const paymentStatus = await this.paymentService.makePayment(data);
-    // this.rmqService.ack(context);
-    // return { data, paymentStatus };
-    console.log(data);
-    // console.log(context);
+  async handlePaymentDone(@Payload() data: any) {
+    const payment = JSON.parse(data);
+
+    this.borrowingService.updateOne(payment.borrowing_id, {
+      is_payment_done: true,
+    });
   }
 
   @Post()

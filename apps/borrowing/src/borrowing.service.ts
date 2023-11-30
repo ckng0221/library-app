@@ -34,6 +34,8 @@ export class BorrowingService {
     id: string,
     updateBorrowingDto: UpdateBorrowingDto,
   ): Promise<ReadBorrowingDto> {
+    console.log(updateBorrowingDto);
+
     return this.borrowingModel.findByIdAndUpdate(id, updateBorrowingDto, {
       new: true,
     });
