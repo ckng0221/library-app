@@ -1,6 +1,8 @@
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, Types, connect } from 'mongoose';
 import * as request from 'supertest';
@@ -27,6 +29,7 @@ describe('Borrowing (e2e)', () => {
       providers: [
         BorrowingService,
         { provide: getModelToken(Borrowing.name), useValue: borrowingModel },
+        { provide: 'PAYMENT', useValue: mock<AmqpConnection>() },
       ],
     }).compile();
 
