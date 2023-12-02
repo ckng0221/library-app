@@ -6,9 +6,9 @@ import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, Types, connect } from 'mongoose';
 import * as request from 'supertest';
+import { PaymentDtoStub } from '../src/dto/payment.dto.stub';
 import { PaymentController } from '../src/payment.controller';
 import { PaymentService } from '../src/payment.service';
-import { PaymentDtoStub } from '../src/dto/payment.dto.stub';
 import { Payment, PaymentSchema } from '../src/schemas/payment.schema';
 
 describe('Payment (e2e)', () => {

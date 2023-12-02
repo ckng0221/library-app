@@ -12,7 +12,7 @@ import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation
 import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { PaymentService } from './payment.service';
 
-@Controller()
+@Controller('payments')
 export class PaymentController {
   borrowingService: any;
   constructor(
