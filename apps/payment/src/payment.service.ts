@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 async function makeFakePayment(
-  data: any,
+  payment_id: string,
   logger: Logger,
 ): Promise<'success' | 'failed'> {
   logger.log('Redirecting to payment gateway...');
@@ -15,9 +15,7 @@ async function makeFakePayment(
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       try {
-        logger.log(
-          `Payment complete for borrowing_id: ${data.borrowing._id} .`,
-        );
+        logger.log(`Payment complete for payment_id: ${payment_id} .`);
         return resolve('success');
       } catch (error) {
         logger.error(error);
@@ -43,10 +41,6 @@ export class PaymentService {
   async create(createPaymentDto: CreatePaymentDto): Promise<ReadPaymentDto> {
     const payment = await new this.paymentModel(createPaymentDto).save();
 
-    // console.log(`Emitted payment for borrowing_id: ${payment._id}`);
-    // this.paymentClient.emit('borrowing_created', {
-    //   borrowing: payment,
-    // });
     return payment;
   }
 
@@ -58,23 +52,29 @@ export class PaymentService {
     return this.paymentModel.findByIdAndDelete(id);
   }
 
-  async makePayment(data: any) {
+  async makePayment(id: string) {
+    const payment = await this.paymentModel.findById(id);
     this.logger.log(
-      `Making payment for borrowing_id: ${data.borrowing._id}...`,
+      `Making payment for payment_id: ${id}; borrowing_id: ${payment.borrowing_id}...`,
     );
-    const paymentStatus = await makeFakePayment(data, this.logger);
+    const paymentStatus = await makeFakePayment(id, this.logger);
 
     if (paymentStatus === 'success') {
-      this.paymentClient.emit(
-        'payment_done',
+      await this.paymentModel.findByIdAndUpdate(id, {
+        is_payment_done: true,
+        payment_date: new Date(),
+      });
 
-        JSON.stringify({
-          borrowing_id: data.borrowing._id,
-          status: paymentStatus,
-        }),
-      );
+      const data = JSON.stringify({
+        payment_id: id,
+        borrowing_id: payment.borrowing_id,
+        status: paymentStatus,
+      });
+
+      this.paymentClient.emit('payment_done', data);
+      this.paymentClient.emit('payment_done', data);
       console.log(
-        `Emitted payment_done for borrowing_id: ${data.borrowing._id}`,
+        `Emitted payment_done for payment_id ${id}, borrowing_id: ${payment.borrowing_id}`,
       );
     }
 

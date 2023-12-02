@@ -63,9 +63,13 @@ export class BorrowingController {
   async handlePaymentDone(@Payload() data: any) {
     const payment = JSON.parse(data);
 
-    this.borrowingService.updateOne(payment.borrowing_id, {
-      is_payment_done: true,
-    });
+    const borrowing = await this.borrowingService.updateOne(
+      payment.borrowing_id,
+      {
+        is_payment_done: true,
+      },
+    );
+    console.log(borrowing);
   }
 
   @Post()

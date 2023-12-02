@@ -34,6 +34,7 @@ export class BorrowingService {
     id: string,
     updateBorrowingDto: UpdateBorrowingDto,
   ): Promise<ReadBorrowingDto> {
+    console.log(id);
     console.log(updateBorrowingDto);
 
     return this.borrowingModel.findByIdAndUpdate(id, updateBorrowingDto, {
@@ -47,6 +48,9 @@ export class BorrowingService {
     const borrowing = await new this.borrowingModel(createBorrowingDto).save();
 
     console.log(`Emitted payment for borrowing_id: ${borrowing._id}`);
+    this.paymentClient.emit('borrowing_created', {
+      borrowing,
+    });
     this.paymentClient.emit('borrowing_created', {
       borrowing,
     });

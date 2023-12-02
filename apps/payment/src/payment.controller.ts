@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   Post,
@@ -14,17 +15,14 @@ import { PaymentService } from './payment.service';
 
 @Controller('payments')
 export class PaymentController {
-  borrowingService: any;
-  constructor(
-    private readonly paymentService: PaymentService,
-    // private readonly rmqService: RmqService,
-  ) {}
+  constructor(private readonly paymentService: PaymentService) {}
 
   @Get()
   findAll(): Promise<ReadPaymentDto[]> {
     return this.paymentService.findAll();
   }
 
+  // NOTE: for internal use only, payment should created from event
   @Post()
   create(@Body() createPaymentDto: CreatePaymentDto): Promise<ReadPaymentDto> {
     return this.paymentService.create(createPaymentDto);
@@ -58,14 +56,37 @@ export class PaymentController {
     return this.paymentService.deleteOne(id);
   }
 
-  @EventPattern('borrowing_created')
-  async handleBorrowingCreated(
-    @Payload() data: any,
-    // @Ctx() context: RmqContext,
-  ) {
-    const paymentStatus = await this.paymentService.makePayment(data);
-    // this.rmqService.ack(context);
-
-    return { data, paymentStatus };
+  @HttpCode(200)
+  @Post('makepayment/:id')
+  async makePayment(
+    @Param(
+      'id',
+      new ObjectIdValidationPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+        errorMessage: 'ID not found',
+      }),
+    )
+    id: string,
+  ): Promise<{ payment_id: string; status: 'success' | 'failed' }> {
+    const status = await this.paymentService.makePayment(id);
+    return { payment_id: id, status: status };
   }
+
+  @EventPattern('borrowing_created')
+  async handleBorrowingCreated(@Payload() data: any) {
+    console.log(
+      `Received borrowing_created. borrowing_id: ${data.borrowing?._id}`,
+    );
+
+    const payment = await this.paymentService.create({
+      borrowing_id: data.borrowing._id,
+      amount: getRandomArbitrary(1, 100),
+    });
+
+    console.log(`Created payment_id: ${payment._id}`);
+  }
+}
+
+function getRandomArbitrary(min: number, max: number) {
+  return Math.random() * (max - min) + min;
 }

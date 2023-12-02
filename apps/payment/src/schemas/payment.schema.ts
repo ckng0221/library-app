@@ -4,7 +4,7 @@ import { AbstractDocument } from '../../../../libs/common/src/database/abstract.
 
 @Schema({
   versionKey: false,
-  timestamps: { createdAt: 'payment_date', updatedAt: false },
+  timestamps: { createdAt: 'created_date', updatedAt: false },
 })
 export class Payment extends AbstractDocument {
   @Prop({ type: Types.ObjectId })
@@ -13,7 +13,13 @@ export class Payment extends AbstractDocument {
   @Prop({ required: true, default: 0 })
   amount: number;
 
+  @Prop({ default: false })
+  is_payment_done: false;
+
+  @Prop()
   payment_date: Date;
+
+  created_date: Date;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);
