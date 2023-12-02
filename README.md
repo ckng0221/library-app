@@ -2,7 +2,7 @@
 [![Book-CI](https://github.com/ckng0221/library-app/actions/workflows/book-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/book-ci.yml)
 [![Customer-CI](https://github.com/ckng0221/library-app/actions/workflows/customer-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/customer-ci.yml)
 [![Borrowing-CI](https://github.com/ckng0221/library-app/actions/workflows/borrowing-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/borrowing-ci.yml)
-[![Customer-CI](https://github.com/ckng0221/library-app/actions/workflows/payment-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/payment-ci.yml)
+[![Payment-CI](https://github.com/ckng0221/library-app/actions/workflows/payment-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/payment-ci.yml)
 
 # Library App
 
