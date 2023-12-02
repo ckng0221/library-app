@@ -53,7 +53,7 @@ export class BorrowingService {
     });
     this.paymentClient.emit('borrowing_created', {
       borrowing,
-    });
+    }); //FIXME: Emit twice, to avoid event being consumed by wrong service.
     return borrowing;
   }
 
