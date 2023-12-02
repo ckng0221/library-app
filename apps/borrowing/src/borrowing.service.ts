@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -7,7 +8,6 @@ import {
   UpdateBorrowingDto,
 } from './dto/borrowing.dto';
 import { Borrowing } from './schemas/borrowing.schema';
-import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class BorrowingService {
