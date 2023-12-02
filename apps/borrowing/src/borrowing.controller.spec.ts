@@ -1,5 +1,7 @@
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, Types, connect } from 'mongoose';
 import { BorrowingController } from './borrowing.controller';
@@ -23,6 +25,7 @@ describe('borrowingController', () => {
       providers: [
         BorrowingService,
         { provide: getModelToken(Borrowing.name), useValue: borrowingModel },
+        { provide: 'PAYMENT', useValue: mock<AmqpConnection>() },
       ],
     }).compile();
     borrowingController = app.get<BorrowingController>(BorrowingController);

@@ -18,6 +18,9 @@ export class BorrowingDto {
     ],
   })
   books: [{ id: Types.ObjectId; name: string; returned_date?: Date | null }];
+
+  @ApiProperty({ default: false })
+  is_payment_done: boolean;
 }
 
 export class CreateBorrowingDto extends BorrowingDto {}

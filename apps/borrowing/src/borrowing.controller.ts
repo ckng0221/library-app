@@ -9,14 +9,15 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
 import { BorrowingService } from './borrowing.service';
 import {
   CreateBorrowingDto,
   ReadBorrowingDto,
   UpdateBorrowingDto,
 } from './dto/borrowing.dto';
-import { ApiQuery } from '@nestjs/swagger';
 
+import { EventPattern, Payload } from '@nestjs/microservices';
 import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
 
 @Controller('borrowings')
@@ -42,6 +43,7 @@ export class BorrowingController {
     return this.borrowingService.findOne(id);
   }
 
+  // @EventPattern('payment_done')
   @Patch(':id')
   updateOne(
     @Param(
@@ -55,6 +57,19 @@ export class BorrowingController {
     @Body() updateBorrowingDto: UpdateBorrowingDto,
   ): Promise<ReadBorrowingDto> {
     return this.borrowingService.updateOne(id, updateBorrowingDto);
+  }
+
+  @EventPattern('payment_done')
+  async handlePaymentDone(@Payload() data: any) {
+    const payment = JSON.parse(data);
+
+    const borrowing = await this.borrowingService.updateOne(
+      payment.borrowing_id,
+      {
+        is_payment_done: true,
+      },
+    );
+    console.log(borrowing);
   }
 
   @Post()

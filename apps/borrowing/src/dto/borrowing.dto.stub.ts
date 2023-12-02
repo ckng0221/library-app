@@ -14,5 +14,6 @@ export const BorrowingDtoStub = (
     borrowed_date: borrowingObj?.borrowed_date || new Date(),
     closed_date: borrowingObj?.closed_date || null,
     is_active: borrowingObj?.is_active || true,
+    is_payment_done: borrowingObj?.is_payment_done || false,
   };
 };

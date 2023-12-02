@@ -1,14 +1,14 @@
-name: Book-CI
+name: Customer-CI
 
 on:
   push:
     branches: ['*']
     paths:
-      - 'apps/book/**'
-      - '.github/workflows/book-ci.yml'
+      - 'apps/payment/**'
+      - '.github/workflows/payment-ci.yml'
 
 env:
-  SERVICE: book
+  SERVICE: payment
 
 jobs:
   build:

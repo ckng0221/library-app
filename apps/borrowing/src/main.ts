@@ -1,9 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { RmqService } from '../../../libs/common/src/rabbitmq/rmq.service';
 import { BorrowingModule } from './borrowing.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(BorrowingModule);
+  const rmqService = app.get<RmqService>(RmqService);
 
   const config = new DocumentBuilder()
     .setTitle('Borrowing API')
@@ -14,6 +16,9 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  app.connectMicroservice(rmqService.getOptions('PAYMENT'));
+  await app.startAllMicroservices();
 
   await app.listen(3002);
 }
