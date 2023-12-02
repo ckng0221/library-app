@@ -1,4 +1,4 @@
-name: Customer-CI
+name: Payment-CI
 
 on:
   push:
