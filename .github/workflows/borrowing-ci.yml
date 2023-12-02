@@ -4,7 +4,7 @@ on:
   push:
     branches: ['*']
     paths:
-      - 'apps/payment/**'
+      - 'apps/borrowing/**'
       - '.github/workflows/borrowing-ci.yml'
 
 env:
