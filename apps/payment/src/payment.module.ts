@@ -4,6 +4,9 @@ import { PaymentService } from './payment.service';
 import { ConfigModule } from '@nestjs/config';
 import { RmqModule } from '../../../libs/common/src/rabbitmq/rmq.module';
 import * as Joi from 'joi';
+import { DatabaseModule } from '../../../libs/common/src/database/database.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Payment, PaymentSchema } from './schemas/payment.schema';
 
 @Module({
   imports: [
@@ -15,6 +18,8 @@ import * as Joi from 'joi';
       }),
       envFilePath: './apps/payment/.env',
     }),
+    DatabaseModule,
+    MongooseModule.forFeature([{ name: Payment.name, schema: PaymentSchema }]),
     RmqModule.register({
       name: 'PAYMENT',
     }),

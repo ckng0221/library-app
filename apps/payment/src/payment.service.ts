@@ -1,5 +1,9 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
+import { Payment } from './schemas/payment.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 async function makeFakePayment(
   data: any,
@@ -25,9 +29,34 @@ async function makeFakePayment(
 
 @Injectable()
 export class PaymentService {
-  constructor(@Inject('PAYMENT') private readonly paymentClient: ClientProxy) {}
+  constructor(
+    @InjectModel(Payment.name) private paymentModel: Model<Payment>,
+    @Inject('PAYMENT') private readonly paymentClient: ClientProxy,
+  ) {}
 
   private readonly logger = new Logger(PaymentService.name);
+
+  async findAll(): Promise<ReadPaymentDto[]> {
+    return this.paymentModel.find();
+  }
+
+  async create(createPaymentDto: CreatePaymentDto): Promise<ReadPaymentDto> {
+    const payment = await new this.paymentModel(createPaymentDto).save();
+
+    // console.log(`Emitted payment for borrowing_id: ${payment._id}`);
+    // this.paymentClient.emit('borrowing_created', {
+    //   borrowing: payment,
+    // });
+    return payment;
+  }
+
+  async findOne(id: string): Promise<ReadPaymentDto> {
+    return this.paymentModel.findById(id);
+  }
+
+  async deleteOne(id: string) {
+    return this.paymentModel.findByIdAndDelete(id);
+  }
 
   async makePayment(data: any) {
     this.logger.log(
