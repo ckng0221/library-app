@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { BookModule } from './book.module';
 
+console.log('DB-URI', process.env.MONGODB_URI);
+
 async function bootstrap() {
   const app = await NestFactory.create(BookModule);
 

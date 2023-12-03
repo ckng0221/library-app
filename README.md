@@ -24,8 +24,7 @@ nest start book
 
 # Use npm scripts
 # Eg. npm run <script> --  <service_name>
-npm run start -- book
-npm run start:dev -- book
-npm run start:prod -- book
-npm run build -- book
+npm run start book
+npm run start:dev book
+npm run build book
 ```
