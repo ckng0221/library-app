@@ -13,7 +13,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, { customSiteTitle: 'Customer' });
 
   const PORT = process.env.PORT || 8002;
   await app.listen(PORT);

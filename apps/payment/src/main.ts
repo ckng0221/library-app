@@ -15,7 +15,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, { customSiteTitle: 'Payment' });
 
   app.connectMicroservice(rmqService.getOptions('PAYMENT'));
   await app.startAllMicroservices();

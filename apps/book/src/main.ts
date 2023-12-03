@@ -15,7 +15,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, { customSiteTitle: 'Book' });
 
   const PORT = process.env.PORT || 8001;
   await app.listen(PORT);
