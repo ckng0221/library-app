@@ -14,6 +14,7 @@ There are several main services, including:
 - borrowing
 - customer
 - payment
+- view
 
 To run each of the services, could run using by:
 
@@ -27,6 +28,12 @@ nest start book
 npm run start book
 npm run start:dev book
 npm run build book
+```
+
+For view service, would need to build the React application first, to produce the static files before serving.
+Could run the following to build and serve in 1 command: 
+```bash
+npm run start:dev:view
 ```
 
 The microservice requires MongoDB and RabbitMQ.
