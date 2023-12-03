@@ -1,0 +1,122 @@
+services:
+  # app services
+  book:
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.service
+      target: development
+      args:
+        service: book
+    command: npm run start:dev book
+    env_file:
+      - ./apps/book/.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/libraryapp-book
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '8001:8001'
+    networks:
+      - node-network
+    links:
+      - mongodb
+  customer:
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.service
+      target: development
+      args:
+        service: customer
+    command: npm run start:dev customer
+    env_file:
+      - ./apps/customer/.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/libraryapp-customer
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '8002:8002'
+    networks:
+      - node-network
+    links:
+      - mongodb
+  borrowing:
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.service
+      target: development
+      args:
+        service: borrowing
+    command: npm run start:dev borrowing
+    env_file:
+      - ./apps/borrowing/.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/libraryapp-borrowing
+      - RABBIT_MQ_URI=amqp://rabbitmq:5672
+    depends_on:
+      - mongodb
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '8003:8003'
+    networks:
+      - node-network
+    links:
+      - mongodb
+      - rabbitmq
+  payment:
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.service
+      target: development
+      args:
+        service: payment
+    command: npm run start:dev payment
+    env_file:
+      - ./apps/payment/.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/libraryapp-payment
+      - RABBIT_MQ_URI=amqp://rabbitmq:5672
+    depends_on:
+      - mongodb
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '8004:8004'
+    networks:
+      - node-network
+    links:
+      - mongodb
+      - rabbitmq
+
+  # Dependencies
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+    networks:
+      - node-network
+  mongodb:
+    image: mongo:6
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - node-network
+volumes:
+  mongodb_data_container:
+networks:
+  node-network:
+    driver: bridge
+# docker-compose up -d

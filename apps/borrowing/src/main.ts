@@ -15,11 +15,12 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, { customSiteTitle: 'Borrowing' });
 
   app.connectMicroservice(rmqService.getOptions('PAYMENT'));
   await app.startAllMicroservices();
 
-  await app.listen(3002);
+  const PORT = process.env.PORT || 8003;
+  await app.listen(PORT);
 }
 bootstrap();

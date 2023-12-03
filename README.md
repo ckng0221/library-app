@@ -24,8 +24,16 @@ nest start book
 
 # Use npm scripts
 # Eg. npm run <script> --  <service_name>
-npm run start -- book
-npm run start:dev -- book
-npm run start:prod -- book
-npm run build -- book
+npm run start book
+npm run start:dev book
+npm run build book
+```
+
+The microservice requires MongoDB and RabbitMQ.
+Could run on docker images for these services, if do not have them installed.
+To run all the services in docker, could run:
+
+```bash
+# At project root
+docker-compose up -d
 ```
