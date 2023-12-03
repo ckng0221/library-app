@@ -6,7 +6,9 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "plugins": ["@nestjs/swagger"],
+    "plugins": [
+      "@nestjs/swagger"
+    ],
     "tsConfigPath": "apps/book/tsconfig.app.json"
   },
   "monorepo": true,
@@ -54,6 +56,15 @@
       "sourceRoot": "libs/common/src",
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "view": {
+      "type": "application",
+      "root": "apps/view",
+      "entryFile": "main",
+      "sourceRoot": "apps/view/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/view/tsconfig.app.json"
       }
     }
   }
