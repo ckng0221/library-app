@@ -20,6 +20,7 @@ async function bootstrap() {
   app.connectMicroservice(rmqService.getOptions('PAYMENT'));
   await app.startAllMicroservices();
 
-  await app.listen(3003);
+  const PORT = process.env.PORT || 8004;
+  await app.listen(PORT);
 }
 bootstrap();

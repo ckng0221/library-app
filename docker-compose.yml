@@ -1,0 +1,69 @@
+services:
+  # app Services
+  book:
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.service
+      target: development
+      args:
+        service: book
+    command: npm run start:dev book
+    env_file:
+      - ./apps/book/.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/libraryapp-book
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '8001:8001'
+    networks:
+      - node-network
+    links:
+      - mongodb
+  # customer:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/Dockerfile.service
+  #     target: development
+  #     args:
+  #       service: customer
+  #   command: npm run start:dev customer
+  #   env_file:
+  #     - ./apps/book/.env
+  #   environment:
+  #     - MONGODB_URI=mongodb://mongodb:27017/libraryapp-customer
+  #   depends_on:
+  #     - mongodb
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   ports:
+  #     - '8002:8002'
+  #   networks:
+  #     - node-network
+  #   links:
+  #     - mongodb
+  # Dependencies
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+    networks:
+      - node-network
+  mongodb:
+    image: mongo:6
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - node-network
+volumes:
+  mongodb_data_container:
+networks:
+  node-network:
+    driver: bridge
+# docker-compose up -d
