@@ -30,6 +30,6 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - run: npm run lint
-      - run: npm run test -- $SERVICE
-      - run: npm run test:e2e -- $SERVICE
-      - run: npm run build -- $SERVICE
+      - run: npm run test $SERVICE
+      - run: npm run test:e2e $SERVICE
+      - run: npm run build $SERVICE
