@@ -6,7 +6,11 @@ import { IBook } from '../interfaces/book';
 import { useEffect, useState } from 'react';
 import { getBookById } from '../components/api/book-api';
 
-function BookDetails() {
+interface IProps {
+  addToCart: (bookId: string, bookTitle: string) => void;
+}
+
+function BookDetails(props: IProps) {
   const { bookId } = useParams();
 
   if (!bookId) throw Error();
@@ -22,7 +26,7 @@ function BookDetails() {
   useEffect(() => {
     getBookById(bookId)
       .then((data) => {
-        console.log(data);
+        // console.log(data);
 
         return setBook(data);
       })
@@ -37,7 +41,12 @@ function BookDetails() {
         <Card.Text>Author: {book.author}</Card.Text>
         <Card.Text>Published Date: {book.published_date}</Card.Text>
         <Card.Text>ISBN: {book.isbn}</Card.Text>
-        <Button variant="primary">Add to cart</Button>
+        <Button
+          variant="primary"
+          onClick={() => props.addToCart(book._id, book.title)}
+        >
+          Add to cart
+        </Button>
       </Card.Body>
     </Card>
   );

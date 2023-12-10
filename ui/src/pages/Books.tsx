@@ -12,7 +12,7 @@ function BookTable() {
   useEffect(() => {
     getBooks()
       .then((data) => {
-        console.log(data);
+        // console.log(data);
 
         return setBooks(data);
       })

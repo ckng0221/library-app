@@ -3,8 +3,9 @@ import bookIcon from '/book.png';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import Cart from '../components/Cart';
 
-function NavBar() {
+function NavBar(props) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -17,6 +18,11 @@ function NavBar() {
             <Nav.Link>
               <Link to="books">Books</Link>
             </Nav.Link>
+            <Nav.Link>
+              <Link to="checkout">
+                <Cart cartItems={props.cartItems} />
+              </Link>
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -24,7 +30,7 @@ function NavBar() {
   );
 }
 
-const Layout = () => {
+const Layout = (props) => {
   return (
     <>
       <div>
@@ -32,7 +38,7 @@ const Layout = () => {
           <img src={bookIcon} className="logo" alt="Book icon" />
         </Link>
       </div>
-      <NavBar />
+      <NavBar cartItems={props.cartItems} />
       <p></p>
       <Outlet />
     </>
