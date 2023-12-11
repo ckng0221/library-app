@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-interface IProp {
+interface IProps {
   show: boolean;
   handleClose: () => void;
   title: string;
@@ -9,7 +9,7 @@ interface IProp {
   confirmText: string;
 }
 
-function ModalComp(props: IProp) {
+function ModalComp(props: IProps) {
   const { show, handleClose, title, body, confirmText } = props;
 
   return (

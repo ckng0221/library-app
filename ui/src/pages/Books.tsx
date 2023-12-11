@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import { IBook } from '../interfaces/book';
 import { Link } from 'react-router-dom';
 import { getBooks } from '../components/api/book-api';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 function BookTable() {
   const [books, setBooks] = useState<IBook[]>([
@@ -19,31 +20,46 @@ function BookTable() {
       .catch((error) => console.error(error));
   }, []);
 
-  const bookRows = books.map((book, index) => {
-    return (
-      <tr key={book._id}>
-        <td>{index + 1}</td>
-        <td>
-          <Link to={`/books/${book._id}`}>{book.title}</Link>
-        </td>
-        <td>{book.author}</td>
-        <td>{book.isbn}</td>
-      </tr>
-    );
+  const columns: GridColDef[] = [
+    {
+      field: 'num',
+      headerName: '#',
+      width: 10,
+    },
+    {
+      field: 'title',
+      headerName: 'Title',
+      renderCell: (params) => {
+        return <Link to={`/books/${params.id}`}>{params.formattedValue}</Link>;
+      },
+    },
+    { field: 'author', headerName: 'Author' },
+    { field: 'isbn', headerName: 'ISBN', width: 200 },
+  ];
+
+  const rows = books.map((book, index) => {
+    return {
+      id: book._id,
+      num: index,
+      title: book.title,
+      author: book.author,
+      isbn: book.isbn,
+    };
   });
 
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Author</th>
-          <th>ISBN</th>
-        </tr>
-      </thead>
-      <tbody>{bookRows}</tbody>
-    </Table>
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 5, pageSize: 10 },
+          },
+        }}
+        pageSizeOptions={[1, 10]}
+      />
+    </div>
   );
 }
 

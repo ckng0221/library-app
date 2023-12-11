@@ -20,7 +20,6 @@ const ListItem = ({ cartItems }: { cartItems: ICart[] }) => {
         </Container>
       </ListGroup.Item>
     );
-    return;
   });
 };
 

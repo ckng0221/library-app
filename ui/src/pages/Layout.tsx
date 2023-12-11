@@ -4,8 +4,13 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Cart from '../components/Cart';
+import { ICart } from '../interfaces/cart';
 
-function NavBar(props) {
+interface IProps {
+  cartItems: ICart[];
+}
+
+function NavBar(props: IProps) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -30,7 +35,7 @@ function NavBar(props) {
   );
 }
 
-const Layout = (props) => {
+const Layout = (props: IProps) => {
   return (
     <>
       <div>

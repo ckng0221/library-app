@@ -1,11 +1,11 @@
-import Badge from 'react-bootstrap/Badge';
-import { FaCartShopping } from 'react-icons/fa6';
 import { ICart } from '../interfaces/cart';
+import Badge from '@mui/material/Badge';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 function CartBadge({ count }: { count: number }) {
   return (
-    <Badge pill bg="danger">
-      {count}
+    <Badge badgeContent={count} color="primary">
+      <ShoppingCartIcon color="action" />
     </Badge>
   );
 }
@@ -13,12 +13,7 @@ function CartBadge({ count }: { count: number }) {
 function Cart(props: { cartItems: ICart[] }) {
   const cartItemCount = props.cartItems.length;
 
-  return (
-    <>
-      <FaCartShopping />
-      {cartItemCount > 0 ? <CartBadge count={cartItemCount} /> : ''}
-    </>
-  );
+  return <CartBadge count={cartItemCount} />;
 }
 
 export default Cart;
