@@ -1,4 +1,4 @@
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
 
 interface IProps {
@@ -20,10 +20,7 @@ function ModalComp(props: IProps) {
         </Modal.Header>
         <Modal.Body>{body}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="contained" onClick={handleClose}>
             {confirmText}
           </Button>
         </Modal.Footer>

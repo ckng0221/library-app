@@ -1,11 +1,11 @@
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import sampleBook from '/sample-book.webp';
-import { useParams } from 'react-router-dom';
-import { IBook } from '../interfaces/book';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { Alert, Button, Snackbar, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import { useParams } from 'react-router-dom';
 import { getBookById } from '../components/api/book-api';
-import { Alert, Snackbar, Stack } from '@mui/material';
+import { IBook } from '../interfaces/book';
+import sampleBook from '/sample-book.webp';
 
 interface IProps {
   addToCart: (bookId: string, bookTitle: string) => void;
@@ -41,7 +41,7 @@ function BookDetails(props: IProps) {
 
   return (
     <>
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ width: '20rem' }}>
         <Card.Img variant="top" src={sampleBook} />
         <Card.Body>
           <Card.Title>{book.title}</Card.Title>
@@ -49,17 +49,18 @@ function BookDetails(props: IProps) {
           <Card.Text>Published Date: {book.published_date}</Card.Text>
           <Card.Text>ISBN: {book.isbn}</Card.Text>
           <Button
-            variant="primary"
+            variant="contained"
             onClick={() => props.addToCart(book._id, book.title)}
           >
-            Add to cart
+            Add to cart &nbsp;
+            <AddShoppingCartIcon />
           </Button>
         </Card.Body>
       </Card>
       <Stack spacing={2} sx={{ width: '100%' }}>
         <Snackbar
           open={props.snackOpen}
-          autoHideDuration={3000}
+          autoHideDuration={1000}
           onClose={props.handleCloseSnack}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >

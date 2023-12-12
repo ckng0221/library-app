@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Table from 'react-bootstrap/Table';
 import { IBook } from '../interfaces/book';
 import { Link } from 'react-router-dom';
 import { getBooks } from '../components/api/book-api';
@@ -40,7 +39,7 @@ function BookTable() {
   const rows = books.map((book, index) => {
     return {
       id: book._id,
-      num: index,
+      num: index + 1,
       title: book.title,
       author: book.author,
       isbn: book.isbn,
