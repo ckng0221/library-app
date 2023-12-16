@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Layout from './pages/Layout';
 import BookDetails from './pages/BookDetails';
 import Books from './pages/Books';
-import { SyntheticEvent, useState } from 'react';
+import { useState } from 'react';
 import { ICart } from './interfaces/cart';
 import Checkout from './pages/Checkout';
 
@@ -29,14 +29,6 @@ function App() {
 
   const [snackOpen, setSnackOpen] = useState(false);
 
-  const handleCloseSnack = (event: SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackOpen(false);
-  };
-
   return (
     <>
       <BrowserRouter>
@@ -50,7 +42,7 @@ function App() {
                 <BookDetails
                   addToCart={addToCart}
                   snackOpen={snackOpen}
-                  handleCloseSnack={handleCloseSnack}
+                  setSnackOpen={setSnackOpen}
                 />
               }
             />

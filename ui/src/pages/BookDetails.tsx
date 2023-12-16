@@ -1,19 +1,17 @@
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Alert, Button, Snackbar, Stack } from '@mui/material';
+import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { useParams } from 'react-router-dom';
-import { getBookById } from '../components/api/book-api';
+import { getBookById } from '../api/book-api';
 import { IBook } from '../interfaces/book';
 import sampleBook from '/sample-book.webp';
+import AlertComp from '../components/Alert';
 
 interface IProps {
   addToCart: (bookId: string, bookTitle: string) => void;
   snackOpen: boolean;
-  handleCloseSnack: (
-    event: React.SyntheticEvent | Event,
-    reason?: string,
-  ) => void;
+  setSnackOpen: (arg: boolean) => void;
 }
 
 function BookDetails(props: IProps) {
@@ -57,22 +55,11 @@ function BookDetails(props: IProps) {
           </Button>
         </Card.Body>
       </Card>
-      <Stack spacing={2} sx={{ width: '100%' }}>
-        <Snackbar
-          open={props.snackOpen}
-          autoHideDuration={1000}
-          onClose={props.handleCloseSnack}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-          <Alert
-            onClose={props.handleCloseSnack}
-            severity="success"
-            sx={{ width: '100%' }}
-          >
-            "{book.title}" added to cart!
-          </Alert>
-        </Snackbar>
-      </Stack>
+      <AlertComp
+        alertMessage={`${book.title} added to cart!`}
+        snackOpen={props.snackOpen}
+        setSnackOpen={props.setSnackOpen}
+      />
     </>
   );
 }

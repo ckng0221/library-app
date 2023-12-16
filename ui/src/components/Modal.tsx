@@ -1,16 +1,27 @@
+import { CircularProgress } from '@mui/material';
 import Button from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
 
 interface IProps {
   show: boolean;
+  handleConfirm: () => void;
   handleClose: () => void;
   title: string;
   body: string;
   confirmText: string;
+  showLoading: boolean;
 }
 
 function ModalComp(props: IProps) {
-  const { show, handleClose, title, body, confirmText } = props;
+  const {
+    show,
+    handleConfirm,
+    handleClose,
+    title,
+    body,
+    confirmText,
+    showLoading,
+  } = props;
 
   return (
     <>
@@ -18,9 +29,21 @@ function ModalComp(props: IProps) {
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{body}</Modal.Body>
+        <Modal.Body>
+          {showLoading && (
+            <>
+              <CircularProgress />
+              <br />
+            </>
+          )}
+          {body}
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="contained" onClick={handleClose}>
+          <Button
+            variant="contained"
+            onClick={handleConfirm}
+            disabled={showLoading}
+          >
             {confirmText}
           </Button>
         </Modal.Footer>

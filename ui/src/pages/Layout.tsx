@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import bookIcon from '/book.png';
+import libraryIcon from '/library-icon.png';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -40,7 +40,7 @@ const Layout = (props: IProps) => {
     <>
       <div>
         <Link to="">
-          <img src={bookIcon} className="logo" alt="Book icon" />
+          <img src={libraryIcon} className="logo" alt="Library icon" />
         </Link>
       </div>
       <NavBar cartItems={props.cartItems} />

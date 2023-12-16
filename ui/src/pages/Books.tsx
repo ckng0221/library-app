@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { IBook } from '../interfaces/book';
 import { Link } from 'react-router-dom';
-import { getBooks } from '../components/api/book-api';
+import { getBooks } from '../api/book-api';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 function BookTable() {
-  const [books, setBooks] = useState<IBook[]>([
-    { _id: '', author: '', title: '', isbn: '', published_date: '' },
-  ]);
+  const [books, setBooks] = useState<IBook[]>([]);
 
   useEffect(() => {
     getBooks()
