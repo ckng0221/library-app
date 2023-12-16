@@ -1,12 +1,12 @@
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { ICart } from '../interfaces/cart';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -139,7 +139,9 @@ function Checkout(props: IProps) {
 
       <p></p>
       {props.cartItems.length > 0 && (
-        <Button onClick={handleShow}>Checkout</Button>
+        <Button variant="contained" onClick={handleShow}>
+          Checkout
+        </Button>
       )}
       <ModalComp
         show={show}

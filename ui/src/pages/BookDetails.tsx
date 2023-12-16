@@ -7,15 +7,16 @@ import { getBookById } from '../api/book-api';
 import { IBook } from '../interfaces/book';
 import sampleBook from '/sample-book.webp';
 import AlertComp from '../components/Alert';
+import { ICart } from '../interfaces/cart';
 
 interface IProps {
-  addToCart: (bookId: string, bookTitle: string) => void;
-  snackOpen: boolean;
-  setSnackOpen: (arg: boolean) => void;
+  cartItems: ICart[];
+  setCartItems: (array: ICart[]) => void;
 }
 
 function BookDetails(props: IProps) {
   const { bookId } = useParams();
+  const [snackOpen, setSnackOpen] = useState(false);
 
   if (!bookId) throw Error();
 
@@ -26,6 +27,20 @@ function BookDetails(props: IProps) {
     isbn: '',
     published_date: '',
   });
+
+  function addToCart(bookId: string, bookTitle: string) {
+    const book = props.cartItems.find((item) => item.book_id === bookId);
+    if (book) {
+      book.quantity++;
+    } else {
+      props.setCartItems([
+        ...props.cartItems,
+        { book_id: bookId, book_title: bookTitle, quantity: 1 },
+      ]);
+    }
+    setSnackOpen(true);
+    // console.log(cartItems);
+  }
 
   useEffect(() => {
     getBookById(bookId)
@@ -48,7 +63,7 @@ function BookDetails(props: IProps) {
           <Card.Text>ISBN: {book.isbn}</Card.Text>
           <Button
             variant="contained"
-            onClick={() => props.addToCart(book._id, book.title)}
+            onClick={() => addToCart(book._id, book.title)}
           >
             Add to cart &nbsp;
             <AddShoppingCartIcon />
@@ -57,8 +72,8 @@ function BookDetails(props: IProps) {
       </Card>
       <AlertComp
         alertMessage={`${book.title} added to cart!`}
-        snackOpen={props.snackOpen}
-        setSnackOpen={props.setSnackOpen}
+        snackOpen={snackOpen}
+        setSnackOpen={setSnackOpen}
       />
     </>
   );

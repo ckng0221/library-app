@@ -13,22 +13,6 @@ import Checkout from './pages/Checkout';
 function App() {
   const [cartItems, setCartItems] = useState<ICart[]>([]);
 
-  function addToCart(bookId: string, bookTitle: string) {
-    const book = cartItems.find((item) => item.book_id === bookId);
-    if (book) {
-      book.quantity++;
-    } else {
-      setCartItems([
-        ...cartItems,
-        { book_id: bookId, book_title: bookTitle, quantity: 1 },
-      ]);
-    }
-    setSnackOpen(true);
-    // console.log(cartItems);
-  }
-
-  const [snackOpen, setSnackOpen] = useState(false);
-
   return (
     <>
       <BrowserRouter>
@@ -40,9 +24,8 @@ function App() {
               path="books/:bookId"
               element={
                 <BookDetails
-                  addToCart={addToCart}
-                  snackOpen={snackOpen}
-                  setSnackOpen={setSnackOpen}
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
                 />
               }
             />
