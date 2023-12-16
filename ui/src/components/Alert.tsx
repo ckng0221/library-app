@@ -20,7 +20,7 @@ export default function AlertComp(props: IProp) {
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar
         open={props.snackOpen}
-        autoHideDuration={props.autoHideDuration || 1000}
+        autoHideDuration={props.autoHideDuration || 2000}
         onClose={handleCloseSnack}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >

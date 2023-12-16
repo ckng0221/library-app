@@ -44,7 +44,7 @@ function Customer() {
   useEffect(() => {
     getCustomers()
       .then((data) => {
-        console.log(data);
+        setCustomer(data[0].name);
 
         return setCustomers(data);
       })
@@ -76,6 +76,7 @@ function Customer() {
 
 interface IProps {
   cartItems: ICart[];
+  setCartItems: (array: []) => void;
 }
 
 // function processCheckout
@@ -95,6 +96,7 @@ function Checkout(props: IProps) {
         setBody('Confirm to checkout?');
         setShowLoading(false);
         setSnackOpen(true);
+        props.setCartItems([]);
       }, 1000);
       setBody('Processing payment...');
     }, 1000);
