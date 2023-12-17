@@ -1,11 +1,13 @@
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import {
+  Breadcrumbs,
   Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   Grid,
+  Link,
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -15,6 +17,7 @@ import { IBook } from '../interfaces/book';
 import sampleBook from '/sample-book.webp';
 import { ICart } from '../interfaces/cart';
 import AlertComp from '../components/Alert';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface IProps {
   cartItems: ICart[];
@@ -61,6 +64,21 @@ function BookDetails(props: IProps) {
 
   return (
     <>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" to="/" component={RouterLink}>
+          Home
+        </Link>
+        <Link
+          underline="hover"
+          color="inherit"
+          to="/books"
+          component={RouterLink}
+        >
+          Books
+        </Link>
+        <Typography color="text.primary">{book.title}</Typography>
+      </Breadcrumbs>
+      <br />
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

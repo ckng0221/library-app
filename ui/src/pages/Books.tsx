@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { IBook } from '../interfaces/book';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { getBooks } from '../api/book-api';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Breadcrumbs, Link, Typography } from '@mui/material';
 
 function BookTable() {
   const [books, setBooks] = useState<IBook[]>([]);
@@ -27,7 +28,11 @@ function BookTable() {
       field: 'title',
       headerName: 'Title',
       renderCell: (params) => {
-        return <Link to={`/books/${params.id}`}>{params.formattedValue}</Link>;
+        return (
+          <RouterLink to={`/books/${params.id}`}>
+            {params.formattedValue}
+          </RouterLink>
+        );
       },
     },
     { field: 'author', headerName: 'Author' },
@@ -45,18 +50,27 @@ function BookTable() {
   });
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 5, pageSize: 10 },
-          },
-        }}
-        pageSizeOptions={[1, 10]}
-      />
-    </div>
+    <>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" to="/" component={RouterLink}>
+          Home
+        </Link>
+        <Typography color="text.primary">Books</Typography>
+      </Breadcrumbs>
+      <br />
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 5, pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[1, 10]}
+        />
+      </div>
+    </>
   );
 }
 

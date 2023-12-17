@@ -4,7 +4,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 function CartBadge({ count }: { count: number }) {
   return (
-    <Badge badgeContent={count} color="primary">
+    <Badge badgeContent={count} color="error">
       <ShoppingCartIcon color="action" />
     </Badge>
   );
