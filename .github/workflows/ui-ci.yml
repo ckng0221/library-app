@@ -1,4 +1,4 @@
-name: Payment-CI
+name: UI-CI
 
 on:
   push:
@@ -22,6 +22,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: cd ui
       - run: npm ci
-      - run: npm run build
+      - run: npm run ui:build
