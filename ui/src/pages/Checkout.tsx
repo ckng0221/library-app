@@ -1,34 +1,41 @@
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { useEffect, useState } from 'react';
 import { ICart } from '../interfaces/cart';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import {
+  Avatar,
   Button,
+  Card,
+  CardContent,
   FormControl,
   InputLabel,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Typography,
 } from '@mui/material';
 import { getCustomers } from '../api/customer-api';
 import { ICustomer } from '../interfaces/customer';
 import DialogComp from '../components/Dialog';
 import AlertComp from '../components/Alert';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
-const ListItem = ({ cartItems }: { cartItems: ICart[] }) => {
+const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
   return cartItems.map((item) => {
     return (
-      <ListGroup.Item>
-        <Container>
-          <Row>
-            <Col>{item.book_title}</Col>
-            <Col>{item.quantity}</Col>
-          </Row>
-        </Container>
-      </ListGroup.Item>
+      <ListItem key={item.book_id}>
+        <ListItemAvatar>
+          <Avatar>
+            <MenuBookIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={item.book_title}
+          secondary={`Quantity : ${item.quantity}`}
+        />
+      </ListItem>
     );
   });
 };
@@ -103,38 +110,26 @@ function Checkout(props: IProps) {
   };
   const handleShow = () => setShow(true);
 
-  const ReturnItems = () => {
-    if (props.cartItems.length <= 0) {
-      return 'Your cart is empty';
-    } else {
-      return (
-        <Container>
-          <Row>
-            <Customer />
-          </Row>
-          <br />
-          <Row>
-            <Col>
-              <b>Title</b>
-            </Col>
-            <Col>
-              <b>Quantity</b>
-            </Col>
-          </Row>
-        </Container>
-      );
-    }
-  };
-
   return (
     <>
-      <Card style={{ width: '18rem' }}>
-        <ListGroup variant="flush">
-          <ListGroup.Item>
-            <ReturnItems />
-          </ListGroup.Item>
-          <ListItem cartItems={props.cartItems} />
-        </ListGroup>
+      <Card sx={{ minWidth: 400 }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Checkout Cart
+          </Typography>
+        </CardContent>
+        <CardContent>
+          {props.cartItems.length > 0 ? (
+            <List
+              sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+            >
+              <Customer />
+              <ListItems cartItems={props.cartItems} />
+            </List>
+          ) : (
+            'Your cart is empty'
+          )}
+        </CardContent>
       </Card>
 
       <p></p>

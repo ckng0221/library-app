@@ -1,13 +1,20 @@
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Button } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import Card from 'react-bootstrap/Card';
 import { useParams } from 'react-router-dom';
 import { getBookById } from '../api/book-api';
 import { IBook } from '../interfaces/book';
 import sampleBook from '/sample-book.webp';
-import AlertComp from '../components/Alert';
 import { ICart } from '../interfaces/cart';
+import AlertComp from '../components/Alert';
 
 interface IProps {
   cartItems: ICart[];
@@ -54,21 +61,44 @@ function BookDetails(props: IProps) {
 
   return (
     <>
-      <Card style={{ width: '20rem' }}>
-        <Card.Img variant="top" src={sampleBook} />
-        <Card.Body>
-          <Card.Title>{book.title}</Card.Title>
-          <Card.Text>Author: {book.author}</Card.Text>
-          <Card.Text>Published Date: {book.published_date}</Card.Text>
-          <Card.Text>ISBN: {book.isbn}</Card.Text>
-          <Button
-            variant="contained"
-            onClick={() => addToCart(book._id, book.title)}
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            <CardMedia
+              component="img"
+              height="250"
+              image={sampleBook}
+              alt="Book image"
+            />
+          </Typography>
+          <br />
+          <Typography gutterBottom variant="h5" component="div">
+            {book.title}
+          </Typography>
+          <Typography>Author: {book.author}</Typography>
+          <Typography>Author: {book.author}</Typography>
+          <Typography>Published Date: {book.published_date}</Typography>
+          <Typography>ISBN: {book.isbn}</Typography>
+        </CardContent>
+        <CardActions>
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
           >
-            Add to cart &nbsp;
-            <AddShoppingCartIcon />
-          </Button>
-        </Card.Body>
+            <Grid item xs={5}>
+              <Button
+                variant="contained"
+                onClick={() => addToCart(book._id, book.title)}
+              >
+                Add to cart &nbsp;
+                <AddShoppingCartIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        </CardActions>
       </Card>
       <AlertComp
         alertMessage={`${book.title} added to cart!`}
