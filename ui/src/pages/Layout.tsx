@@ -30,10 +30,7 @@ interface IProps {
 function MenuAppBar(props: IProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDrawer, setOpenDrawer] = useState({
-    top: false,
     left: false,
-    bottom: false,
-    right: false,
   });
 
   const navigate = useNavigate();
@@ -60,9 +57,6 @@ function MenuAppBar(props: IProps) {
               onClick={() =>
                 setOpenDrawer({
                   left: true,
-                  right: false,
-                  top: false,
-                  bottom: false,
                 })
               }
             >
