@@ -84,7 +84,7 @@ function BookDetails(props: IProps) {
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             <CardMedia
               component="img"
-              height="250"
+              height="200"
               image={sampleBook}
               alt="Book image"
             />
@@ -93,7 +93,6 @@ function BookDetails(props: IProps) {
           <Typography gutterBottom variant="h5" component="div">
             {book.title}
           </Typography>
-          <Typography>Author: {book.author}</Typography>
           <Typography>Author: {book.author}</Typography>
           <Typography>Published Date: {book.published_date}</Typography>
           <Typography>ISBN: {book.isbn}</Typography>

@@ -1,23 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ICart } from '../interfaces/cart';
 import {
   Avatar,
+  Breadcrumbs,
   Button,
   Card,
   CardContent,
-  FormControl,
-  InputLabel,
+  Link,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { getCustomers } from '../api/customer-api';
 import { ICustomer } from '../interfaces/customer';
+import { Link as RouterLink } from 'react-router-dom';
 import DialogComp from '../components/Dialog';
 import AlertComp from '../components/Alert';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -40,50 +37,10 @@ const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
   });
 };
 
-function Customer() {
-  const [customer, setCustomer] = useState('');
-  const [customers, setCustomers] = useState<ICustomer[]>([]);
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setCustomer(event.target.value as string);
-  };
-
-  useEffect(() => {
-    getCustomers()
-      .then((data) => {
-        setCustomer(data[0].name);
-
-        return setCustomers(data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
-
-  const CustomerItems = customers.map((customer) => {
-    return (
-      <MenuItem key={customer._id} value={customer.name}>
-        {customer.name}
-      </MenuItem>
-    );
-  });
-  return (
-    <FormControl sx={{ m: 1, minWidth: '10rem' }}>
-      <InputLabel htmlFor="my-input">Customer Name</InputLabel>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={customer}
-        label="Customer Name"
-        onChange={handleChange}
-      >
-        {CustomerItems}
-      </Select>
-    </FormControl>
-  );
-}
-
 interface IProps {
   cartItems: ICart[];
   setCartItems: (array: []) => void;
+  customer: ICustomer;
 }
 
 // function processCheckout
@@ -112,6 +69,14 @@ function Checkout(props: IProps) {
 
   return (
     <>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" to="/" component={RouterLink}>
+          Home
+        </Link>
+        <Typography color="text.primary">Cart</Typography>
+      </Breadcrumbs>
+      <br />
+
       <Card sx={{ minWidth: 400 }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -123,7 +88,7 @@ function Checkout(props: IProps) {
             <List
               sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
             >
-              <Customer />
+              <ListItem>Customer Name: {props.customer.name}</ListItem>
               <ListItems cartItems={props.cartItems} />
             </List>
           ) : (

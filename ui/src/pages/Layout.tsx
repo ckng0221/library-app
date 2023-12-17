@@ -18,7 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { Link, Navigate, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Cart from '../components/Cart';
 import DrawerComp from '../components/Drawer';
 import { ICart } from '../interfaces/cart';
@@ -36,6 +36,8 @@ function MenuAppBar(props: IProps) {
     right: false,
   });
 
+  const navigate = useNavigate();
+
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,8 +45,6 @@ function MenuAppBar(props: IProps) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  Navigate;
 
   return (
     <>
@@ -106,8 +106,14 @@ function MenuAppBar(props: IProps) {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      navigate('/account');
+                    }}
+                  >
+                    My Account
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>Logout</MenuItem>
                 </Menu>
               </div>
             }
