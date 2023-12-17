@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8001';
+const BASE_URL = import.meta.env.VITE_BOOK_API_BASE_URL;
 const resource = '/books';
 const url = `${BASE_URL}${resource}`;
 

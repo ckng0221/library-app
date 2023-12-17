@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Cart from '../components/Cart';
 import { ICart } from '../interfaces/cart';
+import PersonIcon from '@mui/icons-material/Person';
 
 interface IProps {
   cartItems: ICart[];
@@ -27,6 +28,9 @@ function NavBar(props: IProps) {
               <Link to="checkout">
                 <Cart cartItems={props.cartItems} />
               </Link>
+            </Nav.Link>
+            <Nav.Link>
+              <PersonIcon />
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

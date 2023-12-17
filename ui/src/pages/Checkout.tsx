@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { getCustomers } from '../api/customer-api';
 import { ICustomer } from '../interfaces/customer';
-import ModalComp from '../components/Modal';
+import DialogComp from '../components/Dialog';
 import AlertComp from '../components/Alert';
 
 const ListItem = ({ cartItems }: { cartItems: ICart[] }) => {
@@ -84,7 +84,7 @@ interface IProps {
 function Checkout(props: IProps) {
   const [show, setShow] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [body, setBody] = useState('Confirm to checkout?');
+  const [body, setBody] = useState('Confirm to checkout your cart?');
   const [snackOpen, setSnackOpen] = useState(false);
 
   const handleConfirm = () => {
@@ -93,7 +93,7 @@ function Checkout(props: IProps) {
     setTimeout(() => {
       setTimeout(() => {
         setShow(false);
-        setBody('Confirm to checkout?');
+        setBody('Confirm to checkout your cart?');
         setShowLoading(false);
         setSnackOpen(true);
         props.setCartItems([]);
@@ -143,7 +143,7 @@ function Checkout(props: IProps) {
           Checkout
         </Button>
       )}
-      <ModalComp
+      <DialogComp
         show={show}
         handleConfirm={handleConfirm}
         handleClose={() => setShow(false)}
