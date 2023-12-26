@@ -14,10 +14,14 @@ import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation
 import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { PaymentService } from './payment.service';
 import { ApiQuery } from '@nestjs/swagger';
+import { EventGateway } from './events.gateway';
 
 @Controller('payments')
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+  constructor(
+    private readonly paymentService: PaymentService,
+    private readonly eventsGateway: EventGateway,
+  ) {}
 
   @Get()
   @ApiQuery({ name: 'borrowing_id', required: false })
@@ -73,8 +77,13 @@ export class PaymentController {
     )
     id: string,
   ): Promise<{ payment_id: string; status: 'success' | 'failed' }> {
-    const status = await this.paymentService.makePayment(id);
-    return { payment_id: id, status: status };
+    const obj = await this.paymentService.makePayment(id);
+    this.eventsGateway.emitEvent('payment_done', {
+      payment_id: obj.payment_id,
+      borrowing_id: obj.borrowing_id,
+      status: obj.status,
+    });
+    return { payment_id: id, status: obj.status };
   }
 
   @EventPattern('borrowing_created')

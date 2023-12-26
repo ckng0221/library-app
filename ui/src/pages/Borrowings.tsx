@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Breadcrumbs,
   Card,
   CardContent,
@@ -12,7 +13,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { getBorrowings } from '../api/borrowing-api';
 import { IBorrowing } from '../interfaces/borrowing';
@@ -20,15 +21,16 @@ import { ICustomer } from '../interfaces/customer';
 import dayjs from 'dayjs';
 import TableComp from '../components/Table';
 import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
+import { paymentSocket } from '../utils/socket';
 
 const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
+  const columns = [
+    { field: 'index', headerName: 'No.' },
+    { field: 'name', headerName: 'Book Title' },
+    { field: 'quantity', headerName: 'Quantity' },
+  ];
   return borrowings.map((borrowing) => {
     const borrowed_date = dayjs(borrowing.borrowed_date).format('YYYY-MM-DD');
-    const columns = [
-      { field: 'index', headerName: 'No.' },
-      { field: 'name', headerName: 'Book Title' },
-      { field: 'quantity', headerName: 'Quantity' },
-    ];
 
     const borrowingBooks = borrowing.books.map((book, index) => {
       return { index: index + 1, ...book };
@@ -91,19 +93,58 @@ interface IProps {
 // function processCheckout
 
 function Borrowings(props: IProps) {
-  const [borrowings, setBorrowings] = useState<IBorrowing[]>([]);
+  const [borrowings, _setBorrowings] = useState<IBorrowing[]>([]);
+  const borrowingsRef = useRef(borrowings);
+  const setBorrowings = (data: any) => {
+    borrowingsRef.current = data;
+    _setBorrowings(data);
+  };
   const [showLoading, setShowLoading] = useState(true);
+  const [isConnected, setIsConnected] = useState(false);
 
+  function onConnect() {
+    setIsConnected(true);
+  }
+
+  function onDisconnect() {
+    setIsConnected(false);
+  }
+
+  function onPaymentDone(message: any) {
+    // console.log('payment_done', message);
+    if (message.status === 'success') {
+      const objIndex = borrowingsRef.current.findIndex(
+        (obj) => obj._id == message.borrowing_id,
+      );
+
+      // console.log('lala', borrowings);
+      // console.log(objIndex);
+
+      borrowingsRef.current[objIndex].is_payment_done = true;
+      setBorrowings(borrowingsRef.current);
+      console.log(borrowingsRef.current);
+    }
+  }
+
+  const customer_id = props.customer._id;
   useEffect(() => {
-    const customer_id = props.customer._id;
-    if (!customer_id) return;
+    paymentSocket.on('connected', onConnect);
+    paymentSocket.on('disconnected', onDisconnect);
+    paymentSocket.on('payment_done', onPaymentDone);
+
     getBorrowings({ customer_id })
       .then((res) => {
         setBorrowings(res.data);
         setShowLoading(false);
       })
       .catch((error) => console.error(error));
-  }, [props.customer._id]);
+
+    return () => {
+      paymentSocket.off('connected', onConnect);
+      paymentSocket.off('disconnected', onDisconnect);
+      paymentSocket.off('payment_done', onPaymentDone);
+    };
+  }, [borrowings]);
 
   return (
     <>
@@ -121,6 +162,11 @@ function Borrowings(props: IProps) {
           <Typography gutterBottom variant="h5" component="div">
             My Borrowings
           </Typography>
+          {/* <Badge
+            badgeContent={1}
+            color={isConnected ? 'success' : 'error'}
+            variant="dot"
+          ></Badge> */}
         </CardContent>
         {showLoading && <CircularProgress />}
         {borrowings.length > 0 && !showLoading && (

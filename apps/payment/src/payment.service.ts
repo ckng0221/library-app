@@ -4,6 +4,7 @@ import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { Payment } from './schemas/payment.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { EventGateway } from './events.gateway';
 
 async function makeFakePayment(
   payment_id: string,
@@ -68,16 +69,17 @@ export class PaymentService {
     );
     const paymentStatus = await makeFakePayment(id, this.logger);
 
+    const obj = {
+      payment_id: id,
+      borrowing_id: payment.borrowing_id,
+      status: paymentStatus,
+    };
+    const data = JSON.stringify(obj);
+
     if (paymentStatus === 'success') {
       await this.paymentModel.findByIdAndUpdate(id, {
         is_payment_done: true,
         payment_date: new Date(),
-      });
-
-      const data = JSON.stringify({
-        payment_id: id,
-        borrowing_id: payment.borrowing_id,
-        status: paymentStatus,
       });
 
       this.paymentClient.emit('payment_done', data);
@@ -85,8 +87,11 @@ export class PaymentService {
       console.log(
         `Emitted payment_done for payment_id ${id}, borrowing_id: ${payment.borrowing_id}`,
       );
+
+      //TODO: Add payment done socket event
+      // this.socketGateway.emitEvent('payment_done', data);
     }
 
-    return paymentStatus;
+    return obj;
   }
 }

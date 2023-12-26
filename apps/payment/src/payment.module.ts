@@ -7,6 +7,7 @@ import * as Joi from 'joi';
 import { DatabaseModule } from '../../../libs/common/src/database/database.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Payment, PaymentSchema } from './schemas/payment.schema';
+import { EventGateway } from './events.gateway';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { Payment, PaymentSchema } from './schemas/payment.schema';
     }),
   ],
   controllers: [PaymentController],
-  providers: [PaymentService],
+  providers: [PaymentService, EventGateway],
 })
 export class PaymentModule {}
