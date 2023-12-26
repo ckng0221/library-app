@@ -72,6 +72,7 @@ function Checkout(props: IProps) {
         id: item.book_id,
         name: item.book_title,
         returned_date: null,
+        quantity: item.quantity,
       };
     });
 

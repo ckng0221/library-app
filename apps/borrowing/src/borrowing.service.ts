@@ -27,9 +27,9 @@ export class BorrowingService {
     if (customer_id) {
       searchOption = { ...searchOption, customer_id };
     }
-    console.log(searchOption);
+    // console.log(searchOption);
 
-    return this.borrowingModel.find(searchOption);
+    return this.borrowingModel.find(searchOption).sort({ borrowed_date: -1 });
   }
 
   async findOne(id: string): Promise<ReadBorrowingDto> {

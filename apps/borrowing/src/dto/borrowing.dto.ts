@@ -14,10 +14,22 @@ export class BorrowingDto {
   @IsNotEmpty()
   @ApiProperty({
     example: [
-      { id: '6559783dc650b9e8939a0214', name: 'My Book', return_date: null },
+      {
+        id: '6559783dc650b9e8939a0214',
+        name: 'My Book',
+        return_date: null,
+        quantity: 1,
+      },
     ],
   })
-  books: [{ id: Types.ObjectId; name: string; returned_date?: Date | null }];
+  books: [
+    {
+      id: Types.ObjectId;
+      name: string;
+      returned_date?: Date | null;
+      quantity: number;
+    },
+  ];
 
   @ApiProperty({ default: false })
   is_payment_done: boolean;

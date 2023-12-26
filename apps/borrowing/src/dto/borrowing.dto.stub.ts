@@ -9,7 +9,12 @@ export const BorrowingDtoStub = (
     customer_id: new Types.ObjectId(),
     customer_name: borrowingObj?.customer_name || 'test-customer',
     books: borrowingObj?.books || [
-      { id: new Types.ObjectId(), name: 'test-book', returned_date: null },
+      {
+        id: new Types.ObjectId(),
+        name: 'test-book',
+        returned_date: null,
+        quantity: 1,
+      },
     ],
     borrowed_date: borrowingObj?.borrowed_date || new Date(),
     closed_date: borrowingObj?.closed_date || null,

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Breadcrumbs,
   Card,
   CardContent,
@@ -29,6 +30,15 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
       { field: 'quantity', headerName: 'Quantity' },
     ];
 
+    const borrowingBooks = borrowing.books.map((book, index) => {
+      return { index: index + 1, ...book };
+    });
+    const paymentStatus: any = {
+      text: borrowing.is_payment_done ? 'successful' : 'pending',
+      color: borrowing.is_payment_done ? 'success' : 'warning',
+    };
+    // console.log(borrowingBooks);
+
     return (
       <>
         <ListItem key={borrowing._id}>
@@ -42,13 +52,13 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
             secondary={`Books: `}
           />
           <ListItemText secondary={`Date: ${borrowed_date}`} />
+          <ListItemText secondary={<>Payment status:</>} />
+          <Badge
+            badgeContent={paymentStatus.text}
+            color={paymentStatus.color}
+          ></Badge>
         </ListItem>
-        <TableComp
-          rows={borrowing.books.map((book, index) => {
-            return { index: index + 1, ...book };
-          })}
-          columns={columns}
-        />
+        <TableComp rows={borrowingBooks} columns={columns} />
         <hr />
       </>
     );
@@ -105,7 +115,7 @@ function Borrowings(props: IProps) {
           </CardContent>
         )}
         {borrowings.length <= 0 && !showLoading && (
-          <CardContent>"You don't have any borrowings"</CardContent>
+          <CardContent>You don't have any borrowings</CardContent>
         )}
       </Card>
     </>
