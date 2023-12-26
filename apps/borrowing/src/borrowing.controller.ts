@@ -72,7 +72,7 @@ export class BorrowingController {
         is_payment_done: true,
       },
     );
-    console.log(borrowing);
+    // console.log(borrowing);
   }
 
   @Post()
