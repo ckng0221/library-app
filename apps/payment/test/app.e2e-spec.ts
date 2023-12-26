@@ -10,6 +10,7 @@ import { PaymentDtoStub } from '../src/dto/payment.dto.stub';
 import { PaymentController } from '../src/payment.controller';
 import { PaymentService } from '../src/payment.service';
 import { Payment, PaymentSchema } from '../src/schemas/payment.schema';
+import { EventGateway } from '../src/events.gateway';
 
 describe('Payment (e2e)', () => {
   let app: INestApplication;
@@ -30,6 +31,7 @@ describe('Payment (e2e)', () => {
         PaymentService,
         { provide: getModelToken(Payment.name), useValue: paymentModel },
         { provide: 'PAYMENT', useValue: mock<AmqpConnection>() },
+        EventGateway,
       ],
     }).compile();
 
