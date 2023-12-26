@@ -1,9 +1,9 @@
 import {
   Avatar,
-  Badge,
   Breadcrumbs,
   Card,
   CardContent,
+  Chip,
   CircularProgress,
   Link,
   List,
@@ -34,7 +34,7 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
       return { index: index + 1, ...book };
     });
     const paymentStatus: any = {
-      text: borrowing.is_payment_done ? 'successful' : 'pending',
+      text: borrowing.is_payment_done ? 'Successful' : 'Pending',
       color: borrowing.is_payment_done ? 'success' : 'warning',
     };
     // console.log(borrowingBooks);
@@ -48,15 +48,22 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={`ID: ${borrowing._id?.slice(0, 8)}`}
+            primary={<>ID: {borrowing._id}</>}
             secondary={`Books: `}
           />
           <ListItemText secondary={`Date: ${borrowed_date}`} />
-          <ListItemText secondary={<>Payment status:</>} />
-          <Badge
-            badgeContent={paymentStatus.text}
-            color={paymentStatus.color}
-          ></Badge>
+          <ListItemText
+            secondary={
+              <>
+                Payment status: &nbsp;&nbsp;
+                <Chip
+                  label={paymentStatus.text}
+                  color={paymentStatus.color}
+                  size="small"
+                />
+              </>
+            }
+          />
         </ListItem>
         <TableComp rows={borrowingBooks} columns={columns} />
         <hr />
@@ -97,7 +104,7 @@ function Borrowings(props: IProps) {
       </Breadcrumbs>
       <br />
 
-      <Card sx={{ minWidth: 600 }}>
+      <Card sx={{ minWidth: 800 }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             My Borrowings

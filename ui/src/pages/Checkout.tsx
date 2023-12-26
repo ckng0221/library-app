@@ -22,6 +22,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { createBorrowing } from '../api/borrowing-api';
 import { IBorrowing } from '../interfaces/borrowing';
 import { sleep } from '../utils/common';
+import { getPayments, makePaymentById } from '../api/payment-api';
 
 const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
   return cartItems.map((item) => {
@@ -66,7 +67,6 @@ function Checkout(props: IProps) {
   const handleConfirm = async () => {
     setShowLoading(true);
 
-    // TODO: Create borrowing
     const borrowingBooks = props.cartItems.map((item) => {
       return {
         id: item.book_id,
@@ -89,14 +89,19 @@ function Checkout(props: IProps) {
       setBody(`Redirecting to payment gateway...`);
       await sleep(1000);
 
-      setBody(`Proceeding payment for borrowing_id: ${borrowing.data._id}...`);
-      await sleep(1000);
+      setBody(`Making payment for borrowing_id: ${borrowing.data._id}...`);
+      const payments = await getPayments({ borrowing_id: borrowing.data._id });
+      // console.table(payments);
 
-      // TODO: Call payment API after confirm
+      const payment_id = payments.data[0]._id;
+      // console.log('id', payment_id);
+
+      await makePaymentById(payment_id);
 
       setShowLoading(false);
       setShow(false);
       showAlert(String('Successfully check out!'), 'success');
+      props.setCartItems([]);
     } catch (error) {
       console.error(error);
       setShowLoading(false);

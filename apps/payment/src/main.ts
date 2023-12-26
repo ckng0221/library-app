@@ -7,6 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create(PaymentModule);
   const rmqService = app.get<RmqService>(RmqService);
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Payment API')
     .setDescription('Payment API')

@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { Payment } from './schemas/payment.schema';
@@ -34,8 +34,14 @@ export class PaymentService {
 
   private readonly logger = new Logger(PaymentService.name);
 
-  async findAll(): Promise<ReadPaymentDto[]> {
-    return this.paymentModel.find();
+  async findAll(query = null): Promise<ReadPaymentDto[]> {
+    const borrowing_id = query?.borrowing_id || '';
+    let searchOption = {};
+
+    if (borrowing_id) {
+      searchOption = { ...searchOption, borrowing_id };
+    }
+    return this.paymentModel.find(searchOption);
   }
 
   async create(createPaymentDto: CreatePaymentDto): Promise<ReadPaymentDto> {
@@ -54,6 +60,9 @@ export class PaymentService {
 
   async makePayment(id: string) {
     const payment = await this.paymentModel.findById(id);
+    if (!payment) {
+      throw new NotFoundException(`Cannot find payment_id: ${id}`);
+    }
     this.logger.log(
       `Making payment for payment_id: ${id}; borrowing_id: ${payment.borrowing_id}...`,
     );

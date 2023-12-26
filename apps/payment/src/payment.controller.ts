@@ -7,19 +7,24 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
 import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { PaymentService } from './payment.service';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('payments')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Get()
-  findAll(): Promise<ReadPaymentDto[]> {
-    return this.paymentService.findAll();
+  @ApiQuery({ name: 'borrowing_id', required: false })
+  findAll(
+    @Query() query?: { search: string; customer_id: string },
+  ): Promise<ReadPaymentDto[]> {
+    return this.paymentService.findAll(query);
   }
 
   // NOTE: for internal use only, payment should created from event

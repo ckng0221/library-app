@@ -26,7 +26,9 @@ export class BorrowingController {
   @Get()
   @ApiQuery({ name: 'search', required: false })
   @ApiQuery({ name: 'customer_id', required: false })
-  findAll(@Query() query?: { search: string }): Promise<ReadBorrowingDto[]> {
+  findAll(
+    @Query() query?: { search: string; customer_id: string },
+  ): Promise<ReadBorrowingDto[]> {
     return this.borrowingService.findAll(query);
   }
 
