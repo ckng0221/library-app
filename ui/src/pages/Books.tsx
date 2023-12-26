@@ -10,10 +10,10 @@ function BookTable() {
 
   useEffect(() => {
     getBooks()
-      .then((data) => {
+      .then((res) => {
         // console.log(data);
 
-        return setBooks(data);
+        return setBooks(res.data);
       })
       .catch((error) => console.error(error));
   }, []);

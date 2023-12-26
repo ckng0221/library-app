@@ -17,6 +17,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, { customSiteTitle: 'Borrowing' });
 
+  app.enableCors();
+
   app.connectMicroservice(rmqService.getOptions('PAYMENT'));
   await app.startAllMicroservices();
 

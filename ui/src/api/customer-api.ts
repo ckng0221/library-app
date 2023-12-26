@@ -1,17 +1,15 @@
-const BASE_URL = 'http://localhost:8002';
+import axios from 'axios';
+
+const BASE_URL = import.meta.env.VITE_CUSTOMER_API_BASE_URL;
 const resource = '/customers';
 const url = `${BASE_URL}${resource}`;
 
 export async function getCustomers() {
   const endpoint = url;
-  const res = await fetch(endpoint);
-  const customers = await res.json();
-  return customers;
+  return await axios.get(endpoint);
 }
 
 export async function getCustomerById(id: string) {
   const endpoint = `${url}/${id}`;
-  const res = await fetch(endpoint);
-  const customer = await res.json();
-  return customer;
+  return await axios.get(endpoint);
 }

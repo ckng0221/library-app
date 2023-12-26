@@ -54,10 +54,10 @@ function BookDetails(props: IProps) {
 
   useEffect(() => {
     getBookById(bookId)
-      .then((data) => {
+      .then((res) => {
         // console.log(data);
 
-        return setBook(data);
+        return setBook(res.data);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -121,6 +121,7 @@ function BookDetails(props: IProps) {
         alertMessage={`${book.title} added to cart!`}
         snackOpen={snackOpen}
         setSnackOpen={setSnackOpen}
+        severity="success"
       />
     </>
   );

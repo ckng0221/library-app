@@ -4,9 +4,12 @@ import { SyntheticEvent } from 'react';
 interface IProp {
   snackOpen: boolean;
   alertMessage: string;
+  severity: AlertColor;
   setSnackOpen: (arg: boolean) => void;
   autoHideDuration?: number;
 }
+
+export type AlertColor = 'success' | 'info' | 'warning' | 'error';
 
 export default function AlertComp(props: IProp) {
   const handleCloseSnack = (event: SyntheticEvent | Event, reason?: string) => {
@@ -26,7 +29,7 @@ export default function AlertComp(props: IProp) {
       >
         <Alert
           onClose={handleCloseSnack}
-          severity="success"
+          severity={props.severity}
           sx={{ width: '100%' }}
         >
           {props.alertMessage}

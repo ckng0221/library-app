@@ -18,10 +18,16 @@ export class BorrowingService {
 
   async findAll(query = null): Promise<ReadBorrowingDto[]> {
     const searchString = query?.search || '';
+    const customer_id = query?.customer_id || '';
+    let searchOption = {};
 
-    const searchOption = searchString
-      ? { $text: { $search: searchString } }
-      : null;
+    if (searchString) {
+      searchOption = { ...searchOption, $text: { $search: searchString } };
+    }
+    if (customer_id) {
+      searchOption = { ...searchOption, customer_id };
+    }
+    console.log(searchOption);
 
     return this.borrowingModel.find(searchOption);
   }

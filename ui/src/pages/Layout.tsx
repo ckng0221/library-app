@@ -9,6 +9,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Tooltip,
 } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -64,16 +65,23 @@ function MenuAppBar(props: IProps) {
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link to="/" style={{ color: '#FFF' }}>
-                Library App
+                <img
+                  src={libraryIcon}
+                  alt="Library icon"
+                  style={{ height: 30, width: 30 }}
+                />
+                &nbsp; Library App
               </Link>
             </Typography>
             {
               <div>
-                <IconButton>
-                  <Link to="checkout" id="checkout">
-                    <Cart cartItems={props.cartItems} />
-                  </Link>
-                </IconButton>
+                <Tooltip title="Checkout Cart">
+                  <IconButton>
+                    <Link to="checkout" id="checkout">
+                      <Cart cartItems={props.cartItems} />
+                    </Link>
+                  </IconButton>
+                </Tooltip>
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -106,6 +114,13 @@ function MenuAppBar(props: IProps) {
                     }}
                   >
                     My Account
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      navigate('/borrowings');
+                    }}
+                  >
+                    My Borrowings
                   </MenuItem>
                   <MenuItem onClick={handleClose}>Logout</MenuItem>
                 </Menu>
@@ -160,11 +175,7 @@ const DrawerList = () => (
 const Layout = (props: IProps) => {
   return (
     <>
-      <div>
-        <Link to="">
-          <img src={libraryIcon} className="logo" alt="Library icon" />
-        </Link>
-      </div>
+      <div></div>
       <MenuAppBar cartItems={props.cartItems} />
       <p></p>
       <Outlet />

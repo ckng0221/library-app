@@ -12,6 +12,7 @@ import Checkout from './pages/Checkout';
 import Account from './pages/Account';
 import { ICustomer } from './interfaces/customer';
 import { getCustomerById, getCustomers } from './api/customer-api';
+import Borrowings from './pages/Borrowings';
 
 function App() {
   const [cartItems, setCartItems] = useState<ICart[]>([]);
@@ -23,15 +24,15 @@ function App() {
   });
 
   useEffect(() => {
-    getCustomers().then((data) => {
-      console.log(data);
+    getCustomers().then((res) => {
+      console.log(res);
 
       // NOTE: POC only, just use the first customer
-      getCustomerById(data[0]._id)
-        .then((data) => {
+      getCustomerById(res.data[0]._id)
+        .then((res) => {
           // console.log(data);
 
-          return setCustomer(data);
+          return setCustomer(res.data);
         })
         .catch((error) => console.error(error));
     });
@@ -64,6 +65,10 @@ function App() {
               }
             />
             <Route path="account" element={<Account customer={customer} />} />
+            <Route
+              path="borrowings"
+              element={<Borrowings customer={customer} />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
