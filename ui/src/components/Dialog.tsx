@@ -7,13 +7,14 @@ import {
   DialogTitle,
 } from '@mui/material';
 import Button from '@mui/material/Button';
+import { ReactNode } from 'react';
 
 interface IProps {
   show: boolean;
   handleConfirm: () => void;
   handleClose: () => void;
   title: string;
-  body: string;
+  body: string | ReactNode;
   confirmText: string;
   showLoading: boolean;
 }
@@ -46,7 +47,7 @@ function DialogComp(props: IProps) {
               <br />
             </>
           )}
-          {body}
+          {!showLoading && body}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

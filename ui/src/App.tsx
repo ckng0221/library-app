@@ -13,6 +13,7 @@ import Account from './pages/Account';
 import { ICustomer } from './interfaces/customer';
 import { getCustomerById, getCustomers } from './api/customer-api';
 import Borrowings from './pages/Borrowings';
+import BorrowingDetails from './pages/BorrowingDetails';
 
 function App() {
   const [cartItems, setCartItems] = useState<ICart[]>([]);
@@ -68,6 +69,10 @@ function App() {
             <Route
               path="borrowings"
               element={<Borrowings customer={customer} />}
+            />
+            <Route
+              path="borrowings/:borrowingId"
+              element={<BorrowingDetails />}
             />
           </Route>
         </Routes>

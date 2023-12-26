@@ -48,7 +48,19 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={<>ID: {borrowing._id}</>}
+            primary={
+              <>
+                ID: &nbsp;
+                <Link
+                  underline="always"
+                  color="inherit"
+                  to={`/borrowings/${borrowing._id}`}
+                  component={RouterLink}
+                >
+                  {borrowing._id?.slice(0, 8)}
+                </Link>
+              </>
+            }
             secondary={`Books: `}
           />
           <ListItemText secondary={`Date: ${borrowed_date}`} />
@@ -100,7 +112,7 @@ function Borrowings(props: IProps) {
         <Link underline="hover" color="inherit" to="/" component={RouterLink}>
           Home
         </Link>
-        <Typography color="text.primary">My Borrowings</Typography>
+        <Typography color="text.primary">Borrowings</Typography>
       </Breadcrumbs>
       <br />
 
@@ -113,7 +125,7 @@ function Borrowings(props: IProps) {
         {showLoading && <CircularProgress />}
         {borrowings.length > 0 && !showLoading && (
           <CardContent>
-            Customer Name: {props.customer.name}
+            {/* Customer Name: {props.customer.name} */}
             {
               <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <ListItems borrowings={borrowings} />

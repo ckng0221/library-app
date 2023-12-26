@@ -23,6 +23,7 @@ import { createBorrowing } from '../api/borrowing-api';
 import { IBorrowing } from '../interfaces/borrowing';
 import { sleep } from '../utils/common';
 import { getPayments, makePaymentById } from '../api/payment-api';
+import { IPayment } from '../interfaces/payment';
 
 const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
   return cartItems.map((item) => {
@@ -57,6 +58,13 @@ function Checkout(props: IProps) {
   const [snackOpen, setSnackOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success');
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [paymentDialogLoading, setPaymentDialogLoading] = useState(false);
+  const [payment, setPayment] = useState<IPayment>({
+    _id: '',
+    borrowing_id: '',
+    amount: 0,
+  });
 
   function showAlert(alertMessage: string, alertSeverity: AlertColor) {
     setSnackOpen(true);
@@ -84,24 +92,21 @@ function Checkout(props: IProps) {
     };
 
     try {
+      setBody(`Creating borrowing...`);
+
       const borrowing = await createBorrowing(payload);
 
       setBody(`Redirecting to payment gateway...`);
+      const payments = await getPayments({
+        borrowing_id: String(borrowing.data._id),
+      });
+      setPayment(payments.data[0]);
+
       await sleep(1000);
-
-      setBody(`Making payment for borrowing_id: ${borrowing.data._id}...`);
-      const payments = await getPayments({ borrowing_id: borrowing.data._id });
-      // console.table(payments);
-
-      const payment_id = payments.data[0]._id;
-      // console.log('id', payment_id);
-
-      await makePaymentById(payment_id);
 
       setShowLoading(false);
       setShow(false);
-      showAlert(String('Successfully check out!'), 'success');
-      props.setCartItems([]);
+      setPaymentDialogOpen(true);
     } catch (error) {
       console.error(error);
       setShowLoading(false);
@@ -111,6 +116,20 @@ function Checkout(props: IProps) {
     // console.log(borrowing);
   };
   const handleShow = () => setShow(true);
+
+  // console.log('id', payment_id);
+
+  async function handleConfirmPayment(payment_id: string) {
+    setBody(`Making payment for payment_id: ${payment_id}...`);
+
+    setPaymentDialogLoading(true);
+    await makePaymentById(payment_id);
+    setPaymentDialogLoading(false);
+    setPaymentDialogOpen(false);
+    props.setCartItems([]);
+
+    showAlert(String('Successfully checked out!'), 'success');
+  }
 
   return (
     <>
@@ -156,6 +175,23 @@ function Checkout(props: IProps) {
         body={body}
         confirmText="Confirm"
         showLoading={showLoading}
+      />
+      <DialogComp
+        show={paymentDialogOpen}
+        title="Payment Gateway"
+        body={
+          <>
+            Payment ID: {payment._id}
+            <br />
+            Amount: $ {payment.amount.toFixed(2)}
+          </>
+        }
+        showLoading={paymentDialogLoading}
+        handleClose={() => setPaymentDialogOpen(false)}
+        handleConfirm={() => {
+          return handleConfirmPayment(payment._id);
+        }}
+        confirmText="Confirm payment"
       />
       <AlertComp
         snackOpen={snackOpen}
