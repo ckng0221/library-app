@@ -9,10 +9,14 @@ interface IProps {
 const CopyToClipboardIcon = (props: IProps) => {
   const [open, setOpen] = useState(false);
 
-  const handleCopyToClipboard = (text: string | undefined) => {
+  const handleCopyToClipboard = async (text: string | undefined) => {
     if (!text) return;
     setOpen(true);
-    navigator.clipboard.writeText(text);
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

@@ -107,6 +107,16 @@ function Borrowings(props: IProps) {
   const [isConnected, setIsConnected] = useState(false);
 
   const customer_id = props.customer._id;
+
+  useEffect(() => {
+    getBorrowings({ customer_id })
+      .then((res) => {
+        setBorrowings(res.data);
+        setShowLoading(false);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
@@ -117,7 +127,7 @@ function Borrowings(props: IProps) {
     }
 
     function onPaymentDone(message: any) {
-      // console.log('payment_done', message);
+      console.log('payment_done', message);
       if (message.status === 'success') {
         const objIndex = borrowingsRef.current.findIndex(
           (obj) => obj._id == message.borrowing_id,
@@ -127,21 +137,17 @@ function Borrowings(props: IProps) {
         // console.log(objIndex);
 
         borrowingsRef.current[objIndex].is_payment_done = true;
-        setBorrowings(borrowingsRef.current);
-        console.log(borrowingsRef.current);
+        const updatedBorrowings = borrowingsRef.current;
+
+        setBorrowings((prev: any) => [...updatedBorrowings]);
+
+        // console.log(updatedBorrowings);
       }
     }
 
     paymentSocket.on('connected', onConnect);
     paymentSocket.on('disconnected', onDisconnect);
     paymentSocket.on('payment_done', onPaymentDone);
-
-    getBorrowings({ customer_id })
-      .then((res) => {
-        setBorrowings(res.data);
-        setShowLoading(false);
-      })
-      .catch((error) => console.error(error));
 
     return () => {
       paymentSocket.off('connected', onConnect);

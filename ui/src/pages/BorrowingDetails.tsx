@@ -7,6 +7,7 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  CircularProgress,
   Grid,
   Link,
   Typography,
@@ -24,9 +25,11 @@ import { getPayments, makePaymentById } from '../api/payment-api';
 import { IPayment } from '../interfaces/payment';
 import { paymentSocket } from '../utils/socket';
 import CopyToClipboardIcon from '../components/CopyToClipboard';
+import BackdropComp from '../components/Backdrop';
 
 function BorrowingDetails() {
   const { borrowingId } = useParams();
+  const [isFetchingData, setIsFetchingData] = useState(true);
   const [snackOpen, setSnackOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
@@ -38,6 +41,7 @@ function BorrowingDetails() {
     borrowed_date: new Date(),
     customer_id: '',
     customer_name: '',
+    is_payment_done: false,
   });
   const borrowingRef = useRef(borrowing);
   const setBorrowing = (data: any) => {
@@ -49,14 +53,7 @@ function BorrowingDetails() {
     borrowing_id: '',
     amount: 0,
   });
-
-  function onPaymentDone(message: any) {
-    // console.log('payment_done', message);
-    if (message.status === 'success') {
-      borrowingRef.current.is_payment_done = true;
-      setBorrowing(borrowingRef.current);
-    }
-  }
+  const [paymentDone, setPaymentDone] = useState(false);
 
   if (!borrowingId) throw Error();
 
@@ -69,9 +66,27 @@ function BorrowingDetails() {
         borrowing_id: String(borrowingId),
       });
       setPayment(payments.data[0]);
+      setIsFetchingData(false);
     }
 
     loadData();
+  }, [borrowingId]);
+
+  useEffect(() => {
+    function onPaymentDone(message: any) {
+      console.log('payment_done', message);
+      if (message.status === 'success') {
+        // console.log('before', borrowingRef.current);
+
+        borrowingRef.current.is_payment_done = true;
+        const updatedBorrowing = borrowingRef.current;
+        setBorrowing((prev: any) => updatedBorrowing);
+        setPaymentDone(() => true);
+
+        // console.log('borrowing', borrowing);
+        // console.log('after', updatedBorrowing);
+      }
+    }
     paymentSocket.on('payment_done', onPaymentDone);
 
     return () => {
@@ -92,8 +107,8 @@ function BorrowingDetails() {
     return { index: index + 1, ...book };
   });
   const paymentStatus: any = {
-    text: borrowing.is_payment_done ? 'Successful' : 'Pending',
-    color: borrowing.is_payment_done ? 'success' : 'warning',
+    text: borrowing.is_payment_done || paymentDone ? 'Successful' : 'Pending',
+    color: borrowing.is_payment_done || paymentDone ? 'success' : 'warning',
   };
 
   function makePaymentDialog() {
@@ -115,115 +130,127 @@ function BorrowingDetails() {
     setSnackOpen(true);
   }
 
-  return (
-    <>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="inherit" to="/" component={RouterLink}>
-          Home
-        </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          to="/borrowings"
-          component={RouterLink}
-        >
-          Borrowings
-        </Link>
-        <Typography color="text.primary">
-          {borrowing._id?.slice(0, 8)}
-        </Typography>
-      </Breadcrumbs>
-      <br />
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            <CardMedia
-              component="img"
-              height="200"
-              image={sampleBook}
-              alt="Book image"
-            />
-          </Typography>
-          <br />
-          <Typography>
-            Borrowing ID: {borrowing._id}
-            <CopyToClipboardIcon text={borrowing._id} />
-          </Typography>
-          <Typography>Borrowing Date: {borrowed_date}</Typography>
-          <Typography>
-            Payment ID: {payment._id}
-            <CopyToClipboardIcon text={payment._id} />
-          </Typography>
-          <Typography>Payment Amount: ${payment.amount.toFixed(2)}</Typography>
-          <Typography>
-            Payment status:{' '}
-            <Chip
-              label={paymentStatus.text}
-              color={paymentStatus.color}
-              size="small"
-            />
-          </Typography>
-
-          <br />
-          <TableComp rows={borrowingBooks} columns={columns} />
-        </CardContent>
-        <CardActions>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
+  const BorrowingDetailsComp = () => {
+    return (
+      <>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link underline="hover" color="inherit" to="/" component={RouterLink}>
+            Home
+          </Link>
+          <Link
+            underline="hover"
+            color="inherit"
+            to="/borrowings"
+            component={RouterLink}
           >
-            <Grid item xs={5}>
-              {!borrowing.is_payment_done && (
-                <Button
-                  variant="contained"
-                  color="warning"
-                  onClick={makePaymentDialog}
-                >
-                  Make Payment &nbsp;
-                  <PaymentIcon />
-                </Button>
-              )}
-            </Grid>
-          </Grid>
-        </CardActions>
-      </Card>
-      <DialogComp
-        show={dialogOpen}
-        title=""
-        body="Redirecting to payment gateway..."
-        showLoading={dialogLoading}
-        handleClose={() => {}}
-        handleConfirm={() => {}}
-        confirmText=""
-      />
-      {/* Payment Dialog */}
-      <DialogComp
-        show={paymentDialogOpen}
-        title="Payment Gateway"
-        body={
-          <>
-            Payment ID: {payment._id}
+            Borrowings
+          </Link>
+          <Typography color="text.primary">
+            {borrowing._id?.slice(0, 8)}
+          </Typography>
+        </Breadcrumbs>
+        <br />
+        <Card sx={{ minWidth: 275 }}>
+          <CardContent>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              <CardMedia
+                component="img"
+                height="200"
+                image={sampleBook}
+                alt="Book image"
+              />
+            </Typography>
             <br />
-            Amount: $ {payment.amount.toFixed(2)}
-          </>
-        }
-        showLoading={paymentDialogLoading}
-        handleClose={() => setPaymentDialogOpen(false)}
-        handleConfirm={() => {
-          return handleConfirmPayment(payment._id);
-        }}
-        confirmText="Confirm payment"
-      />
-      <AlertComp
-        alertMessage={`Payment done for ${borrowing._id}!`}
-        snackOpen={snackOpen}
-        setSnackOpen={setSnackOpen}
-        severity="success"
-      />
-    </>
+            <Typography>
+              Borrowing ID: {borrowing._id}
+              <CopyToClipboardIcon text={borrowing._id} />
+            </Typography>
+            <Typography>Borrowing Date: {borrowed_date}</Typography>
+            <Typography>
+              Payment ID: {payment._id}
+              <CopyToClipboardIcon text={payment._id} />
+            </Typography>
+            <Typography>
+              Payment Amount: ${payment.amount.toFixed(2)}
+            </Typography>
+            <Typography>
+              Payment status:&nbsp;
+              <Chip
+                label={paymentStatus.text}
+                color={paymentStatus.color}
+                size="small"
+              />
+            </Typography>
+
+            <br />
+            <TableComp rows={borrowingBooks} columns={columns} />
+          </CardContent>
+          <CardActions>
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Grid item xs={5}>
+                {!borrowing.is_payment_done && (
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    onClick={makePaymentDialog}
+                  >
+                    Make Payment &nbsp;
+                    <PaymentIcon />
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
+          </CardActions>
+        </Card>
+        <DialogComp
+          show={dialogOpen}
+          title=""
+          body="Redirecting to payment gateway..."
+          showLoading={dialogLoading}
+          handleClose={() => {}}
+          handleConfirm={() => {}}
+          confirmText=""
+        />
+        {/* Payment Dialog */}
+        <DialogComp
+          show={paymentDialogOpen}
+          title="Payment Gateway"
+          body={
+            <>
+              Payment ID: {payment._id}
+              <br />
+              Amount: $ {payment.amount.toFixed(2)}
+            </>
+          }
+          showLoading={paymentDialogLoading}
+          handleClose={() => setPaymentDialogOpen(false)}
+          handleConfirm={() => {
+            return handleConfirmPayment(payment._id);
+          }}
+          confirmText="Confirm payment"
+        />
+        <AlertComp
+          alertMessage={`Payment done for ${borrowing._id}!`}
+          snackOpen={snackOpen}
+          setSnackOpen={setSnackOpen}
+          severity="success"
+        />
+      </>
+    );
+  };
+
+  return (
+    <>{isFetchingData ? <CircularProgress /> : <BorrowingDetailsComp />}</>
   );
 }
 
