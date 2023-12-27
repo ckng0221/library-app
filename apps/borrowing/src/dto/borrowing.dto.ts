@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { Types } from 'mongoose';
 export class BorrowingDto {
   @IsNotEmpty()
-  @ApiProperty({ example: "'655976c5554224af8519a724'" })
+  @ApiProperty({ example: '655976c5554224af8519a724' })
   customer_id: Types.ObjectId;
 
   @IsString()

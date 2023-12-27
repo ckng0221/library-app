@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { getBorrowingById } from '../api/borrowing-api';
 import AlertComp from '../components/Alert';
@@ -22,6 +22,8 @@ import { IBorrowing } from '../interfaces/borrowing';
 import sampleBook from '/sample-book.webp';
 import { getPayments, makePaymentById } from '../api/payment-api';
 import { IPayment } from '../interfaces/payment';
+import { paymentSocket } from '../utils/socket';
+import CopyToClipboardIcon from '../components/CopyToClipboard';
 
 function BorrowingDetails() {
   const { borrowingId } = useParams();
@@ -30,21 +32,33 @@ function BorrowingDetails() {
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [dialogLoading, setDialogLoading] = useState(false);
   const [paymentDialogLoading, setPaymentDialogLoading] = useState(false);
-
-  if (!borrowingId) throw Error();
-
-  const [borrowing, setBorrowing] = useState<IBorrowing>({
+  const [borrowing, _setBorrowing] = useState<IBorrowing>({
     _id: '',
     books: [],
     borrowed_date: new Date(),
     customer_id: '',
     customer_name: '',
   });
+  const borrowingRef = useRef(borrowing);
+  const setBorrowing = (data: any) => {
+    borrowingRef.current = data;
+    _setBorrowing(data);
+  };
   const [payment, setPayment] = useState<IPayment>({
     _id: '',
     borrowing_id: '',
     amount: 0,
   });
+
+  function onPaymentDone(message: any) {
+    // console.log('payment_done', message);
+    if (message.status === 'success') {
+      borrowingRef.current.is_payment_done = true;
+      setBorrowing(borrowingRef.current);
+    }
+  }
+
+  if (!borrowingId) throw Error();
 
   useEffect(() => {
     async function loadData() {
@@ -58,7 +72,12 @@ function BorrowingDetails() {
     }
 
     loadData();
-  }, [borrowing]);
+    paymentSocket.on('payment_done', onPaymentDone);
+
+    return () => {
+      paymentSocket.off('payment_done', onPaymentDone);
+    };
+  }, []);
 
   const borrowed_date = dayjs(borrowing.borrowed_date).format(
     'YYYY-MM-DD hh:mm A',
@@ -126,9 +145,15 @@ function BorrowingDetails() {
             />
           </Typography>
           <br />
-          <Typography>Borrowing ID: {borrowing._id}</Typography>
+          <Typography>
+            Borrowing ID: {borrowing._id}
+            <CopyToClipboardIcon text={borrowing._id} />
+          </Typography>
           <Typography>Borrowing Date: {borrowed_date}</Typography>
-          <Typography>Payment ID: {payment._id}</Typography>
+          <Typography>
+            Payment ID: {payment._id}
+            <CopyToClipboardIcon text={payment._id} />
+          </Typography>
           <Typography>Payment Amount: ${payment.amount.toFixed(2)}</Typography>
           <Typography>
             Payment status:{' '}

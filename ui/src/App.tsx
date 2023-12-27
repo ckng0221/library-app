@@ -26,7 +26,7 @@ function App() {
 
   useEffect(() => {
     getCustomers().then((res) => {
-      console.log(res);
+      // console.log(res);
 
       // NOTE: POC only, just use the first customer
       getCustomerById(res.data[0]._id)

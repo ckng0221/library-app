@@ -6,11 +6,13 @@ import {
   CardContent,
   Chip,
   CircularProgress,
+  IconButton,
   Link,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
@@ -21,6 +23,7 @@ import TableComp from '../components/Table';
 import { IBorrowing } from '../interfaces/borrowing';
 import { ICustomer } from '../interfaces/customer';
 import { paymentSocket } from '../utils/socket';
+import CopyToClipboardIcon from '../components/CopyToClipboard';
 
 const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
   const columns = [
@@ -60,6 +63,8 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
                 >
                   {borrowing._id?.slice(0, 8)}
                 </Link>
+                &nbsp;
+                <CopyToClipboardIcon text={borrowing._id} />
               </>
             }
             secondary={`Books: `}
@@ -101,32 +106,32 @@ function Borrowings(props: IProps) {
   const [showLoading, setShowLoading] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
 
-  function onConnect() {
-    setIsConnected(true);
-  }
-
-  function onDisconnect() {
-    setIsConnected(false);
-  }
-
-  function onPaymentDone(message: any) {
-    // console.log('payment_done', message);
-    if (message.status === 'success') {
-      const objIndex = borrowingsRef.current.findIndex(
-        (obj) => obj._id == message.borrowing_id,
-      );
-
-      // console.log('lala', borrowings);
-      // console.log(objIndex);
-
-      borrowingsRef.current[objIndex].is_payment_done = true;
-      setBorrowings(borrowingsRef.current);
-      console.log(borrowingsRef.current);
-    }
-  }
-
   const customer_id = props.customer._id;
   useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    function onPaymentDone(message: any) {
+      // console.log('payment_done', message);
+      if (message.status === 'success') {
+        const objIndex = borrowingsRef.current.findIndex(
+          (obj) => obj._id == message.borrowing_id,
+        );
+
+        // console.log('lala', borrowings);
+        // console.log(objIndex);
+
+        borrowingsRef.current[objIndex].is_payment_done = true;
+        setBorrowings(borrowingsRef.current);
+        console.log(borrowingsRef.current);
+      }
+    }
+
     paymentSocket.on('connected', onConnect);
     paymentSocket.on('disconnected', onDisconnect);
     paymentSocket.on('payment_done', onPaymentDone);
@@ -143,7 +148,7 @@ function Borrowings(props: IProps) {
       paymentSocket.off('disconnected', onDisconnect);
       paymentSocket.off('payment_done', onPaymentDone);
     };
-  }, [borrowings]);
+  }, []);
 
   return (
     <>

@@ -104,6 +104,7 @@ function Checkout(props: IProps) {
 
       await sleep(1000);
 
+      props.setCartItems([]);
       setShowLoading(false);
       setShow(false);
       setPaymentDialogOpen(true);
@@ -126,7 +127,6 @@ function Checkout(props: IProps) {
     await makePaymentById(payment_id);
     setPaymentDialogLoading(false);
     setPaymentDialogOpen(false);
-    props.setCartItems([]);
 
     showAlert(String('Successfully checked out!'), 'success');
   }
