@@ -48,7 +48,7 @@ describe('Borrowing (e2e)', () => {
       BorrowingDtoStub({
         customer_id: new Types.ObjectId(),
         customer_name: 'test-borrowing',
-        books: [{ id: new Types.ObjectId(), name: 'Test book' }],
+        books: [{ id: new Types.ObjectId(), name: 'Test book', quantity: 1 }],
       }),
     ).save();
   });

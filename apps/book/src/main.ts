@@ -18,6 +18,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document, { customSiteTitle: 'Book' });
 
   const PORT = process.env.PORT || 8001;
+  app.enableCors();
   await app.listen(PORT);
 }
 bootstrap();

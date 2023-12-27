@@ -25,7 +25,10 @@ export class BorrowingController {
   constructor(private readonly borrowingService: BorrowingService) {}
   @Get()
   @ApiQuery({ name: 'search', required: false })
-  findAll(@Query() query?: { search: string }): Promise<ReadBorrowingDto[]> {
+  @ApiQuery({ name: 'customer_id', required: false })
+  findAll(
+    @Query() query?: { search: string; customer_id: string },
+  ): Promise<ReadBorrowingDto[]> {
     return this.borrowingService.findAll(query);
   }
 
@@ -69,7 +72,7 @@ export class BorrowingController {
         is_payment_done: true,
       },
     );
-    console.log(borrowing);
+    // console.log(borrowing);
   }
 
   @Post()

@@ -8,6 +8,7 @@ import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
 import { PaymentDtoStub } from './dto/payment.dto.stub';
 import { Payment, PaymentSchema } from './schemas/payment.schema';
+import { EventGateway } from './events.gateway';
 
 describe('paymentController', () => {
   let paymentController: PaymentController;
@@ -26,6 +27,7 @@ describe('paymentController', () => {
         PaymentService,
         { provide: getModelToken(Payment.name), useValue: paymentModel },
         { provide: 'PAYMENT', useValue: mock<AmqpConnection>() },
+        EventGateway,
       ],
     }).compile();
     paymentController = app.get<PaymentController>(PaymentController);
