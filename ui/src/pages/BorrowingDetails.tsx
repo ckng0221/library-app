@@ -16,16 +16,15 @@ import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { getBorrowingById } from '../api/borrowing-api';
+import { getPayments, makePaymentById } from '../api/payment-api';
 import AlertComp from '../components/Alert';
+import CopyToClipboardIcon from '../components/CopyToClipboard';
 import DialogComp from '../components/Dialog';
 import TableComp from '../components/Table';
 import { IBorrowing } from '../interfaces/borrowing';
-import sampleBook from '/sample-book.webp';
-import { getPayments, makePaymentById } from '../api/payment-api';
 import { IPayment } from '../interfaces/payment';
 import { paymentSocket } from '../utils/socket';
-import CopyToClipboardIcon from '../components/CopyToClipboard';
-import BackdropComp from '../components/Backdrop';
+import sampleBook from '/sample-book.webp';
 
 function BorrowingDetails() {
   const { borrowingId } = useParams();
@@ -35,7 +34,7 @@ function BorrowingDetails() {
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [dialogLoading, setDialogLoading] = useState(false);
   const [paymentDialogLoading, setPaymentDialogLoading] = useState(false);
-  const [borrowing, _setBorrowing] = useState<IBorrowing>({
+  const [borrowing, setBorrowing] = useState<IBorrowing>({
     _id: '',
     books: [],
     borrowed_date: new Date(),
@@ -43,11 +42,6 @@ function BorrowingDetails() {
     customer_name: '',
     is_payment_done: false,
   });
-  const borrowingRef = useRef(borrowing);
-  const setBorrowing = (data: any) => {
-    borrowingRef.current = data;
-    _setBorrowing(data);
-  };
   const [payment, setPayment] = useState<IPayment>({
     _id: '',
     borrowing_id: '',
@@ -78,9 +72,6 @@ function BorrowingDetails() {
       if (message.status === 'success') {
         // console.log('before', borrowingRef.current);
 
-        borrowingRef.current.is_payment_done = true;
-        const updatedBorrowing = borrowingRef.current;
-        setBorrowing((prev: any) => updatedBorrowing);
         setPaymentDone(() => true);
 
         // console.log('borrowing', borrowing);
@@ -199,7 +190,7 @@ function BorrowingDetails() {
               justifyContent="center"
             >
               <Grid item xs={5}>
-                {!borrowing.is_payment_done && (
+                {!borrowing.is_payment_done && !paymentDone && (
                   <Button
                     variant="contained"
                     color="warning"
