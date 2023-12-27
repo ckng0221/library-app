@@ -25,6 +25,7 @@ import DrawerComp from '../components/Drawer';
 import { ICart } from '../interfaces/cart';
 import libraryIcon from '/library-icon.png';
 import InfoIcon from '@mui/icons-material/Info';
+import Footer from '../components/Footer';
 interface IProps {
   cartItems: ICart[];
 }
