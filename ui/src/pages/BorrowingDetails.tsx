@@ -183,6 +183,7 @@ function BorrowingDetails() {
                 label={paymentStatus.text}
                 color={paymentStatus.color}
                 size="small"
+                component="span"
               />
             </Typography>
 

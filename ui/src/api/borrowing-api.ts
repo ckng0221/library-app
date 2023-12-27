@@ -7,7 +7,7 @@ const url = `${BASE_URL}${resource}`;
 
 export async function getBorrowings({ customer_id }: { customer_id: string }) {
   const endpoint = url;
-  console.log('id', customer_id);
+  // console.log('id', customer_id);
 
   return await axios.get(endpoint, {
     params: {

@@ -6,24 +6,22 @@ import {
   CardContent,
   Chip,
   CircularProgress,
-  IconButton,
   Link,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { getBorrowings } from '../api/borrowing-api';
+import CopyToClipboardIcon from '../components/CopyToClipboard';
 import TableComp from '../components/Table';
 import { IBorrowing } from '../interfaces/borrowing';
 import { ICustomer } from '../interfaces/customer';
 import { paymentSocket } from '../utils/socket';
-import CopyToClipboardIcon from '../components/CopyToClipboard';
 
 const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
   const columns = [
@@ -31,6 +29,7 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
     { field: 'name', headerName: 'Book Title' },
     { field: 'quantity', headerName: 'Quantity' },
   ];
+
   return borrowings.map((borrowing) => {
     const borrowed_date = dayjs(borrowing.borrowed_date).format('YYYY-MM-DD');
 
@@ -44,8 +43,8 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
     // console.log(borrowingBooks);
 
     return (
-      <>
-        <ListItem key={borrowing._id}>
+      <div key={borrowing._id}>
+        <ListItem>
           <ListItemAvatar>
             <Avatar>
               <AutoStoriesTwoToneIcon />
@@ -78,6 +77,7 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
                   label={paymentStatus.text}
                   color={paymentStatus.color}
                   size="small"
+                  component="span"
                 />
               </>
             }
@@ -85,7 +85,7 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
         </ListItem>
         <TableComp rows={borrowingBooks} columns={columns} />
         <hr />
-      </>
+      </div>
     );
   });
 };
@@ -181,12 +181,9 @@ function Borrowings(props: IProps) {
         {showLoading && <CircularProgress />}
         {borrowings.length > 0 && !showLoading && (
           <CardContent>
-            {/* Customer Name: {props.customer.name} */}
-            {
-              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                <ListItems borrowings={borrowings} />
-              </List>
-            }
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+              <ListItems borrowings={borrowings} />
+            </List>
           </CardContent>
         )}
         {borrowings.length <= 0 && !showLoading && (
