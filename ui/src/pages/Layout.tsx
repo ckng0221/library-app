@@ -24,6 +24,7 @@ import Cart from '../components/Cart';
 import DrawerComp from '../components/Drawer';
 import { ICart } from '../interfaces/cart';
 import libraryIcon from '/library-icon.png';
+import InfoIcon from '@mui/icons-material/Info';
 interface IProps {
   cartItems: ICart[];
 }
@@ -165,6 +166,18 @@ const DrawerList = () => (
               <MenuBookIcon />
             </ListItemIcon>
             <ListItemText primary={'Books'} />
+          </ListItemButton>
+        </Link>
+      </ListItem>
+    </List>
+    <List>
+      <ListItem disablePadding>
+        <Link id="about" to="/about">
+          <ListItemButton>
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary={'About'} />
           </ListItemButton>
         </Link>
       </ListItem>

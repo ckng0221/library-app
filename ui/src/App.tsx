@@ -14,6 +14,7 @@ import { ICustomer } from './interfaces/customer';
 import { getCustomerById, getCustomers } from './api/customer-api';
 import Borrowings from './pages/Borrowings';
 import BorrowingDetails from './pages/BorrowingDetails';
+import About from './pages/About';
 
 function App() {
   const [cartItems, setCartItems] = useState<ICart[]>([]);
@@ -74,6 +75,7 @@ function App() {
               path="borrowings/:borrowingId"
               element={<BorrowingDetails />}
             />
+            <Route path="about" element={<About />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -60,7 +60,7 @@ function BookDetails(props: IProps) {
         return setBook(res.data);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [bookId]);
 
   return (
     <>

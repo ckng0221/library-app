@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { getBorrowingById } from '../api/borrowing-api';
 import { getPayments, makePaymentById } from '../api/payment-api';

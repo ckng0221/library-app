@@ -115,7 +115,7 @@ function Borrowings(props: IProps) {
         setShowLoading(false);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [customer_id]);
 
   useEffect(() => {
     function onConnect() {
