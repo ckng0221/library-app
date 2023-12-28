@@ -33,7 +33,11 @@ function App() {
       const fakeCustomerId = res.data?.[0]._id;
 
       if (!fakeCustomerId) {
-        throw new Error('Customer not found!');
+        const errorMsg =
+          'Customer not found! Create a initial data at the admin page first';
+        console.error(errorMsg);
+        // alert(errorMsg);
+        // throw new Error('Customer not found!');
       }
 
       // NOTE: POC only, just use the first customer.

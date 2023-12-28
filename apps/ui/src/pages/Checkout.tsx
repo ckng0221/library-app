@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { sleep } from '@repo/common';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { createBorrowing } from '../api/borrowing-api';
 import { getPayments, makePaymentById } from '../api/payment-api';
@@ -66,6 +66,10 @@ function Checkout(props: IProps) {
     amount: 0,
   });
 
+  useEffect(() => {
+    setPayment(payment);
+  }, [payment]);
+
   function showAlert(alertMessage: string, alertSeverity: AlertColor) {
     setSnackOpen(true);
     setAlertMessage(alertMessage);
@@ -104,7 +108,6 @@ function Checkout(props: IProps) {
       // console.log('payment', payment);
 
       await sleep(1000);
-
       props.setCartItems([]);
       setShowLoading(false);
       setShow(false);
