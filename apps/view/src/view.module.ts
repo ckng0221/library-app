@@ -6,7 +6,7 @@ import { resolve } from 'path';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: resolve('apps/ui/dist'),
+      rootPath: resolve('dist/apps/ui'),
     }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: 'apps/view/.env' }),
   ],
