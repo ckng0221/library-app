@@ -14,3 +14,10 @@ node_modules
 .eslintrc.js
 .prettierrc
 README.md
+
+dist/**
+dist/
+dist
+
+/dist
+.turbo

@@ -6,11 +6,19 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+WORKDIR /usr/src/app/apps/ui
+
+COPY apps/ui/package*.json ./
+
+WORKDIR /usr/src/app
+
 RUN npm install
 
 COPY . .
 
 RUN npm run build ${service}
+
+RUN npm run build:ui
 
 FROM node:alpine as production
 
