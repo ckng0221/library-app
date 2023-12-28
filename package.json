@@ -7,7 +7,6 @@
   "license": "UNLICENSED",
   "workspaces": [
     "apps/*",
-    "ui",
     "packages/*"
   ],
   "scripts": {

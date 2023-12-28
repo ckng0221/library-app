@@ -6,7 +6,7 @@
       "outputs": ["dist/**", "../../dist/apps/ui/**"]
     },
     "dev": {
-      "dependsOn": ["^dev"]
+      "cache": false
     },
     "lint": {}
   },
