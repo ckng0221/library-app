@@ -4,7 +4,7 @@ on:
   push:
     branches: ['*']
     paths:
-      - 'ui/**'
+      - 'apps/ui/**'
       - '.github/workflows/ui-ci.yml'
 
 jobs:
