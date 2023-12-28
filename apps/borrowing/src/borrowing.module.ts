@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { BorrowingService } from './borrowing.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Borrowing, BorrowingSchema } from './schemas/borrowing.schema';
-import { DatabaseModule } from '../../../libs/common/src/database/database.module';
+import { DatabaseModule } from '../../../packages/nestlib';
 import { BorrowingController } from './borrowing.controller';
-import { RmqModule } from '../../../libs/common/src/rabbitmq/rmq.module';
+import { RmqModule } from '../../../packages/nestlib';
 import * as Joi from 'joi';
 
 @Module({

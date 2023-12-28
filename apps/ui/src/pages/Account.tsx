@@ -7,7 +7,6 @@ import {
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { ICustomer } from '../interfaces/customer';
-
 interface IProps {
   customer: ICustomer;
 }

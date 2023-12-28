@@ -10,7 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
+import { ObjectIdValidationPipe } from '../../../packages/nestlib';
 import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { PaymentService } from './payment.service';
 import { ApiQuery } from '@nestjs/swagger';

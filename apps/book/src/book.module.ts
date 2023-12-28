@@ -4,7 +4,7 @@ import { BookController } from './book.controller';
 import { BookService } from './book.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Book, BookSchema } from './schemas/book.schema';
-import { DatabaseModule } from '../../../libs/common/src/database/database.module';
+import { DatabaseModule } from '../../../packages/nestlib';
 
 @Module({
   imports: [

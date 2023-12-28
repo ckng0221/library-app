@@ -14,7 +14,7 @@ export class EventGateway {
     // console.log(client);
     this.server.emit('connected', {});
 
-    console.log('Connected');
+    // console.log('Connected');
 
     // Handle connection event
   }
@@ -23,7 +23,7 @@ export class EventGateway {
     // Handle disconnection event
     this.server.emit('disconnected', {});
 
-    console.log('Disconnected');
+    // console.log('Disconnected');
   }
 
   emitEvent(event: string, payload) {

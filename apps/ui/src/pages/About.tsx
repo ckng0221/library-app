@@ -1,6 +1,5 @@
 import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import Footer from '../components/Footer';
 
 function About() {
   return (
@@ -20,7 +19,7 @@ function About() {
         that is built with microservice architecture.
       </Typography>
       <Typography align="left">The microservice consists of:</Typography>
-      <Typography align="left">
+      <Typography align="left" component={'span'}>
         <ul>
           <li>Book Service</li>
           <li>Customer Service</li>
@@ -30,7 +29,7 @@ function About() {
         </ul>
       </Typography>
       <Typography align="left">Tech stacks:</Typography>
-      <Typography align="left">
+      <Typography align="left" component={'span'}>
         <ul>
           <li>
             Frontend:&nbsp;
@@ -84,7 +83,6 @@ function About() {
           </li>
         </ul>
       </Typography>
-      <Footer />
     </>
   );
 }

@@ -193,6 +193,7 @@ const Layout = (props: IProps) => {
       <MenuAppBar cartItems={props.cartItems} />
       <p></p>
       <Outlet />
+      <Footer position="fixed" />
     </>
   );
 };
