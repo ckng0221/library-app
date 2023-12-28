@@ -7,7 +7,8 @@
   "license": "UNLICENSED",
   "workspaces": [
     "apps",
-    "ui"
+    "ui",
+    "packages/*"
   ],
   "scripts": {
     "build": "nest build",

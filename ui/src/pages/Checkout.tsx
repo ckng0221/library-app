@@ -21,7 +21,7 @@ import AlertComp from '../components/Alert';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { createBorrowing } from '../api/borrowing-api';
 import { IBorrowing } from '../interfaces/borrowing';
-import { sleep } from '../utils/common';
+import { sleep } from '@repo/utils/common';
 import { getPayments, makePaymentById } from '../api/payment-api';
 import { IPayment } from '../interfaces/payment';
 
