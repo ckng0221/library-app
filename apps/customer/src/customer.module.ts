@@ -4,7 +4,7 @@ import { CustomerController } from './customer.controller';
 import { CustomerService } from './customer.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Customer, CustomerSchema } from './schemas/customer.schema';
-import { DatabaseModule } from '../../../libs/common/src/database/database.module';
+import { DatabaseModule } from '../../../packages/nestlib';
 
 @Module({
   imports: [

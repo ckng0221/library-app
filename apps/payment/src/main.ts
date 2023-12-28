@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { RmqService } from '../../../libs/common/src/rabbitmq/rmq.service';
+import { RmqService } from '../../../packages/nestlib';
 import { PaymentModule } from './payment.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 

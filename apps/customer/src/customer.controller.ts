@@ -16,7 +16,7 @@ import {
   UpdateCustomerDto,
 } from './dto/customer.dto';
 import { ApiQuery } from '@nestjs/swagger';
-import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
+import { ObjectIdValidationPipe } from '../../../packages/nestlib';
 
 @Controller('customers')
 export class CustomerController {

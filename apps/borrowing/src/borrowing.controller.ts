@@ -18,7 +18,7 @@ import {
 } from './dto/borrowing.dto';
 
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
+import { ObjectIdValidationPipe } from '../../../packages/nestlib';
 
 @Controller('borrowings')
 export class BorrowingController {

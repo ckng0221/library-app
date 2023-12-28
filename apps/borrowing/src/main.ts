@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { RmqService } from '../../../libs/common/src/rabbitmq/rmq.service';
+import { RmqService } from '../../../packages/nestlib';
 import { BorrowingModule } from './borrowing.module';
 
 async function bootstrap() {

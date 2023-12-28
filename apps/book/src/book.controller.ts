@@ -12,7 +12,7 @@ import {
 import { BookService } from './book.service';
 import { CreateBookDto, ReadBookDto, UpdateBookDto } from './dto/book.dto';
 import { ApiQuery } from '@nestjs/swagger';
-import { ObjectIdValidationPipe } from '../../../libs/common/src/pipe/validation.pipe';
+import { ObjectIdValidationPipe } from '../../../packages/nestlib';
 
 @Controller('books')
 export class BookController {
