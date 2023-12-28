@@ -98,6 +98,23 @@ services:
     links:
       - mongodb
       - rabbitmq
+  view:
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.view
+      target: development
+      args:
+        service: view
+    command: npm run start:dev view
+    env_file:
+      - ./apps/view/.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '8000:8000'
+    networks:
+      - node-network
 
   # Dependencies
   rabbitmq:
@@ -114,9 +131,12 @@ services:
       - '27017:27017'
     networks:
       - node-network
+
 volumes:
   mongodb_data_container:
 networks:
   node-network:
     driver: bridge
-# docker-compose up -d
+# docker compose up -d
+# docker compose up -d --build
+# docker compose down
