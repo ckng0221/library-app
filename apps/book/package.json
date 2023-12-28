@@ -1,0 +1,9 @@
+{
+  "name": "book",
+  "scripts": {
+    "start": "cd ../.. && npm run start book",
+    "start:prod": "cd ../.. && node dist/apps/book/main",
+    "dev": "cd ../.. && npm run start:dev book",
+    "build": "cd ../.. && npm run build book"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "payment",
+  "scripts": {
+    "start": "cd ../.. && npm run start payment",
+    "start:prod": "cd ../.. && node dist/apps/payment/main",
+    "dev": "cd ../.. && npm run start:dev payment",
+    "build": "cd ../.. && npm run build payment"
+  }
+}

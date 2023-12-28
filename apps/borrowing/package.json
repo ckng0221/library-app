@@ -1,0 +1,9 @@
+{
+  "name": "borrowing",
+  "scripts": {
+    "start": "cd ../.. && npm run start borrowing",
+    "start:prod": "cd ../.. && node dist/apps/borrowing/main",
+    "dev": "cd ../.. && npm run start:dev borrowing",
+    "build": "cd ../.. && npm run build borrowing"
+  }
+}

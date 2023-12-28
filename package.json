@@ -11,11 +11,14 @@
   ],
   "scripts": {
     "build": "nest build",
-    "build:all": "nest build book && nest build customer && nest build borrowing && nest build payment && npm run ui:build",
+    "build:all": "turbo build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
+    "start:all": "turbo start",
+    "start:all:prod": "turbo start:prod",
     "start:book": "nest start book",
     "start:dev": "nest start --watch",
+    "start:dev:all": "turbo dev",
     "start:debug": "nest start --debug --watch",
     "start:prod:book": "node dist/apps/book/main",
     "start:dev:view": "npm run ui:build && npm run start:dev view",
@@ -25,8 +28,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config jest-e2e.json",
-    "ui:dev": "turbo dev --filter=ui",
-    "ui:build": "turbo build --filter=ui"
+    "dev:ui": "turbo dev --filter=ui",
+    "build:ui": "turbo build --filter=ui"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
