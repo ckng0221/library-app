@@ -29,7 +29,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config jest-e2e.json",
     "dev:ui": "turbo dev --filter=ui",
-    "build:ui": "turbo build --filter=ui"
+    "build:ui": "turbo build --filter=ui",
+    "lint:ui": "turbo lint --filter=ui"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
