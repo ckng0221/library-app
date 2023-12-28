@@ -101,6 +101,7 @@ function Checkout(props: IProps) {
         borrowing_id: String(borrowing.data._id),
       });
       setPayment(payments.data[0]);
+      // console.log('payment', payment);
 
       await sleep(1000);
 
@@ -181,9 +182,9 @@ function Checkout(props: IProps) {
         title="Payment Gateway"
         body={
           <>
-            Payment ID: {payment._id}
+            Payment ID: {payment?._id}
             <br />
-            Amount: $ {payment.amount.toFixed(2)}
+            Amount: $ {payment?.amount.toFixed(2)}
           </>
         }
         showLoading={paymentDialogLoading}

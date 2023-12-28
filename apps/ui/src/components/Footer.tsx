@@ -2,11 +2,10 @@ import { BottomNavigation, IconButton, Tooltip } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
-function Footer() {
+function Footer({ position = 'fixed' }) {
   return (
     <BottomNavigation
-      showLabels
-      sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
+      sx={{ position: { position }, bottom: 0, left: 0, right: 0 }}
     >
       <Tooltip title="GitHub Repository">
         <IconButton

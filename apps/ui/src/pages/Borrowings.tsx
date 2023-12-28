@@ -22,6 +22,7 @@ import TableComp from '../components/Table';
 import { IBorrowing } from '../interfaces/borrowing';
 import { ICustomer } from '../interfaces/customer';
 import { paymentSocket } from '../utils/socket';
+import Footer from '../components/Footer';
 
 const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
   const columns = [
