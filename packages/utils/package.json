@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./common": "./common.ts"
+    "./common": "./src/common.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0"
