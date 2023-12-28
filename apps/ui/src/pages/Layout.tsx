@@ -1,5 +1,7 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import {
@@ -22,10 +24,10 @@ import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Cart from '../components/Cart';
 import DrawerComp from '../components/Drawer';
+import Footer from '../components/Footer';
 import { ICart } from '../interfaces/cart';
 import libraryIcon from '/library-icon.png';
-import InfoIcon from '@mui/icons-material/Info';
-import Footer from '../components/Footer';
+
 interface IProps {
   cartItems: ICart[];
 }
@@ -124,7 +126,9 @@ function MenuAppBar(props: IProps) {
                   >
                     My Borrowings
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>Logout</MenuItem>
+                  <MenuItem onClick={handleClose} disabled>
+                    Logout
+                  </MenuItem>
                 </Menu>
               </div>
             }
@@ -179,6 +183,18 @@ const DrawerList = () => (
               <InfoIcon />
             </ListItemIcon>
             <ListItemText primary={'About'} />
+          </ListItemButton>
+        </Link>
+      </ListItem>
+    </List>
+    <List>
+      <ListItem disablePadding>
+        <Link id="admin" to="/admin">
+          <ListItemButton>
+            <ListItemIcon>
+              <AdminPanelSettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Admin'} />
           </ListItemButton>
         </Link>
       </ListItem>
