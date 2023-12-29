@@ -8,9 +8,9 @@ today! As a contributor, here are the guidelines we would like you to follow:
 - [Coding Rules](#coding-rules)
 - [Commit Message Guidelines](#commit-message-guidelines)
 
-## <a name="submit"></a> Submission Guidelines
+## Submission Guidelines
 
-### <a name="submit-pr"></a> Submitting a Pull Request (PR)
+### Submitting a Pull Request (PR)
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
@@ -24,8 +24,8 @@ Before you submit your Pull Request (PR) consider the following guidelines:
    ```
 
 1. Create your patch, **including appropriate test cases**.
-1. Follow our [Coding Rules](#rules).
-1. Run the full test suite (see [common scripts](#common-scripts)),
+1. Follow our [Coding Rules](#coding-rules).
+1. Run the full test suite (see [common scripts](#commonly-used-npm-scripts)),
    and ensure that all tests pass.
 1. Commit your changes using a descriptive commit message that follows our
    [commit message conventions](#commit). Adherence to these conventions
@@ -87,7 +87,7 @@ from the main (upstream) repository:
   git pull --ff upstream main
   ```
 
-## <a name="development"></a> Development Setup
+## Development Setup
 
 You will need [Node.js](https://nodejs.org) version >= 10.13.0 (except for v13), [RabbitMQ](https://www.rabbitmq.com/), [MongoDB](https://www.mongodb.com/) to run all the services locally.
 
@@ -99,7 +99,7 @@ Alternatively, you could run in Docker without intalling the dependencies explic
 $ npm ci
 ```
 
-### <a name="common-scripts"></a>Commonly used NPM scripts
+### Commonly used NPM scripts
 
 ```bash
 # build all services
@@ -113,7 +113,7 @@ $ npm run test:e2e
 $ npm run lint
 ```
 
-## <a name="rules"></a> Coding Rules
+## Coding Rules
 
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
@@ -125,7 +125,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 - We follow [Google's JavaScript Style Guide][js-style-guide], but wrap all code at
   **100 characters**. An automated formatter is available (`npm run format`).
 
-## <a name="commit"></a> Commit Message Guidelines
+## Commit Message Guidelines
 
 We have very precise rules over how our git commit messages can be formatted. This leads to **more
 readable messages** that are easy to follow when looking through the **project history**.
@@ -198,3 +198,4 @@ reference GitHub issues that this commit **Closes**.
 The contribution guide is inspired by [NestJS](https://github.com/nestjs/nest) contribution guide.
 
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
+[gh_prs]: https://github.com/ckng0221/library-app/pulls

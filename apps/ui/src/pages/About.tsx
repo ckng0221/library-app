@@ -15,10 +15,37 @@ function About() {
       </Typography>
       <Typography align="left">
         <br />
-        This is a prove-of-concept (POC) application for library application
-        that is built with microservice architecture.
+        The application is a prove-of-concept (POC) library application designed
+        in a
+        <a
+          href="https://microservices.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          &nbsp;microservice&nbsp;
+        </a>
+        architecture. The application is built with
+        <a
+          href="https://www.typescriptlang.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          &nbsp;Typescript&nbsp;
+        </a>
+        in a
+        <a
+          href="https://monorepo.tools/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          &nbsp;monorepo&nbsp;
+        </a>
+        project setup.
       </Typography>
-      <Typography align="left">The microservice consists of:</Typography>
+      <br />
+      <Typography align="left">
+        The microservice app consists of the following services:
+      </Typography>
       <Typography align="left" component={'span'}>
         <ul>
           <li>Book Service</li>
@@ -28,60 +55,35 @@ function About() {
           <li>View Service</li>
         </ul>
       </Typography>
-      <Typography align="left">Tech stacks:</Typography>
-      <Typography align="left" component={'span'}>
-        <ul>
-          <li>
-            Frontend:&nbsp;
-            <a
-              href="https://react.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React
-            </a>
-          </li>
-          <li>
-            Backend:&nbsp;
-            <a
-              href="https://nestjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              NestJS
-            </a>
-          </li>
-          <li>
-            Message broker:&nbsp;
-            <a
-              href="https://www.rabbitmq.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              RabbitMQ
-            </a>
-          </li>
-          <li>
-            Build system:&nbsp;
-            <a
-              href="https://turbo.build/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Turborepo
-            </a>
-          </li>
-          <li>
-            CI platform:&nbsp;
-            <a
-              href="https://github.com/features/actions"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub Actions
-            </a>
-          </li>
-        </ul>
+      <Typography align="left">
+        For further details, please refer the{' '}
+        <a
+          href="https://github.com/ckng0221/library-app/blob/main/README.md"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Readme
+        </a>{' '}
+        document in the{' '}
+        <a
+          href="https://github.com/ckng0221/library-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>{' '}
+        page.
+      </Typography>
+      <Typography align="left">
+        For contribution, please refer the{' '}
+        <a
+          href="https://github.com/ckng0221/library-app/blob/main/CONTRIBUTING.md"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Contribution Guide
+        </a>
+        .
       </Typography>
     </>
   );

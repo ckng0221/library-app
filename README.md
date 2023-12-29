@@ -23,7 +23,7 @@ The microservice app consists of the following services:
 
 Backend:
 
-- Web Server: [NestJS](https://nestjs.com/)
+- Server Framework: [NestJS](https://nestjs.com/)
 - Database: [MongoDB](https://www.mongodb.com/)
 - Message broker: [RabbitMQ](https://www.rabbitmq.com/)
 
