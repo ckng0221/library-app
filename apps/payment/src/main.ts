@@ -1,12 +1,18 @@
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
+import * as morgan from 'morgan';
 import { RmqService } from '../../../packages/nestlib';
 import { PaymentModule } from './payment.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(PaymentModule);
   const rmqService = app.get<RmqService>(RmqService);
 
+  const loggingMode =
+    process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
+  app.use(helmet());
+  app.use(morgan(loggingMode));
   app.enableCors();
 
   const config = new DocumentBuilder()
