@@ -1,10 +1,9 @@
 {
   "name": "library-app",
-  "version": "0.0.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "A library app microservice",
   "author": "CK Ng",
-  "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -12,17 +11,18 @@
   "scripts": {
     "build": "nest build",
     "build:all": "turbo build",
-    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:all": "turbo start",
     "start:all:prod": "turbo start:prod",
     "start:book": "nest start book",
     "start:dev": "nest start --watch",
     "start:dev:all": "turbo dev",
+    "start:dev:docker": "docker compose up",
     "start:debug": "nest start --debug --watch",
     "start:prod:book": "node dist/apps/book/main",
     "start:dev:view": "npm run ui:build && npm run start:dev view",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "format": "prettier \"**/*.ts\" \"packages/**/*.json\" --ignore-path ./.prettierignore --write && git status",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
