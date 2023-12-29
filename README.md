@@ -5,6 +5,8 @@
 [![Customer-CI](https://github.com/ckng0221/library-app/actions/workflows/customer-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/customer-ci.yml)
 [![Borrowing-CI](https://github.com/ckng0221/library-app/actions/workflows/borrowing-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/borrowing-ci.yml)
 [![Payment-CI](https://github.com/ckng0221/library-app/actions/workflows/payment-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/payment-ci.yml)
+[![Notification-CI](https://github.com/ckng0221/library-app/actions/workflows/notification-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/notification-ci.yml)
+[![View-CI](https://github.com/ckng0221/library-app/actions/workflows/view-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/view-ci.yml)
 [![UI-CI](https://github.com/ckng0221/library-app/actions/workflows/ui-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/ui-ci.yml)
 
 ## Description
