@@ -1,0 +1,9 @@
+{
+  "name": "notification",
+  "scripts": {
+    "start": "cd ../.. && npm run start notification",
+    "start:prod": "cd ../.. && node dist/apps/notification/main",
+    "dev": "cd ../.. && npm run start:dev notification",
+    "build": "cd ../.. && npm run build notification"
+  }
+}

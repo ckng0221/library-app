@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateBookDto, ReadBookDto, UpdateBookDto } from './dto/book.dto';
@@ -6,7 +7,10 @@ import { Book } from './schemas/book.schema';
 
 @Injectable()
 export class BookService {
-  constructor(@InjectModel(Book.name) private bookModel: Model<Book>) {}
+  constructor(
+    @InjectModel(Book.name) private bookModel: Model<Book>,
+    @Inject('NOTIFICATION') private notificationClient: ClientProxy,
+  ) {}
 
   async findAll(query?: { search: string }): Promise<ReadBookDto[]> {
     const searchString = query?.search || '';
@@ -33,7 +37,12 @@ export class BookService {
 
   async create(createBookDto: CreateBookDto): Promise<ReadBookDto> {
     const book = new this.bookModel(createBookDto);
-    return book.save();
+    book.save();
+
+    this.notificationClient.emit('book_added', { book });
+    console.log('Emitted book notification event to queue.');
+
+    return book;
   }
 
   async deleteOne(id: string) {

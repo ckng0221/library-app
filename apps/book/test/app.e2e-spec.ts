@@ -1,13 +1,15 @@
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, connect } from 'mongoose';
 import * as request from 'supertest';
 import { BookController } from '../src/book.controller';
 import { BookService } from '../src/book.service';
-import { Book, BookSchema } from '../src/schemas/book.schema';
-import { INestApplication } from '@nestjs/common';
 import { BookDtoStub } from '../src/dto/book.dto.stub';
+import { Book, BookSchema } from '../src/schemas/book.schema';
 
 describe('Book (e2e)', () => {
   let app: INestApplication;
@@ -27,6 +29,7 @@ describe('Book (e2e)', () => {
       providers: [
         BookService,
         { provide: getModelToken(Book.name), useValue: bookModel },
+        { provide: 'NOTIFICATION', useValue: mock<AmqpConnection>() },
       ],
     }).compile();
 

@@ -4,7 +4,6 @@ import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { Payment } from './schemas/payment.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { EventGateway } from './events.gateway';
 
 async function makeFakePayment(
   payment_id: string,
@@ -87,9 +86,6 @@ export class PaymentService {
       console.log(
         `Emitted payment_done for payment_id ${id}, borrowing_id: ${payment.borrowing_id}`,
       );
-
-      //TODO: Add payment done socket event
-      // this.socketGateway.emitEvent('payment_done', data);
     }
 
     return obj;

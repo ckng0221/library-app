@@ -1,8 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as morgan from 'morgan';
 import { BookModule } from './book.module';
 
-console.log('DB-URI', process.env.MONGODB_URI);
+// console.log('DB-URI', process.env.MONGODB_URI);
 
 async function bootstrap() {
   const app = await NestFactory.create(BookModule);
@@ -18,6 +19,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document, { customSiteTitle: 'Book' });
 
   const PORT = process.env.PORT || 8001;
+  const loggingMode =
+    process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
+  app.use(morgan(loggingMode));
   app.enableCors();
   await app.listen(PORT);
 }

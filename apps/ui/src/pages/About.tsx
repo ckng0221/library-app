@@ -52,6 +52,7 @@ function About() {
           <li>Customer Service</li>
           <li>Borrowing Service</li>
           <li>Payment Service</li>
+          <li>Notification Service</li>
           <li>View Service</li>
         </ul>
       </Typography>

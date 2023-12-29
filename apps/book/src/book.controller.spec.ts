@@ -1,5 +1,7 @@
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, Types, connect } from 'mongoose';
 import { BookController } from './book.controller';
@@ -23,6 +25,7 @@ describe('bookController', () => {
       providers: [
         BookService,
         { provide: getModelToken(Book.name), useValue: bookModel },
+        { provide: 'NOTIFICATION', useValue: mock<AmqpConnection>() },
       ],
     }).compile();
     bookController = app.get<BookController>(BookController);

@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as morgan from 'morgan';
 import { RmqService } from '../../../packages/nestlib';
 import { BorrowingModule } from './borrowing.module';
 
@@ -18,6 +19,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document, { customSiteTitle: 'Borrowing' });
 
   app.enableCors();
+  const loggingMode =
+    process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
+  app.use(morgan(loggingMode));
 
   app.connectMicroservice(rmqService.getOptions('PAYMENT'));
   await app.startAllMicroservices();
