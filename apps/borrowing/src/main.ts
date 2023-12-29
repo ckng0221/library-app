@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import helmet from 'helmet';
 import * as morgan from 'morgan';
 import { RmqService } from '../../../packages/nestlib';
 import { BorrowingModule } from './borrowing.module';
@@ -22,7 +21,6 @@ async function bootstrap() {
   app.enableCors();
   const loggingMode =
     process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
-  app.use(helmet());
   app.use(morgan(loggingMode));
 
   app.connectMicroservice(rmqService.getOptions('PAYMENT'));

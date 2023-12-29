@@ -13,11 +13,12 @@ A prove-of-concept (POC) library application designed in a [microservice](https:
 
 The microservice app consists of the following services:
 
-- book
-- borrowing
-- customer
-- payment
-- view
+- Book service
+- Borrowing service
+- Customer service
+- Payment service
+- Notification
+- View
 
 ## Tech stacks
 
