@@ -11,7 +11,7 @@
 
 ## Description
 
-A prove-of-concept (POC) library application designed in a [microservice](https://microservices.io/) architecture. The application is built with [Typescript](https://www.typescriptlang.org/) in a [monorepo](https://monorepo.tools/) project setup.
+A proof of concept (POC) library application designed in a [microservice](https://microservices.io/) architecture. The application is built with [Typescript](https://www.typescriptlang.org/) in a [monorepo](https://monorepo.tools/) project setup.
 
 The microservice app consists of the following services:
 

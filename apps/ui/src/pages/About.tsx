@@ -15,7 +15,7 @@ function About() {
       </Typography>
       <Typography align="left">
         <br />
-        The application is a prove-of-concept (POC) library application designed
+        The application is a proof of concept (POC) library application designed
         in a
         <a
           href="https://microservices.io/"

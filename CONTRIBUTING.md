@@ -1,6 +1,6 @@
 # Contributing to Library App
 
-As the application is just a prove-of-concept (POC), there are many rooms of improvement. We would love for you to contribute to the application and help make it even better than it is
+As the application is just a proof of concept (POC), there are many rooms of improvement. We would love for you to contribute to the application and help make it even better than it is
 today! As a contributor, here are the guidelines we would like you to follow:
 
 - [Submission Guidelines](#submission-guidelines)
