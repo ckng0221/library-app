@@ -32,7 +32,7 @@ function About() {
         >
           &nbsp;Typescript&nbsp;
         </a>
-        in a
+        organized in a
         <a
           href="https://monorepo.tools/"
           target="_blank"
