@@ -19,8 +19,8 @@ The microservice app consists of the following services:
 - Borrowing service
 - Customer service
 - Payment service
-- Notification
-- View
+- Notification service
+- View service
 
 ## Tech stacks
 
