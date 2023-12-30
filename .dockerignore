@@ -15,9 +15,6 @@ node_modules
 .prettierrc
 README.md
 
-dist/**
-dist/
 dist
 
-/dist
 .turbo
