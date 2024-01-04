@@ -21,8 +21,8 @@ import CopyToClipboardIcon from '../components/CopyToClipboard';
 import TableComp from '../components/Table';
 import { IBorrowing, IPaymentStatus } from '../interfaces/borrowing';
 import { ICustomer } from '../interfaces/customer';
-import { paymentSocket } from '../utils/socket';
 import { IPaymentDone } from '../interfaces/payment';
+import { paymentSocket } from '../utils/socket';
 
 const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
   const columns = [
