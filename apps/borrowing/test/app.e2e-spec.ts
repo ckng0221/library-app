@@ -10,6 +10,7 @@ import { BorrowingController } from '../src/borrowing.controller';
 import { BorrowingService } from '../src/borrowing.service';
 import { BorrowingDtoStub } from '../src/dto/borrowing.dto.stub';
 import { Borrowing, BorrowingSchema } from '../src/schemas/borrowing.schema';
+import { ReadBorrowingDto } from '../src/dto/borrowing.dto';
 
 describe('Borrowing (e2e)', () => {
   let app: INestApplication;
@@ -17,7 +18,7 @@ describe('Borrowing (e2e)', () => {
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let borrowingModel: Model<Borrowing>;
-  let testBorrowing: any;
+  let testBorrowing: ReadBorrowingDto;
 
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();

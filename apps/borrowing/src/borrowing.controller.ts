@@ -19,6 +19,7 @@ import {
 
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ObjectIdValidationPipe } from '../../../packages/nestlib';
+import { IPaymentDone } from '../../ui/src/interfaces/payment';
 
 @Controller('borrowings')
 export class BorrowingController {
@@ -63,15 +64,12 @@ export class BorrowingController {
   }
 
   @EventPattern('payment_done')
-  async handlePaymentDone(@Payload() data: any) {
-    const payment = JSON.parse(data);
+  async handlePaymentDone(@Payload() data: string) {
+    const payment: IPaymentDone = JSON.parse(data);
 
-    const borrowing = await this.borrowingService.updateOne(
-      payment.borrowing_id,
-      {
-        is_payment_done: true,
-      },
-    );
+    return await this.borrowingService.updateOne(payment.borrowing_id, {
+      is_payment_done: true,
+    });
     // console.log(borrowing);
   }
 

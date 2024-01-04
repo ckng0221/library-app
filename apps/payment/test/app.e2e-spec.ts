@@ -11,6 +11,7 @@ import { PaymentController } from '../src/payment.controller';
 import { PaymentService } from '../src/payment.service';
 import { Payment, PaymentSchema } from '../src/schemas/payment.schema';
 import { EventGateway } from '../src/events.gateway';
+import { ReadPaymentDto } from '../src/dto/payment.dto';
 
 describe('Payment (e2e)', () => {
   let app: INestApplication;
@@ -18,7 +19,7 @@ describe('Payment (e2e)', () => {
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let paymentModel: Model<Payment>;
-  let testPayment: any;
+  let testPayment: ReadPaymentDto;
 
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();

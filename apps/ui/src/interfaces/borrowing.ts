@@ -1,3 +1,5 @@
+import { ChipOwnProps } from '@mui/material';
+
 export interface IBorrowingBook {
   id: string;
   name: string;
@@ -11,4 +13,11 @@ export interface IBorrowing {
   books: IBorrowingBook[];
   is_payment_done?: boolean;
   borrowed_date?: Date;
+}
+
+export interface IPaymentStatus<
+  T extends ChipOwnProps['color'] = ChipOwnProps['color'],
+> {
+  text: string;
+  color: T;
 }

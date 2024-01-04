@@ -19,10 +19,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { getBorrowings } from '../api/borrowing-api';
 import CopyToClipboardIcon from '../components/CopyToClipboard';
 import TableComp from '../components/Table';
-import { IBorrowing } from '../interfaces/borrowing';
+import { IBorrowing, IPaymentStatus } from '../interfaces/borrowing';
 import { ICustomer } from '../interfaces/customer';
+import { IPaymentDone } from '../interfaces/payment';
 import { paymentSocket } from '../utils/socket';
-import Footer from '../components/Footer';
 
 const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
   const columns = [
@@ -37,7 +37,7 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
     const borrowingBooks = borrowing.books.map((book, index) => {
       return { index: index + 1, ...book };
     });
-    const paymentStatus: any = {
+    const paymentStatus: IPaymentStatus<'success' | 'warning'> = {
       text: borrowing.is_payment_done ? 'Successful' : 'Pending',
       color: borrowing.is_payment_done ? 'success' : 'warning',
     };
@@ -127,7 +127,7 @@ function Borrowings(props: IProps) {
       setIsConnected(false);
     }
 
-    function onPaymentDone(message: any) {
+    function onPaymentDone(message: IPaymentDone) {
       console.log('payment_done', message);
       if (message.status === 'success') {
         const objIndex = borrowingsRef.current.findIndex(

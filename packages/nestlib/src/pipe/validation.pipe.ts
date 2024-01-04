@@ -13,15 +13,21 @@ import { Types } from 'mongoose';
 export interface ObjectIdPipeOptions {
   errorHttpStatusCode?: ErrorHttpStatusCode;
   errorMessage?: string;
-  exceptionFactory?: (error: string) => any;
+  exceptionFactory?: (error: string) => unknown;
   optional?: boolean;
+}
+
+interface ObjectIdLike {
+  id: string | Uint8Array;
+  __id?: string;
+  toHexString(): string;
 }
 /**
  * Ensure objectId of MongoDB
  */
 @Injectable()
 export class ObjectIdValidationPipe implements PipeTransform {
-  protected exceptionFactory: (error: string) => any;
+  protected exceptionFactory: (error: string) => unknown;
 
   constructor(@Optional() protected readonly options?: ObjectIdPipeOptions) {
     options = options || {};
@@ -35,7 +41,9 @@ export class ObjectIdValidationPipe implements PipeTransform {
       ((error) => new HttpErrorByCode[errorHttpStatusCode](error));
   }
 
-  transform(value: any) {
+  transform(
+    value: string | number | Types.ObjectId | ObjectIdLike | Uint8Array,
+  ) {
     if (Types.ObjectId.isValid(value)) return value;
     throw this.exceptionFactory(this.options.errorMessage || 'Invalid ID');
   }
