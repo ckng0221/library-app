@@ -8,6 +8,7 @@ import { CustomerService } from '../src/customer.service';
 import { Customer, CustomerSchema } from '../src/schemas/customer.schema';
 import { INestApplication } from '@nestjs/common';
 import { CustomerDtoStub } from '../src/dto/customer.dto.stub';
+import { ReadCustomerDto } from '../src/dto/customer.dto';
 
 describe('Customer (e2e)', () => {
   let app: INestApplication;
@@ -15,7 +16,7 @@ describe('Customer (e2e)', () => {
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let customerModel: Model<Customer>;
-  let testCustomer: any;
+  let testCustomer: ReadCustomerDto;
 
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();

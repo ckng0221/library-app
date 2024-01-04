@@ -10,11 +10,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
+import { ApiQuery } from '@nestjs/swagger';
 import { ObjectIdValidationPipe } from '../../../packages/nestlib';
 import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
-import { PaymentService } from './payment.service';
-import { ApiQuery } from '@nestjs/swagger';
 import { EventGateway } from './events.gateway';
+import { PaymentService } from './payment.service';
+import { ReadBorrowingDto } from '../../borrowing/src/dto/borrowing.dto';
 
 @Controller('payments')
 export class PaymentController {
@@ -87,9 +88,13 @@ export class PaymentController {
   }
 
   @EventPattern('borrowing_created')
-  async handleBorrowingCreated(@Payload() data: any) {
+  async handleBorrowingCreated(
+    @Payload() data: { borrowing: ReadBorrowingDto },
+  ) {
+    // console.log(data);
+
     console.log(
-      `Received borrowing_created. borrowing_id: ${data.borrowing?._id}`,
+      `Received borrowing_created. borrowing_id: ${data.borrowing._id}`,
     );
 
     const payment = await this.paymentService.create({

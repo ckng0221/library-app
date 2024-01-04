@@ -10,6 +10,7 @@ import { BookController } from '../src/book.controller';
 import { BookService } from '../src/book.service';
 import { BookDtoStub } from '../src/dto/book.dto.stub';
 import { Book, BookSchema } from '../src/schemas/book.schema';
+import { ReadBookDto } from '../src/dto/book.dto';
 
 describe('Book (e2e)', () => {
   let app: INestApplication;
@@ -17,7 +18,7 @@ describe('Book (e2e)', () => {
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let bookModel: Model<Book>;
-  let testBook: any;
+  let testBook: ReadBookDto;
 
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();

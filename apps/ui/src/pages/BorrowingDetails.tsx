@@ -7,6 +7,7 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  ChipOwnProps,
   CircularProgress,
   Grid,
   Link,
@@ -21,8 +22,8 @@ import AlertComp from '../components/Alert';
 import CopyToClipboardIcon from '../components/CopyToClipboard';
 import DialogComp from '../components/Dialog';
 import TableComp from '../components/Table';
-import { IBorrowing } from '../interfaces/borrowing';
-import { IPayment } from '../interfaces/payment';
+import { IBorrowing, IPaymentStatus } from '../interfaces/borrowing';
+import { IPayment, IPaymentDone } from '../interfaces/payment';
 import { paymentSocket } from '../utils/socket';
 import sampleBook from '/sample-book.webp';
 
@@ -59,6 +60,7 @@ function BorrowingDetails() {
       const payments = await getPayments({
         borrowing_id: String(borrowingId),
       });
+
       setPayment(payments.data[0]);
       setIsFetchingData(false);
     }
@@ -67,7 +69,7 @@ function BorrowingDetails() {
   }, [borrowingId]);
 
   useEffect(() => {
-    function onPaymentDone(message: any) {
+    function onPaymentDone(message: IPaymentDone) {
       console.log('payment_done', message);
       if (message.status === 'success') {
         // console.log('before', borrowingRef.current);
@@ -97,7 +99,7 @@ function BorrowingDetails() {
   const borrowingBooks = borrowing.books.map((book, index) => {
     return { index: index + 1, ...book };
   });
-  const paymentStatus: any = {
+  const paymentStatus: IPaymentStatus<'success' | 'warning'> = {
     text: borrowing.is_payment_done || paymentDone ? 'Successful' : 'Pending',
     color: borrowing.is_payment_done || paymentDone ? 'success' : 'warning',
   };
