@@ -1,0 +1,31 @@
+name: ApiGateway-CI
+
+on:
+  push:
+    branches: ['*']
+    paths:
+      - 'apps/apigateway/**'
+      - '.github/workflows/apigateway-ci.yml'
+
+env:
+  SERVICE: apigateway
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint:apigateway
+      - run: npm run build:apigateway
+      - run: npm run test:apigateway

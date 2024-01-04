@@ -28,9 +28,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config jest-e2e.json",
+    "test:apigateway": "turbo test --filter=apigateway",
     "dev:ui": "turbo dev --filter=ui",
     "build:ui": "turbo build --filter=ui",
-    "lint:ui": "turbo lint --filter=ui"
+    "build:apigateway": "turbo build --filter=apigateway",
+    "lint:ui": "turbo lint --filter=ui",
+    "lint:apigateway": "turbo lint --filter=apigateway"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

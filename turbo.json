@@ -12,7 +12,8 @@
     "start:prod": {
       "dependsOn": ["build"]
     },
-    "lint": {}
+    "lint": {},
+    "test": {}
   },
 
   "globalDependencies": ["tsconfig.json"]
