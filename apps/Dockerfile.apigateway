@@ -16,7 +16,8 @@ RUN npm install --workspace=${service}
 
 COPY . .
 
-RUN npm run build ${service}
+RUN npm run build:${service}
+
 
 FROM node:alpine as production
 
@@ -41,7 +42,7 @@ RUN npm install --omit=dev --workspace=${service}
 
 COPY --from=development /usr/src/app/dist/apps/${service} ./dist
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/server.js"]
 
 # docker build --build-arg="service=apigateway" -f ./apps/Dockerfile.apigateway . -t libraryapp-apigateway
 # docker run -p 8080:8080 libraryapp/apigateway

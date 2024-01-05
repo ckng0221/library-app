@@ -1,14 +1,14 @@
+# NOTE: The ports of internal services (eg. book, customer, payment, borrowing) are not exposed in production
+
 services:
   # app services
   book:
-    image: libraryapp-dev-book
     build:
       context: .
       dockerfile: ./apps/Dockerfile.service
-      target: development
+      target: production
       args:
         service: book
-    command: npm run start:dev book
     env_file:
       - ./apps/book/.env
     environment:
@@ -17,49 +17,39 @@ services:
     depends_on:
       - mongodb
       - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - '8001:8001'
+    # ports:
+    #   - '8001:8001'
     networks:
       - node-network
     links:
       - mongodb
       - rabbitmq
   customer:
-    image: libraryapp-dev-customer
     build:
       context: .
       dockerfile: ./apps/Dockerfile.service
-      target: development
+      target: production
       args:
         service: customer
-    command: npm run start:dev customer
     env_file:
       - ./apps/customer/.env
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-customer
     depends_on:
       - mongodb
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - '8002:8002'
+    # ports:
+    #   - '8002:8002'
     networks:
       - node-network
     links:
       - mongodb
   borrowing:
-    image: libraryapp-dev-borrowing
     build:
       context: .
       dockerfile: ./apps/Dockerfile.service
-      target: development
+      target: production
       args:
         service: borrowing
-    command: npm run start:dev borrowing
     env_file:
       - ./apps/borrowing/.env
     environment:
@@ -68,25 +58,20 @@ services:
     depends_on:
       - mongodb
       - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - '8003:8003'
+    # ports:
+    #   - '8003:8003'
     networks:
       - node-network
     links:
       - mongodb
       - rabbitmq
   payment:
-    image: libraryapp-dev-payment
     build:
       context: .
       dockerfile: ./apps/Dockerfile.service
-      target: development
+      target: production
       args:
         service: payment
-    command: npm run start:dev payment
     env_file:
       - ./apps/payment/.env
     environment:
@@ -95,49 +80,38 @@ services:
     depends_on:
       - mongodb
       - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - '8004:8004'
+    # ports:
+    #   - '8004:8004'
     networks:
       - node-network
     links:
       - mongodb
       - rabbitmq
   notification:
-    image: libraryapp-dev-notification
     build:
       context: .
       dockerfile: ./apps/Dockerfile.service
-      target: development
+      target: production
       args:
         service: notification
-    command: npm run start:dev notification
     env_file:
       - ./apps/notification/.env
     environment:
       - RABBIT_MQ_URI=amqp://rabbitmq:5672
     depends_on:
       - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - '8005:8005'
+    # ports:
+    #   - '8005:8005'
     networks:
       - node-network
     links:
       - rabbitmq
   view:
-    image: libraryapp-dev-view
     build:
       context: .
       dockerfile: ./apps/Dockerfile.view
-      target: development
       args:
         service: view
-    command: npm run start:dev view
     env_file:
       - ./apps/view/.env
     depends_on:
@@ -146,30 +120,21 @@ services:
       - borrowing
       - payment
       - notification
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
       - '8000:8000'
     networks:
       - node-network
-
   apigateway:
-    image: libraryapp-dev-apigateway
     build:
       context: .
       dockerfile: ./apps/Dockerfile.apigateway
-      target: development
+      target: production
       args:
         service: apigateway
-    command: npm run dev:apigateway
     env_file:
       - ./apps/apigateway/.env
     depends_on:
       - view
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
       - '8080:8080'
     networks:
@@ -206,6 +171,6 @@ volumes:
 networks:
   node-network:
     driver: bridge
-# docker compose up -d
-# docker compose up -d --build
-# docker compose down
+# docker compose -f docker-compose.prod.yml up -d
+# docker compose -f docker-compose.prod.yml up -d --build
+# docker compose -f docker-compose.prod.yml down

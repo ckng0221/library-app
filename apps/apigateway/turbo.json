@@ -1,0 +1,12 @@
+{
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist", "../../dist/apps/**"]
+    },
+    "start": {
+      "dependsOn": ["build"]
+    }
+  }
+}
