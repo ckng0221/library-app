@@ -3,13 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "devv": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "start": "cd ../.. && node dist/apps/apigateway/server.js",
     "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start": "cd ../.. && cd dist/apps/apigateway && node server.js",
+    "start:prod": "npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
     "test": "jest test/*.ts"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "http-proxy-middleware": "^2.0.6",

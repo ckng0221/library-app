@@ -9,10 +9,12 @@ export interface IRoute {
   proxy: Options;
 }
 
-const BASEURL_BOOK = process.env.BASEURL_BOOK;
-const BASEURL_CUSTOMER = process.env.BASEURL_CUSTOMER;
-const BASEURL_BORROWING = process.env.BASEURL_BORROWING;
-const BASEURL_PAYMENT = process.env.BASEURL_PAYMENT;
+const BASEURL_BOOK = process.env.BASEURL_BOOK || 'http://localhost:8001';
+const BASEURL_CUSTOMER =
+  process.env.BASEURL_CUSTOMER || 'http://localhost:8002';
+const BASEURL_BORROWING =
+  process.env.BASEURL_BORROWING || 'http://localhost:8003';
+const BASEURL_PAYMENT = process.env.BASEURL_PAYMENT || 'http://localhost:8004';
 
 export const ROUTES: IRoute[] = [
   // Book
@@ -62,20 +64,10 @@ export const ROUTES: IRoute[] = [
     proxy: {
       target: BASEURL_PAYMENT,
       changeOrigin: true,
+      ws: false, // use http polling
       pathRewrite: {
         '^/api/payment': '',
       },
-    },
-  },
-  // Socket
-  {
-    url: '/socket.io',
-    auth: false,
-    creditCheck: false,
-    proxy: {
-      target: BASEURL_PAYMENT,
-      changeOrigin: true,
-      ws: false,
     },
   },
 ];
