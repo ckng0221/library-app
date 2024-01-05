@@ -54,7 +54,7 @@ export const ROUTES: IRoute[] = [
       },
     },
   },
-  // Customer
+  // Paymenet
   {
     url: '/api/payment',
     auth: false,
@@ -65,6 +65,17 @@ export const ROUTES: IRoute[] = [
       pathRewrite: {
         '^/api/payment': '',
       },
+    },
+  },
+  // Socket
+  {
+    url: '/socket.io',
+    auth: false,
+    creditCheck: false,
+    proxy: {
+      target: BASEURL_PAYMENT,
+      changeOrigin: true,
+      ws: false,
     },
   },
 ];

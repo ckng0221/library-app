@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_PAYMENT_API_BASE_URL;
-const resource = '/payments';
+const resource = '/api/payment/payments';
 const url = `${BASE_URL}${resource}`;
 
 export async function getPayments({ borrowing_id }: { borrowing_id: string }) {

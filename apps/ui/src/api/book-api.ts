@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IBook } from '../interfaces/book';
 
 const BASE_URL = import.meta.env.VITE_BOOK_API_BASE_URL;
-const resource = '/books';
+const resource = '/api/book/books';
 const url = `${BASE_URL}${resource}`;
 
 export async function getBooks() {

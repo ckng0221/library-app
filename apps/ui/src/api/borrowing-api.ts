@@ -2,7 +2,7 @@ import { IBorrowing } from '../interfaces/borrowing';
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_BORROWING_API_BASE_URL;
-const resource = '/borrowings';
+const resource = '/api/borrowing/borrowings';
 const url = `${BASE_URL}${resource}`;
 
 export async function getBorrowings({ customer_id }: { customer_id: string }) {
