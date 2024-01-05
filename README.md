@@ -8,6 +8,7 @@
 [![Notification-CI](https://github.com/ckng0221/library-app/actions/workflows/notification-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/notification-ci.yml)
 [![View-CI](https://github.com/ckng0221/library-app/actions/workflows/view-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/view-ci.yml)
 [![UI-CI](https://github.com/ckng0221/library-app/actions/workflows/ui-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/ui-ci.yml)
+[![ApiGateway-CI](https://github.com/ckng0221/library-app/actions/workflows/apigateway-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/apigateway-ci.yml)
 
 ## Description
 
@@ -21,6 +22,7 @@ The microservice app consists of the following services:
 - Payment service
 - Notification service
 - View service
+- API gateway service
 
 ## Tech stacks
 
@@ -82,9 +84,15 @@ npm run dev:ui
 # At project root
 npm run start:dev:docker # run via npm scripts
 # Run directly via docker compose
+# For Dev
 docker compose up -d # start all containers in detached mode
 docker compose up -d --build # forced build all containers
 docker compose down # shut down all containers
+
+# For Prod
+# docker compose -f docker-compose.prod.yml up -d
+# docker compose -f docker-compose.prod.yml up -d --build
+# docker compose -f docker-compose.prod.yml down
 ```
 
 ## Contribution
