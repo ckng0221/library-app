@@ -33,6 +33,7 @@
     "build:ui": "turbo build --filter=ui",
     "build:apigateway": "turbo build --filter=apigateway",
     "lint:ui": "turbo lint --filter=ui",
+    "dev:apigateway": "turbo dev --filter=apigateway",
     "lint:apigateway": "turbo lint --filter=apigateway"
   },
   "dependencies": {

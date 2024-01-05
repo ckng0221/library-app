@@ -1,0 +1,49 @@
+FROM node:alpine As development
+
+ARG service
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+WORKDIR /usr/src/app/apps/${service}
+
+COPY apps/${service}/package*.json ./
+
+WORKDIR /usr/src/app
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build:${service}
+
+
+FROM node:alpine as production
+
+ARG service
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+ENV SERVICE ${service}
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+WORKDIR /usr/src/app/apps/${service}
+
+COPY apps/${service}/package*.json ./
+
+WORKDIR /usr/src/app
+
+RUN npm install --omit=dev
+# RUN echo ${service}
+
+# COPY . .
+
+COPY --from=development /usr/src/app/dist ./dist
+
+CMD node dist/apps/$SERVICE/server.js
+
+# docker build --build-arg="service=apigateway" -f ./apps/Dockerfile.apigateway . -t libraryapp-apigateway
+# docker run -p 8080:8080 libraryapp/apigateway

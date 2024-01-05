@@ -22,8 +22,10 @@ RUN npm run build:ui
 
 FROM node:alpine as production
 
+ARG service
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
+ENV SERVICE ${service}
 
 WORKDIR /usr/src/app
 
@@ -35,4 +37,4 @@ RUN npm install --omit=dev
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/${service}/main"]
+CMD node dist/apps/$SERVICE/main
