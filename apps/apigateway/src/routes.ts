@@ -18,17 +18,17 @@ const BASEURL_BORROWING =
   process.env.BASEURL_BORROWING || 'http://localhost:8003';
 const BASEURL_PAYMENT = process.env.BASEURL_PAYMENT || 'http://localhost:8004';
 
-function removeXPowerByHeader(
-  proxyRes: http.IncomingMessage,
-  // req: express.Request,
-  // res: express.Response,
-) {
-  // Note: headers strating from (server) res -> proxyRes
-  delete proxyRes.headers['x-powered-by'];
-  console.log(proxyRes.statusCode);
+// function removeXPowerByHeader(
+//   proxyRes: http.IncomingMessage,
+//   // req: express.Request,
+//   // res: express.Response,
+// ) {
+//   // Note: headers strating from (server) res -> proxyRes
+//   delete proxyRes.headers['x-powered-by'];
+//   console.log(proxyRes.statusCode);
 
-  // proxyRes.headers['access-control-allow-origin'] = 'http://localhost:8001';
-}
+//   // proxyRes.headers['access-control-allow-origin'] = 'http://localhost:8000';
+// }
 
 export const ROUTES: IRoute[] = [
   // Book
