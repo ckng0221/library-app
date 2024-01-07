@@ -1,3 +1,4 @@
+import * as compression from 'compression';
 import * as cors from 'cors';
 import 'dotenv/config';
 import * as express from 'express';
@@ -21,6 +22,7 @@ const corsOptions: cors.CorsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(helmet());
+app.use(compression());
 app.disable('x-powered-by');
 
 setupLogging(app);
