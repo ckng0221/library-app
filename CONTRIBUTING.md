@@ -150,6 +150,8 @@ to read on GitHub as well as in various git tools.
 
 Footer should contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-via-commit-messages/) if any.
 
+Samples:
+
 ```
 docs: update change log to beta.5
 fix: need to depend on latest rxjs and zone.js
@@ -193,9 +195,12 @@ reference GitHub issues that this commit **Closes**.
 
 **Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
 
+A detailed explanation can be found in this [document][commit-message-format].
+
 ---
 
 The contribution guide is inspired by [NestJS](https://github.com/nestjs/nest) contribution guide.
 
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
 [gh_prs]: https://github.com/ckng0221/library-app/pulls
+[commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
