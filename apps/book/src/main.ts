@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as morgan from 'morgan';
 import { BookModule } from './book.module';
@@ -6,7 +7,7 @@ import { BookModule } from './book.module';
 // console.log('DB-URI', process.env.MONGODB_URI);
 
 async function bootstrap() {
-  const app = await NestFactory.create(BookModule);
+  const app = await NestFactory.create<NestExpressApplication>(BookModule);
 
   const config = new DocumentBuilder()
     .setTitle('Book API')
@@ -22,7 +23,8 @@ async function bootstrap() {
   const loggingMode =
     process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
   app.use(morgan(loggingMode));
-  app.enableCors();
+  // app.enableCors();
+  app.disable('x-powered-by');
   await app.listen(PORT);
 }
 bootstrap();

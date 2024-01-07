@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { CustomerModule } from './customer.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as morgan from 'morgan';
+import { CustomerModule } from './customer.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(CustomerModule);
+  const app = await NestFactory.create<NestExpressApplication>(CustomerModule);
 
   const config = new DocumentBuilder()
     .setTitle('Customer API')
@@ -18,8 +19,9 @@ async function bootstrap() {
 
   const loggingMode =
     process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
-  app.enableCors();
+  // app.enableCors();
   app.use(morgan(loggingMode));
+  app.disable('x-powered-by');
 
   const PORT = process.env.PORT || 8002;
   await app.listen(PORT);
