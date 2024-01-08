@@ -14,7 +14,7 @@ export class CustomerService {
     @InjectModel(Customer.name) private customerModel: Model<Customer>,
   ) {}
 
-  async findAll(query = null): Promise<ReadCustomerDto[]> {
+  async findAll(query: { search: string } = null): Promise<ReadCustomerDto[]> {
     const searchString = query?.search || '';
 
     const searchOption = searchString

@@ -1,5 +1,5 @@
-import * as morgan from 'morgan';
-import * as express from 'express';
+import morgan from 'morgan';
+import type express from 'express';
 
 const loggingMode = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
 

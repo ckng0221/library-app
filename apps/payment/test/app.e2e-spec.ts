@@ -5,13 +5,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, Types, connect } from 'mongoose';
-import * as request from 'supertest';
+import request from 'supertest';
+import { ReadPaymentDto } from '../src/dto/payment.dto';
 import { PaymentDtoStub } from '../src/dto/payment.dto.stub';
+import { EventGateway } from '../src/events.gateway';
 import { PaymentController } from '../src/payment.controller';
 import { PaymentService } from '../src/payment.service';
 import { Payment, PaymentSchema } from '../src/schemas/payment.schema';
-import { EventGateway } from '../src/events.gateway';
-import { ReadPaymentDto } from '../src/dto/payment.dto';
 
 describe('Payment (e2e)', () => {
   let app: INestApplication;

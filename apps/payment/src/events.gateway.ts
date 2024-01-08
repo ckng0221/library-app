@@ -10,7 +10,7 @@ export class EventGateway {
   @WebSocketServer()
   server: Server;
 
-  handleConnection(client) {
+  handleConnection(client: any) {
     // console.log(client);
     this.server.emit('connected', {});
 
@@ -19,14 +19,14 @@ export class EventGateway {
     // Handle connection event
   }
 
-  handleDisconnect(client) {
+  handleDisconnect(client: any) {
     // Handle disconnection event
     this.server.emit('disconnected', {});
 
     // console.log('Disconnected');
   }
 
-  emitEvent(event: string, payload) {
+  emitEvent(event: string, payload: any) {
     this.server.emit(event, payload);
     console.log('Emitted socket event', event);
   }

@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Options } from 'http-proxy-middleware';
-import type * as http from 'http';
+// import type * as http from 'http';
 // import type * as express from 'express';
 
 export interface IRoute {
@@ -86,34 +86,3 @@ export const ROUTES: IRoute[] = [
     },
   },
 ];
-
-// export const ROUTES: IRoute[] = [
-//   {
-//     url: '/free',
-//     auth: false,
-//     creditCheck: false,
-//     rateLimit: {
-//       windowMs: 15 * 60 * 1000,
-//       max: 5,
-//     },
-//     proxy: {
-//       target: 'https://www.google.com',
-//       changeOrigin: true,
-//       pathRewrite: {
-//         [`^/free`]: '',
-//       },
-//     },
-//   },
-//   {
-//     url: '/premium',
-//     auth: true,
-//     creditCheck: true,
-//     proxy: {
-//       target: 'https://www.google.com',
-//       changeOrigin: true,
-//       pathRewrite: {
-//         [`^/premium`]: '',
-//       },
-//     },
-//   },
-// ];

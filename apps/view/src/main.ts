@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ViewModule } from './view.module';
-import * as morgan from 'morgan';
+import morgan from 'morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create(ViewModule);

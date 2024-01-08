@@ -5,12 +5,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, connect } from 'mongoose';
-import * as request from 'supertest';
+import request from 'supertest';
 import { BookController } from '../src/book.controller';
 import { BookService } from '../src/book.service';
+import { ReadBookDto } from '../src/dto/book.dto';
 import { BookDtoStub } from '../src/dto/book.dto.stub';
 import { Book, BookSchema } from '../src/schemas/book.schema';
-import { ReadBookDto } from '../src/dto/book.dto';
 
 describe('Book (e2e)', () => {
   let app: INestApplication;

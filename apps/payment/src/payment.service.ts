@@ -34,7 +34,9 @@ export class PaymentService {
 
   private readonly logger = new Logger(PaymentService.name);
 
-  async findAll(query = null): Promise<ReadPaymentDto[]> {
+  async findAll(
+    query: { search: string; borrowing_id: string } = null,
+  ): Promise<ReadPaymentDto[]> {
     const borrowing_id = query?.borrowing_id || '';
     let searchOption = {};
 

@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as morgan from 'morgan';
+import morgan from 'morgan';
 import { BookModule } from './book.module';
 
 // console.log('DB-URI', process.env.MONGODB_URI);

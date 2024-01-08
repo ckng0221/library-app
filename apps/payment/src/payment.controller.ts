@@ -27,7 +27,7 @@ export class PaymentController {
   @Get()
   @ApiQuery({ name: 'borrowing_id', required: false })
   findAll(
-    @Query() query?: { search: string; customer_id: string },
+    @Query() query?: { search: string; borrowing_id: string },
   ): Promise<ReadPaymentDto[]> {
     return this.paymentService.findAll(query);
   }

@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { mock } from 'jest-mock-extended';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, Types, connect } from 'mongoose';
-import * as request from 'supertest';
+import request from 'supertest';
 import { BorrowingController } from '../src/borrowing.controller';
 import { BorrowingService } from '../src/borrowing.service';
 import { BorrowingDtoStub } from '../src/dto/borrowing.dto.stub';

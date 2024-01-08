@@ -2,7 +2,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, connect } from 'mongoose';
-import * as request from 'supertest';
+import request from 'supertest';
 import { CustomerController } from '../src/customer.controller';
 import { CustomerService } from '../src/customer.service';
 import { Customer, CustomerSchema } from '../src/schemas/customer.schema';

@@ -16,7 +16,9 @@ export class BorrowingService {
     @Inject('PAYMENT') private paymentClient: ClientProxy,
   ) {}
 
-  async findAll(query = null): Promise<ReadBorrowingDto[]> {
+  async findAll(
+    query: { search: string; customer_id: string } = null,
+  ): Promise<ReadBorrowingDto[]> {
     const searchString = query?.search || '';
     const customer_id = query?.customer_id || '';
     let searchOption = {};

@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import * as morgan from 'morgan';
+import morgan from 'morgan';
 import { RmqService } from '../../../packages/nestlib';
 import { PaymentModule } from './payment.module';
 
