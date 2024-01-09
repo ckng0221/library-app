@@ -1,25 +1,30 @@
-FROM node:alpine As development
+FROM node:alpine AS base
 
+FROM base AS builder
 ARG service
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-WORKDIR /usr/src/app/apps/${service}
-
-COPY apps/${service}/package*.json ./
-
-WORKDIR /usr/src/app
-
-RUN npm install --workspace=${service}
-
+# Set working directory
+WORKDIR /app
+RUN npm i -g turbo
 COPY . .
+# Use turbo output, to copy all related workspace together
+RUN turbo prune ${service} --docker
 
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+ARG service
+
+WORKDIR /app
+
+# First install the dependencies (as they change less often)
+COPY --from=builder /app/out/json/ .
+RUN npm install
+
+# Build the project
+COPY --from=builder /app/out/full/ .
 RUN npm run build:${service}
 
-
-FROM node:alpine as production
+FROM base as production
 
 ARG service
 ARG NODE_ENV=production
@@ -28,19 +33,14 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-
-WORKDIR /usr/src/app/apps/${service}
-
-COPY apps/${service}/package*.json ./
-
-WORKDIR /usr/src/app
+COPY apps/${service}/package*.json ./apps/${service}/
 
 RUN npm install --omit=dev --workspace=${service}
 # RUN echo ${service}
 
 # COPY . .
 
-COPY --from=development /usr/src/app/dist/apps/${service} ./dist
+COPY --from=installer /app/dist/apps/${service} ./dist
 
 CMD ["node", "dist/server.js"]
 

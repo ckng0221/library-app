@@ -45,4 +45,4 @@ CMD ["node", "dist/main.js"]
 
 # Eg.
 # docker build --build-arg="service=book" -f ./apps/Dockerfile.service . -t libraryapp-book
-# docker run -p 8080:8080 libraryapp/book
+# docker run -p 8080:8080 libraryapp-book
