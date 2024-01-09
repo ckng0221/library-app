@@ -2,23 +2,17 @@ FROM node:alpine As development
 
 ARG service
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
-
-WORKDIR /usr/src/app/apps/${service}
-COPY apps/${service}/package*.json ./
-
-WORKDIR /usr/src/app/apps/ui
-COPY apps/ui/package*.json ./
-
-WORKDIR /usr/src/app/packages/common
-COPY packages/common/package*.json ./
-
-WORKDIR /usr/src/app
+COPY apps/${service}/package*.json ./apps/${service}/
+COPY apps/ui/package*.json ./apps/ui/
+COPY packages/common/package*.json ./packages/common/
+COPY packages/typescript-config/package*.json ./packages/typescript-config/
 
 RUN npm install --workspace=${service}
 RUN npm install --workspace=@repo/common
+RUN npm install --workspace=@repo/typescript-config
 RUN npm install --workspace=ui
 
 COPY . .
@@ -37,19 +31,14 @@ ENV SERVICE ${service}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-
-WORKDIR /usr/src/app/apps/${service}
-
-COPY apps/${service}/package*.json ./
-
-WORKDIR /usr/src/app
+COPY apps/${service}/package*.json ./apps/${service}/
 
 RUN npm install --omit=dev --workspace=${service}
 
 # COPY . .
 
 # NOTE: keep the app folder name, as will be serving dist/ui/index.html
-COPY --from=development /usr/src/app/dist ./dist
+COPY --from=development /app/dist ./dist
 
 # Execute from this workdir, as shared for both ui and view
 CMD node dist/apps/$SERVICE/main
