@@ -66,9 +66,9 @@ function Checkout(props: IProps) {
     amount: 0,
   });
 
-  useEffect(() => {
-    setPayment(payment);
-  }, [payment]);
+  // useEffect(() => {
+  //   setPayment(payment);
+  // }, [payment]);
 
   function showAlert(alertMessage: string, alertSeverity: AlertColor) {
     setSnackOpen(true);
@@ -101,11 +101,35 @@ function Checkout(props: IProps) {
       const borrowing = await createBorrowing(payload);
 
       setBody(`Redirecting to payment gateway...`);
-      const payments = await getPayments({
-        borrowing_id: String(borrowing.data._id),
-      });
-      setPayment(payments.data[0]);
-      // console.log('payment', payment);
+      // await sleep(1000);
+      // console.log(borrowing);
+
+      let paymentData = [];
+      let payments;
+      let requestAttempts = 0;
+      // Solve eventual consistency issue from queue
+      while (
+        requestAttempts < 10 &&
+        (!paymentData || paymentData.length <= 0)
+      ) {
+        // console.log(`Sending request attempt ${requestAttempts}...`);
+        payments = await getPayments({
+          borrowing_id: String(borrowing.data._id),
+        });
+        // console.log(payments.data);
+
+        paymentData = payments.data || [];
+        requestAttempts++;
+        await sleep(500);
+      }
+      if (paymentData.length > 0) {
+        setPayment(payments.data[0]);
+      } else {
+        throw new Error('Failed to load payment data');
+      }
+
+      // console.log('payment_initial', payment);
+      // console.log('payments', payments);
 
       await sleep(1000);
       props.setCartItems([]);
