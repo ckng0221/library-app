@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --project tsconfig.dev.json --respawn --transpile-only src/server.ts",
     "start": "cd ../.. && cd dist/apps/apigateway && node server.js",
     "start:prod": "npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
@@ -20,8 +20,8 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "*",
     "@jest/globals": "^29.7.0",
+    "@repo/typescript-config": "*",
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",
     "@types/morgan": "^1.9.9",

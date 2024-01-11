@@ -1,0 +1,7 @@
+{
+  "extends": "../../packages/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/apigateway/"
+  },
+  "exclude": ["test/*", "jest.**"]
+}
