@@ -16,6 +16,7 @@ import Borrowings from './pages/Borrowings';
 import Checkout from './pages/Checkout';
 import Home from './pages/Home';
 import Layout from './pages/Layout';
+import Login from './pages/Login';
 
 function App() {
   const [cartItems, setCartItems] = useState<ICart[]>([]);
@@ -88,6 +89,7 @@ function App() {
             />
             <Route path="about" element={<About />} />
             <Route path="admin" element={<Admin />} />
+            <Route path="login" element={<Login />} />
           </Route>
         </Routes>
       </BrowserRouter>

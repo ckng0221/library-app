@@ -28,7 +28,7 @@ app.disable('x-powered-by');
 
 setupLogging(app);
 
-app.use(authVerification);
+// app.use(authVerification);
 setupProxies(app, ROUTES);
 
 app.get('/', (req, res) => {
