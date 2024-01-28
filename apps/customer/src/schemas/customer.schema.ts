@@ -16,7 +16,7 @@ export class Customer extends AbstractDocument {
 
 @Schema({ versionKey: false })
 export class CustomerCredential extends AbstractDocument {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Customer' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Customer', unique: true })
   customer: Customer;
 
   @Prop()

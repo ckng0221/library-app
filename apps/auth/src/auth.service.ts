@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ReadCustomerDto } from '../../customer/src/dto/customer.dto';
+import bcrypt from 'bcrypt';
 
 interface ICustomerCred {
   _id: string;
@@ -29,12 +30,14 @@ export class AuthService {
     );
 
     const customerCreds: ICustomerCred[] = await res.json();
+    // console.log(customerCreds);
+
     if (customerCreds.length <= 0) {
       console.log('customer not found');
 
       throw new UnauthorizedException('Email or password is wrong');
     }
-    console.log(customerCreds);
+    // console.log(customerCreds);
 
     return customerCreds[0];
   }
@@ -42,7 +45,9 @@ export class AuthService {
   async signIn(email: string, pass: string): Promise<{ access_token: string }> {
     const user = await this.getUser(email);
 
-    if (user?.password !== pass) {
+    const passwordValid = await bcrypt.compare(pass, user.password);
+
+    if (!passwordValid) {
       throw new UnauthorizedException('Email or password is wrong');
     }
     const payload = {

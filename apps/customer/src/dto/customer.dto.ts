@@ -33,7 +33,7 @@ export class ReadCustomerDto extends CustomerDto {
 }
 
 export class CustomerCredentialDto {
-  @ApiProperty()
+  @ApiProperty({ example: '655977ed7b831cef1b597be5' })
   customer: Types.ObjectId;
 
   @ApiProperty()

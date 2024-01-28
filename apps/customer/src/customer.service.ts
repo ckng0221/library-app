@@ -4,12 +4,11 @@ import { Model } from 'mongoose';
 import {
   CreateCustomerDto,
   CustomerCredentialDto,
-  ReadCustomerCredentialDto,
   ReadCustomerDto,
   UpdateCustomerDto,
 } from './dto/customer.dto';
 import { Customer, CustomerCredential } from './schemas/customer.schema';
-
+import bcrypt from 'bcrypt';
 @Injectable()
 export class CustomerService {
   constructor(
@@ -72,6 +71,7 @@ export class CustomerCredentialService {
       searchOption = { ...searchOption, email: searchEmail };
     }
     const customer = await this.customerModel.findOne(searchOption);
+    // console.log(customer);
 
     // return this.customerCredentialModel.findOne(searchOption);
     return this.customerCredentialModel
@@ -80,6 +80,14 @@ export class CustomerCredentialService {
   }
 
   async create(createCredDto: CustomerCredentialDto): Promise<any> {
+    const saltRound = 10;
+    const hashedPawssword = await bcrypt.hash(
+      createCredDto.password,
+      saltRound,
+    );
+    createCredDto.password = hashedPawssword;
+    // console.log(hashedPawssword);
+
     const customer = new this.customerCredentialModel(createCredDto);
     return customer.save();
   }
