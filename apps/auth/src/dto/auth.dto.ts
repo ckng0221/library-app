@@ -15,3 +15,12 @@ export class AuthDto {
   })
   password: string;
 }
+
+export class VerificationDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'token',
+  })
+  token: string;
+}

@@ -18,6 +18,7 @@ import { AuthService } from './auth.service';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
+        // secretOrPrivateKey: configService.get<string>('JWT_SECRET'),
       }),
       inject: [ConfigService],
     }),

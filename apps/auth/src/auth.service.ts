@@ -46,12 +46,17 @@ export class AuthService {
       throw new UnauthorizedException('Email or password is wrong');
     }
     const payload = {
-      sub: user._id,
+      sub: user.customer?._id,
       name: user.customer?.name,
       email: user.customer?.email,
     };
+
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async verifyToken(token: string) {
+    return this.jwtService.verifyAsync(token);
   }
 }
