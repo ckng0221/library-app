@@ -1,0 +1,30 @@
+name: Auth-CI
+
+on:
+  push:
+    branches: ['*']
+    paths:
+      - 'apps/auth/**'
+      - '.github/workflows/auth-ci.yml'
+
+env:
+  SERVICE: auth
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build $SERVICE

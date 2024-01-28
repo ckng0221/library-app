@@ -61,7 +61,7 @@ describe('Customer (e2e)', () => {
   it('/customers (POST)', () => {
     return request(app.getHttpServer())
       .post('/customers')
-      .send({ name: 'customer-test', email: 'test@email.com' })
+      .send({ name: 'customer-test', email: 'test2@email.com' })
       .expect(201);
   });
   it('/customers/{id} (GET)', () => {

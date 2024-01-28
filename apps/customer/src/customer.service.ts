@@ -17,7 +17,7 @@ export class CustomerService {
   ) {}
 
   async findAll(
-    query: { email: string; search: string } = null,
+    query: { email?: string; search?: string } = null,
   ): Promise<ReadCustomerDto[]> {
     const searchString = query?.search || '';
     const searchEmail = query?.email || '';

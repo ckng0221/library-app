@@ -28,7 +28,7 @@ export class CustomerController {
   @ApiQuery({ name: 'search', required: false })
   @ApiQuery({ name: 'email', required: false })
   findAll(
-    @Query() query?: { email: string; search: string },
+    @Query() query?: { email?: string; search?: string },
   ): Promise<ReadCustomerDto[]> {
     return this.customerService.findAll(query);
   }
