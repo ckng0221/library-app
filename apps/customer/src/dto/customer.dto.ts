@@ -31,3 +31,16 @@ export class ReadCustomerDto extends CustomerDto {
   @ApiProperty()
   _id: Types.ObjectId;
 }
+
+export class CustomerCredentialDto {
+  @ApiProperty()
+  customer: Types.ObjectId;
+
+  @ApiProperty()
+  password: string;
+}
+
+export class ReadCustomerCredentialDto extends CustomerCredentialDto {
+  @ApiProperty()
+  _id: Types.ObjectId;
+}
