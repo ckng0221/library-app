@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   HttpStatus,
   Param,
   Patch,
@@ -65,7 +66,10 @@ export class CustomerController {
   @Post()
   create(
     @Body() createCustomerDto: CreateCustomerDto,
+    @Headers() headers?: any,
   ): Promise<ReadCustomerDto> {
+    // console.log(headers);
+
     return this.customerService.create(createCustomerDto);
   }
 

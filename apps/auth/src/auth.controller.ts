@@ -21,10 +21,12 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('verfication')
+  @Post('verification')
   async verifyToken(@Body() verificationDto: VerificationDto) {
-    if (!verificationDto.token)
+    if (!verificationDto.token) {
+      console.log(verificationDto);
       throw new UnprocessableEntityException('Token cannot be empty');
+    }
 
     try {
       return await this.authService.verifyToken(verificationDto.token);

@@ -48,7 +48,7 @@ export const ROUTES: IRoute[] = [
   // Customer
   {
     url: '/api/customer',
-    auth: false,
+    auth: true,
     creditCheck: false,
     proxy: {
       target: BASEURL_CUSTOMER,
