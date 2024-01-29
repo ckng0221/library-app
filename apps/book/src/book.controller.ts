@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   HttpStatus,
   Param,
   Patch,
@@ -20,7 +21,11 @@ export class BookController {
 
   @Get()
   @ApiQuery({ name: 'search', required: false })
-  findAll(@Query() query?: { search: string }): Promise<ReadBookDto[]> {
+  findAll(
+    @Query() query?: { search: string },
+    @Headers() headers?: any,
+  ): Promise<ReadBookDto[]> {
+    // console.log(headers.authorization);
     return this.bookService.findAll(query);
   }
 

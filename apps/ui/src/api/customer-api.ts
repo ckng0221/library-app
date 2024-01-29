@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from './api';
+
 import { ICustomer } from '../interfaces/customer';
 
 const BASE_URL = import.meta.env.VITE_CUSTOMER_API_BASE_URL;

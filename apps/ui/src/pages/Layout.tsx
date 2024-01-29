@@ -5,6 +5,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import {
+  Button,
   Divider,
   List,
   ListItem,
@@ -27,12 +28,31 @@ import DrawerComp from '../components/Drawer';
 import Footer from '../components/Footer';
 import { ICart } from '../interfaces/cart';
 import libraryIcon from '/library-icon.png';
+import AlertComp, { IAlertProps } from '../components/Alert';
+import { CookieSetOptions } from 'universal-cookie';
+import { ICustomer } from '../interfaces/customer';
 
 interface IProps {
   cartItems: ICart[];
+  alertCompProps: IAlertProps;
+  customer: ICustomer;
+  setCustomer: React.Dispatch<React.SetStateAction<ICustomer>>;
+  removeCookie: (name: 'usertoken', options?: CookieSetOptions) => void;
 }
 
-function MenuAppBar(props: IProps) {
+function MenuAppBar({
+  cartItems,
+  customer,
+  setCustomer,
+  removeCookie,
+  alertCompProps,
+}: {
+  cartItems: IProps['cartItems'];
+  customer: IProps['customer'];
+  setCustomer: IProps['setCustomer'];
+  removeCookie: IProps['removeCookie'];
+  alertCompProps: IProps['alertCompProps'];
+}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDrawer, setOpenDrawer] = useState({
     left: false,
@@ -44,6 +64,20 @@ function MenuAppBar(props: IProps) {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = () => {
+    setCustomer({
+      _id: '',
+      name: '',
+      email: '',
+      address: '',
+    });
+    removeCookie('usertoken');
+    // navigate('/');
+
+    setAnchorEl(null);
+    alertCompProps.setAlertMessage('Logged out!');
+    alertCompProps.setSnackOpen(true);
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -77,12 +111,12 @@ function MenuAppBar(props: IProps) {
                 &nbsp; Library App
               </Link>
             </Typography>
-            {
+            {customer._id ? (
               <div>
                 <Tooltip title="Checkout Cart">
                   <IconButton>
                     <Link to="checkout" id="checkout">
-                      <Cart cartItems={props.cartItems} />
+                      <Cart cartItems={cartItems} />
                     </Link>
                   </IconButton>
                 </Tooltip>
@@ -126,12 +160,14 @@ function MenuAppBar(props: IProps) {
                   >
                     My Borrowings
                   </MenuItem>
-                  <MenuItem onClick={handleClose} disabled>
-                    Logout
-                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
-            }
+            ) : (
+              <Button variant="contained" color={'primary'} href={'/login'}>
+                Sign in
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
@@ -202,11 +238,30 @@ const DrawerList = () => (
   </Box>
 );
 
-const Layout = (props: IProps) => {
+const Layout = ({
+  cartItems,
+  alertCompProps,
+  customer,
+  setCustomer,
+  removeCookie,
+}: IProps) => {
   return (
     <>
       <div></div>
-      <MenuAppBar cartItems={props.cartItems} />
+      <MenuAppBar
+        cartItems={cartItems}
+        customer={customer}
+        setCustomer={setCustomer}
+        removeCookie={removeCookie}
+        alertCompProps={alertCompProps}
+      />
+      <AlertComp
+        snackOpen={alertCompProps.snackOpen}
+        setSnackOpen={alertCompProps.setSnackOpen}
+        alertMessage={alertCompProps.alertMessage}
+        setAlertMessage={alertCompProps.setAlertMessage}
+        severity={alertCompProps.severity}
+      />
       <p></p>
       <Outlet />
       <Footer position="fixed" />

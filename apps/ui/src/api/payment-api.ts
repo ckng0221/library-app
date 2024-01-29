@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './api';
 
 const BASE_URL = import.meta.env.VITE_PAYMENT_API_BASE_URL;
 const resource = '/api/payment/payments';

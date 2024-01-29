@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from './api';
+
 import { IBook } from '../interfaces/book';
 
 const BASE_URL = import.meta.env.VITE_BOOK_API_BASE_URL;

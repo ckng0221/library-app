@@ -30,7 +30,10 @@ export class CustomerController {
   @ApiQuery({ name: 'email', required: false })
   findAll(
     @Query() query?: { email?: string; search?: string },
+    // @Headers() headers?: any,
   ): Promise<ReadCustomerDto[]> {
+    // console.log(headers);
+
     return this.customerService.findAll(query);
   }
 

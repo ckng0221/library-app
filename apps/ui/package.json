@@ -20,8 +20,10 @@
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
+    "react-cookie": "^7.0.2",
     "react-dom": "^18.2.0",
-    "socket.io-client": "^4.7.2"
+    "socket.io-client": "^4.7.2",
+    "universal-cookie": "^7.0.2"
   },
   "devDependencies": {
     "@repo/common": "*",

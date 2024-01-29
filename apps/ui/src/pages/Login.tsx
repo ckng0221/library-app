@@ -17,7 +17,15 @@ import { useNavigate } from 'react-router-dom';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Login() {
+export default function Login({
+  setAlertOpen,
+  setAlertMessage,
+  setCookie,
+}: {
+  setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
+  setCookie: any;
+}) {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
@@ -34,9 +42,11 @@ export default function Login() {
         password: data.get('password').toString(),
       });
       const token = res.data?.access_token;
-      console.log(token);
+      // console.log(token);
+      setCookie('usertoken', token);
       navigate('/');
-      console.log('redirected');
+      setAlertMessage('Welcome back!');
+      setAlertOpen(true);
     } catch (err) {
       setError(true);
       console.log(err);
@@ -61,7 +71,7 @@ export default function Login() {
             <LockOutlinedIcon />
           </Avatar> */}
           <Typography component="h1" variant="h5">
-            Welcome back
+            Sign In
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField

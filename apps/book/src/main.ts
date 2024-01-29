@@ -3,6 +3,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import morgan from 'morgan';
 import { BookModule } from './book.module';
+import cookieParser from 'cookie-parser';
 
 // console.log('DB-URI', process.env.MONGODB_URI);
 
@@ -23,6 +24,7 @@ async function bootstrap() {
   const loggingMode =
     process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
   app.use(morgan(loggingMode));
+  app.use(cookieParser());
   // app.enableCors();
   app.disable('x-powered-by');
   await app.listen(PORT);

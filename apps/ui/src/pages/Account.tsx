@@ -21,9 +21,7 @@ export default function Account(props: IProps) {
         <Typography color="text.primary">Account</Typography>
       </Breadcrumbs>
       <br />
-      <Typography color="text.secondary">
-        (POC only, using the default customer)
-      </Typography>
+
       <br />
       <Card sx={{ minWidth: 275 }}>
         <CardContent>

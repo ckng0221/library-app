@@ -1,9 +1,10 @@
 import { Alert, Snackbar, Stack } from '@mui/material';
 import { SyntheticEvent } from 'react';
 
-interface IProp {
+export interface IAlertProps {
   snackOpen: boolean;
   alertMessage: string;
+  setAlertMessage?: React.Dispatch<React.SetStateAction<string>>;
   severity: AlertColor;
   setSnackOpen: (arg: boolean) => void;
   autoHideDuration?: number;
@@ -11,7 +12,7 @@ interface IProp {
 
 export type AlertColor = 'success' | 'info' | 'warning' | 'error';
 
-export default function AlertComp(props: IProp) {
+export default function AlertComp(props: IAlertProps) {
   const handleCloseSnack = (event: SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
