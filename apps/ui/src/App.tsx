@@ -20,6 +20,7 @@ import Checkout from './pages/Checkout';
 import Home from './pages/Home';
 import Layout from './pages/Layout';
 import Login from './pages/Login';
+import SignUp from './pages/Signup';
 
 function App() {
   const [cartItems, setCartItems] = useState<ICart[]>([]);
@@ -33,12 +34,16 @@ function App() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessaage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success');
+  const [autoHideDuration, setAutoHideDuration] = useState(3000);
   const alertCompProps = {
     snackOpen: alertOpen,
     alertMessage: alertMessaage,
     setAlertMessage: setAlertMessage,
     severity: alertSeverity,
+    setSeverity: setAlertSeverity,
     setSnackOpen: setAlertOpen,
+    autoHideDuration: autoHideDuration,
+    setAutoHideDuration: setAutoHideDuration,
   };
 
   // console.log('userId', userId);
@@ -46,18 +51,20 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['usertoken']);
 
   useEffect(() => {
-    // Get customer ID from jwt verification
-    tokenVerification({ token: cookies['usertoken'] }).then((res) => {
-      const customerId = res.data.sub;
+    if (cookies['usertoken']) {
+      // Get customer ID from jwt verification
+      tokenVerification({ token: cookies['usertoken'] }).then((res) => {
+        const customerId = res.data.sub;
 
-      getCustomerById(customerId)
-        .then((res) => {
-          console.log(res.data);
+        getCustomerById(customerId)
+          .then((res) => {
+            console.log(res.data);
 
-          return setCustomer(res.data);
-        })
-        .catch((error) => console.error(error));
-    });
+            return setCustomer(res.data);
+          })
+          .catch((error) => console.error(error));
+      });
+    }
   }, [cookies]);
 
   return (
@@ -116,6 +123,12 @@ function App() {
                   setAlertMessage={setAlertMessage}
                   setCookie={setCookie}
                 />
+              }
+            />
+            <Route
+              path="signup"
+              element={
+                <SignUp alertCompProps={alertCompProps} setCookie={setCookie} />
               }
             />
           </Route>

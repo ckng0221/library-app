@@ -31,6 +31,7 @@ import libraryIcon from '/library-icon.png';
 import AlertComp, { IAlertProps } from '../components/Alert';
 import { CookieSetOptions } from 'universal-cookie';
 import { ICustomer } from '../interfaces/customer';
+import DialogComp from '../components/Dialog';
 
 interface IProps {
   cartItems: ICart[];
@@ -57,6 +58,8 @@ function MenuAppBar({
   const [openDrawer, setOpenDrawer] = useState({
     left: false,
   });
+  // Logout dialog
+  const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
 
   const navigate = useNavigate();
 
@@ -77,6 +80,7 @@ function MenuAppBar({
     setAnchorEl(null);
     alertCompProps.setAlertMessage('Logged out!');
     alertCompProps.setSnackOpen(true);
+    setOpenLogoutDialog(false);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -160,7 +164,13 @@ function MenuAppBar({
                   >
                     My Borrowings
                   </MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setOpenLogoutDialog(true);
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
                 </Menu>
               </div>
             ) : (
@@ -175,6 +185,17 @@ function MenuAppBar({
         openDrawer={openDrawer}
         setOpenDrawer={setOpenDrawer}
         DrawerListComp={<DrawerList />}
+      />
+      <DialogComp
+        show={openLogoutDialog}
+        handleClose={() => {
+          setOpenLogoutDialog(false);
+        }}
+        handleConfirm={handleLogout}
+        title="Log out"
+        confirmText="Confirm"
+        body="Are you sure you want to log out?"
+        showLoading={false}
       />
     </>
   );
@@ -261,6 +282,8 @@ const Layout = ({
         alertMessage={alertCompProps.alertMessage}
         setAlertMessage={alertCompProps.setAlertMessage}
         severity={alertCompProps.severity}
+        setSeverity={alertCompProps.setSeverity}
+        setAutoHideDuration={alertCompProps.setAutoHideDuration}
       />
       <p></p>
       <Outlet />

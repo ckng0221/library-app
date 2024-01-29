@@ -23,7 +23,11 @@ export class CustomerDto {
   address: string;
 }
 
-export class CreateCustomerDto extends CustomerDto {}
+export class CreateCustomerDto extends CustomerDto {
+  @IsString()
+  @ApiProperty({})
+  password?: string;
+}
 
 export class UpdateCustomerDto extends PartialType(CustomerDto) {}
 

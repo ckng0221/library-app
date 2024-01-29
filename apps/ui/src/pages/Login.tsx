@@ -11,8 +11,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { login } from '../api/auth-api';
 import { useNavigate } from 'react-router-dom';
+import { CookieSetOptions } from 'universal-cookie';
+import { login } from '../api/auth-api';
+import { Link as RouterLink } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -24,7 +26,11 @@ export default function Login({
 }: {
   setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
-  setCookie: any;
+  setCookie: (
+    name: 'usertoken',
+    value: any,
+    options?: CookieSetOptions,
+  ) => void;
 }) {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -42,10 +48,13 @@ export default function Login({
         password: data.get('password').toString(),
       });
       const token = res.data?.access_token;
+      const name = res.data?.name;
+
       // console.log(token);
       setCookie('usertoken', token);
       navigate('/');
-      setAlertMessage('Welcome back!');
+
+      setAlertMessage(`Welcome back ${name}!`);
       setAlertOpen(true);
     } catch (err) {
       setError(true);
@@ -120,7 +129,7 @@ export default function Login({
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="/signup" variant="body2" component={RouterLink}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { CustomerCredentialService, CustomerService } from './customer.service';
 import {
@@ -23,7 +24,10 @@ import { ObjectIdValidationPipe } from '../../../packages/nestlib';
 
 @Controller('customers')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) {}
+  constructor(
+    private readonly customerService: CustomerService,
+    private readonly customerCredService: CustomerCredentialService,
+  ) {}
 
   @Get()
   @ApiQuery({ name: 'search', required: false })
@@ -67,13 +71,29 @@ export class CustomerController {
   }
 
   @Post()
-  create(
+  async create(
     @Body() createCustomerDto: CreateCustomerDto,
     @Headers() headers?: any,
   ): Promise<ReadCustomerDto> {
-    // console.log(headers);
+    // check Email
+    const customerCheck = await this.customerService.findAll({
+      email: createCustomerDto.email,
+    });
 
-    return this.customerService.create(createCustomerDto);
+    if (customerCheck.length > 0) {
+      throw new UnprocessableEntityException('Email already in use.');
+    }
+    const customer = await this.customerService.create(createCustomerDto);
+
+    // console.log(customer._id);
+
+    if (customer && createCustomerDto.password) {
+      await this.customerCredService.create({
+        customer: customer?._id,
+        password: createCustomerDto.password,
+      });
+    }
+    return customer;
   }
 
   @Delete(':id')

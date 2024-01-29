@@ -6,8 +6,10 @@ export interface IAlertProps {
   alertMessage: string;
   setAlertMessage?: React.Dispatch<React.SetStateAction<string>>;
   severity: AlertColor;
+  setSeverity?: React.Dispatch<React.SetStateAction<AlertColor>>;
   setSnackOpen: (arg: boolean) => void;
   autoHideDuration?: number;
+  setAutoHideDuration?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export type AlertColor = 'success' | 'info' | 'warning' | 'error';
@@ -24,7 +26,7 @@ export default function AlertComp(props: IAlertProps) {
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar
         open={props.snackOpen}
-        autoHideDuration={props.autoHideDuration || 2000}
+        autoHideDuration={props.autoHideDuration || 3000}
         onClose={handleCloseSnack}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >

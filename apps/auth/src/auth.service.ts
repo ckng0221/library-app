@@ -42,7 +42,10 @@ export class AuthService {
     return customerCreds[0];
   }
 
-  async signIn(email: string, pass: string): Promise<{ access_token: string }> {
+  async signIn(
+    email: string,
+    pass: string,
+  ): Promise<{ name: string; access_token: string }> {
     const user = await this.getUser(email);
 
     const passwordValid = await bcrypt.compare(pass, user.password);
@@ -57,6 +60,7 @@ export class AuthService {
     };
 
     return {
+      name: user.customer?.name,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
