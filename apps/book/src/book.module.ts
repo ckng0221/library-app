@@ -15,6 +15,7 @@ import { Book, BookSchema } from './schemas/book.schema';
       validationSchema: Joi.object({
         RABBIT_MQ_URI: Joi.string().required(),
         RABBIT_MQ_NOTIFICATION_QUEUE: Joi.string().required(),
+        BASEURL_AUTH: Joi.string().required(),
       }),
     }),
     RmqModule.register({

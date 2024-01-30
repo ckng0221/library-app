@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ApiQuery } from '@nestjs/swagger';
@@ -16,6 +17,7 @@ import { CreatePaymentDto, ReadPaymentDto } from './dto/payment.dto';
 import { EventGateway } from './events.gateway';
 import { PaymentService } from './payment.service';
 import { ReadBorrowingDto } from '../../borrowing/src/dto/borrowing.dto';
+import { AuthGuard } from '../../../packages/nestlib/src/auth/auth.guard';
 
 @Controller('payments')
 export class PaymentController {
@@ -24,6 +26,7 @@ export class PaymentController {
     private readonly eventsGateway: EventGateway,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Get()
   @ApiQuery({ name: 'borrowing_id', required: false })
   findAll(
@@ -33,6 +36,7 @@ export class PaymentController {
   }
 
   // NOTE: for internal use only, payment should created from event
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createPaymentDto: CreatePaymentDto): Promise<ReadPaymentDto> {
     return this.paymentService.create(createPaymentDto);
@@ -52,6 +56,7 @@ export class PaymentController {
     return this.paymentService.findOne(id);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   deleteOne(
     @Param(

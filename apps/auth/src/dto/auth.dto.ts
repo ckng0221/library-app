@@ -20,7 +20,8 @@ export class VerificationDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'token',
+    example:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTU5NzZjNTU1NDIyNGFmODUxOWE3MjQiLCJuYW1lIjoiTXkgQ3VzdG9tZXIiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3MDY1OTIzMzd9.OPhJR0uEnlB-VX2N4kTZLcMMXIbXiJSACIKAG8xy_DA',
   })
   token: string;
 }

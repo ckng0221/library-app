@@ -19,7 +19,7 @@ export class AuthService {
 
   async getUser(email: string) {
     const customerHost = this.configService.get(
-      'CUSTOMER_SERVICE_HOST' || 'http://localhost:8002',
+      'BASEURL_CUSTOMER' || 'http://localhost:8002',
     );
     const endpoint = `${customerHost}/customer-credentials`;
     const res = await fetch(

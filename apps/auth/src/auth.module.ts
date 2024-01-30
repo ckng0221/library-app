@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
       envFilePath: 'apps/auth/.env',
       validationSchema: Joi.object({
         JWT_SECRET: Joi.string().required(),
+        BASEURL_CUSTOMER: Joi.string().required(),
       }),
     }),
     JwtModule.registerAsync({

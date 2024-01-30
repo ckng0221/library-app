@@ -10,6 +10,7 @@ import {
   Post,
   Query,
   UnprocessableEntityException,
+  UseGuards,
 } from '@nestjs/common';
 import { CustomerCredentialService, CustomerService } from './customer.service';
 import {
@@ -21,6 +22,7 @@ import {
 } from './dto/customer.dto';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ObjectIdValidationPipe } from '../../../packages/nestlib';
+import { AuthGuard } from '../../../packages/nestlib/src/auth/auth.guard';
 
 @Controller('customers')
 export class CustomerController {
@@ -55,6 +57,7 @@ export class CustomerController {
     return this.customerService.findOne(id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   updateOne(
     @Param(
@@ -96,6 +99,7 @@ export class CustomerController {
     return customer;
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   deleteOne(
     @Param(

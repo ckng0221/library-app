@@ -15,6 +15,7 @@ import * as Joi from 'joi';
       validationSchema: Joi.object({
         RABBIT_MQ_URI: Joi.string().required(),
         RABBIT_MQ_PAYMENT_QUEUE: Joi.string().required(),
+        BASEURL_AUTH: Joi.string().required(),
       }),
       envFilePath: 'apps/borrowing/.env',
     }),

@@ -24,7 +24,7 @@ export class AuthController {
   @Post('verification')
   async verifyToken(@Body() verificationDto: VerificationDto) {
     if (!verificationDto.token) {
-      console.log(verificationDto);
+      // console.log('veritication', verificationDto);
       throw new UnprocessableEntityException('Token cannot be empty');
     }
 
