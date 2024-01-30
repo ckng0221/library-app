@@ -11,15 +11,17 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getBookById } from '../api/book-api';
 import { IBook } from '../interfaces/book';
 import sampleBook from '/sample-book.webp';
 import { ICart } from '../interfaces/cart';
 import AlertComp from '../components/Alert';
 import { Link as RouterLink } from 'react-router-dom';
+import { ICustomer } from '../interfaces/customer';
 
 interface IProps {
+  customer: ICustomer;
   cartItems: ICart[];
   setCartItems: (array: ICart[]) => void;
 }
@@ -27,6 +29,8 @@ interface IProps {
 function BookDetails(props: IProps) {
   const { bookId } = useParams();
   const [snackOpen, setSnackOpen] = useState(false);
+  const navigate = useNavigate();
+  const prevLocation = useLocation();
 
   if (!bookId) throw Error();
 
@@ -39,6 +43,11 @@ function BookDetails(props: IProps) {
   });
 
   function addToCart(bookId: string, bookTitle: string) {
+    if (!props.customer?._id) {
+      // navigate('/login');
+      // console.log(prevLocation);
+      navigate(`/login?redirectTo=${prevLocation.pathname}`);
+    }
     const book = props.cartItems.find((item) => item.book_id === bookId);
     if (book) {
       book.quantity++;

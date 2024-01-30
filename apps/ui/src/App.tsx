@@ -4,7 +4,14 @@ import { AlertColor } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+  useLocation,
+} from 'react-router-dom';
 import { tokenVerification } from './api/auth-api';
 import { getCustomerById } from './api/customer-api';
 import { ICart } from './interfaces/cart';
@@ -58,7 +65,7 @@ function App() {
 
         getCustomerById(customerId)
           .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
 
             return setCustomer(res.data);
           })
@@ -66,6 +73,31 @@ function App() {
       });
     }
   }, [cookies]);
+
+  const ProtectedRoute = ({
+    isAllowed,
+    redirectPath = `/login`,
+    children,
+  }: {
+    isAllowed: boolean;
+    redirectPath?: string;
+    children?: React.ReactNode;
+  }) => {
+    const prevLocation = useLocation();
+
+    // FIXME: Not a good approach, as usertoken is not verified.
+    // Need to click twice
+    if (!isAllowed && !cookies['usertoken']) {
+      return (
+        <Navigate
+          to={`${redirectPath}?redirectTo=${prevLocation.pathname}`}
+          replace
+        />
+      );
+    }
+
+    return children ? children : <Outlet />;
+  };
 
   return (
     <>
@@ -83,38 +115,19 @@ function App() {
               />
             }
           >
+            {/* Public */}
             <Route index element={<Home />} />
             <Route path="books" element={<Books />} />
             <Route
               path="books/:bookId"
               element={
                 <BookDetails
-                  cartItems={cartItems}
-                  setCartItems={setCartItems}
-                />
-              }
-            />
-            <Route
-              path="checkout"
-              element={
-                <Checkout
-                  cartItems={cartItems}
-                  setCartItems={setCartItems}
                   customer={customer}
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
                 />
               }
             />
-            <Route path="account" element={<Account customer={customer} />} />
-            <Route
-              path="borrowings"
-              element={<Borrowings customer={customer} />}
-            />
-            <Route
-              path="borrowings/:borrowingId"
-              element={<BorrowingDetails />}
-            />
-            <Route path="about" element={<About />} />
-            <Route path="admin" element={<Admin />} />
             <Route
               path="login"
               element={
@@ -131,6 +144,31 @@ function App() {
                 <SignUp alertCompProps={alertCompProps} setCookie={setCookie} />
               }
             />
+            <Route path="about" element={<About />} />
+
+            {/* Private */}
+            <Route path="account" element={<Account customer={customer} />} />
+            <Route
+              path="checkout"
+              element={
+                <Checkout
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  customer={customer}
+                />
+              }
+            />
+            <Route element={<ProtectedRoute isAllowed={!!customer._id} />}>
+              <Route
+                path="borrowings"
+                element={<Borrowings customer={customer} />}
+              />
+              <Route
+                path="borrowings/:borrowingId"
+                element={<BorrowingDetails />}
+              />
+            </Route>
+            <Route path="admin" element={<Admin />} />
           </Route>
         </Routes>
       </BrowserRouter>

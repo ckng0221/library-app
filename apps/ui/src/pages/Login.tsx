@@ -11,9 +11,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CookieSetOptions } from 'universal-cookie';
 import { login } from '../api/auth-api';
+import queryString from 'query-string';
 import { Link as RouterLink } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -35,6 +36,7 @@ export default function Login({
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,8 +53,15 @@ export default function Login({
       const name = res.data?.name;
 
       // console.log(token);
+
       setCookie('usertoken', token);
-      navigate('/');
+      const { redirectTo } = queryString.parse(location.search);
+      console.log(location);
+
+      console.log(redirectTo);
+
+      navigate(redirectTo == null ? '/' : String(redirectTo));
+      console.log('done navigate');
 
       setAlertMessage(`Welcome back ${name}!`);
       setAlertOpen(true);
