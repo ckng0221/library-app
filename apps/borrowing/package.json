@@ -4,7 +4,8 @@
     "start": "cd ../.. && npm run start borrowing",
     "start:prod": "cd ../.. && node dist/apps/borrowing/main",
     "dev": "cd ../.. && npm run start:dev borrowing",
-    "build": "cd ../.. && npm run build borrowing"
+    "build": "cd ../.. && npm run build borrowing",
+    "test": "cd ../.. && npm run test borrowing"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

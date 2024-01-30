@@ -4,7 +4,8 @@
     "start": "cd ../.. && npm run start customer",
     "start:prod": "cd ../.. && node dist/apps/customer/main",
     "dev": "cd ../.. && npm run start:dev customer",
-    "build": "cd ../.. && npm run build customer"
+    "build": "cd ../.. && npm run build customer",
+    "test": "cd ../.. && npm run test customer"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
