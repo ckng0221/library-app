@@ -51,7 +51,7 @@ function DialogComp(props: IProps) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} disabled={showLoading}>
+        <Button onClick={handleClose} disabled={showLoading} color="inherit">
           Cancel
         </Button>
         <Button onClick={handleConfirm} autoFocus disabled={showLoading}>

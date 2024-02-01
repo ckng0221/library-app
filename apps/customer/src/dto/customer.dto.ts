@@ -23,11 +23,28 @@ export class CustomerDto {
   address: string;
 }
 
-export class CreateCustomerDto extends CustomerDto {}
+export class CreateCustomerDto extends CustomerDto {
+  @IsString()
+  @ApiProperty({})
+  password?: string;
+}
 
 export class UpdateCustomerDto extends PartialType(CustomerDto) {}
 
 export class ReadCustomerDto extends CustomerDto {
+  @ApiProperty()
+  _id: Types.ObjectId;
+}
+
+export class CustomerCredentialDto {
+  @ApiProperty({ example: '655977ed7b831cef1b597be5' })
+  customer: Types.ObjectId;
+
+  @ApiProperty()
+  password: string;
+}
+
+export class ReadCustomerCredentialDto extends CustomerCredentialDto {
   @ApiProperty()
   _id: Types.ObjectId;
 }

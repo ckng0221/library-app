@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import { setupLogging } from './logging';
 import { setupProxies } from './proxy';
 import { ROUTES } from './routes';
+import { authVerification } from './auth';
 
 const app = express();
 
@@ -26,9 +27,12 @@ app.use(compression());
 app.disable('x-powered-by');
 
 setupLogging(app);
+
+// app.use(authVerification);
 setupProxies(app, ROUTES);
 
 app.get('/', (req, res) => {
+  // console.log(req.headers);
   return res.send('Welcome to API Gateway!');
 });
 

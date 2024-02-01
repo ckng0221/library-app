@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiQuery } from '@nestjs/swagger';
 import { BorrowingService } from './borrowing.service';
@@ -20,6 +21,7 @@ import {
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ObjectIdValidationPipe } from '../../../packages/nestlib';
 import { IPaymentDone } from '../../ui/src/interfaces/payment';
+import { AuthGuard } from '../../../packages/nestlib/src/auth/auth.guard';
 
 @Controller('borrowings')
 export class BorrowingController {
@@ -33,6 +35,7 @@ export class BorrowingController {
     return this.borrowingService.findAll(query);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(
     @Param(
@@ -48,6 +51,7 @@ export class BorrowingController {
   }
 
   // @EventPattern('payment_done')
+  @UseGuards(AuthGuard)
   @Patch(':id')
   updateOne(
     @Param(
@@ -73,6 +77,7 @@ export class BorrowingController {
     // console.log(borrowing);
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   create(
     @Body() createBorrowingDto: CreateBorrowingDto,
@@ -80,6 +85,7 @@ export class BorrowingController {
     return this.borrowingService.create(createBorrowingDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   deleteOne(
     @Param(

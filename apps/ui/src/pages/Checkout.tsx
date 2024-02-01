@@ -45,7 +45,7 @@ const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
 
 interface IProps {
   cartItems: ICart[];
-  setCartItems: (array: []) => void;
+  setCartItems: React.Dispatch<React.SetStateAction<ICart[]>>;
   customer: ICustomer;
 }
 

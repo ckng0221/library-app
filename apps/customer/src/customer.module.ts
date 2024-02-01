@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { CustomerController } from './customer.controller';
-import { CustomerService } from './customer.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Customer, CustomerSchema } from './schemas/customer.schema';
 import { DatabaseModule } from '../../../packages/nestlib';
+import {
+  CustomerController,
+  CustomerCredentialController,
+} from './customer.controller';
+import { CustomerCredentialService, CustomerService } from './customer.service';
+import {
+  Customer,
+  CustomerCredential,
+  CustomerCredentialSchema,
+  CustomerSchema,
+} from './schemas/customer.schema';
 
 @Module({
   imports: [
@@ -12,9 +20,10 @@ import { DatabaseModule } from '../../../packages/nestlib';
     DatabaseModule,
     MongooseModule.forFeature([
       { name: Customer.name, schema: CustomerSchema },
+      { name: CustomerCredential.name, schema: CustomerCredentialSchema },
     ]),
   ],
-  controllers: [CustomerController],
-  providers: [CustomerService],
+  controllers: [CustomerController, CustomerCredentialController],
+  providers: [CustomerService, CustomerCredentialService],
 })
 export class CustomerModule {}

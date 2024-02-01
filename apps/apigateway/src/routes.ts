@@ -17,6 +17,7 @@ const BASEURL_CUSTOMER =
 const BASEURL_BORROWING =
   process.env.BASEURL_BORROWING || 'http://localhost:8003';
 const BASEURL_PAYMENT = process.env.BASEURL_PAYMENT || 'http://localhost:8004';
+const BASEURL_AUTH = process.env.BASEURL_AUTH || 'http://localhost:8005';
 
 // function removeXPowerByHeader(
 //   proxyRes: http.IncomingMessage,
@@ -48,7 +49,7 @@ export const ROUTES: IRoute[] = [
   // Customer
   {
     url: '/api/customer',
-    auth: false,
+    auth: true,
     creditCheck: false,
     proxy: {
       target: BASEURL_CUSTOMER,
@@ -82,6 +83,20 @@ export const ROUTES: IRoute[] = [
       ws: false, // use http polling
       pathRewrite: {
         '^/api/payment': '',
+      },
+    },
+  },
+  // Auth
+  {
+    url: '/api/auth',
+    auth: false,
+    creditCheck: false,
+    proxy: {
+      target: BASEURL_AUTH,
+      changeOrigin: true,
+      ws: false,
+      pathRewrite: {
+        '^/api/auth': '',
       },
     },
   },

@@ -4,8 +4,16 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, connect } from 'mongoose';
 import request from 'supertest';
 import { CustomerController } from '../src/customer.controller';
-import { CustomerService } from '../src/customer.service';
-import { Customer, CustomerSchema } from '../src/schemas/customer.schema';
+import {
+  CustomerCredentialService,
+  CustomerService,
+} from '../src/customer.service';
+import {
+  Customer,
+  CustomerCredential,
+  CustomerCredentialSchema,
+  CustomerSchema,
+} from '../src/schemas/customer.schema';
 import { INestApplication } from '@nestjs/common';
 import { CustomerDtoStub } from '../src/dto/customer.dto.stub';
 import { ReadCustomerDto } from '../src/dto/customer.dto';
@@ -16,6 +24,7 @@ describe('Customer (e2e)', () => {
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let customerModel: Model<Customer>;
+  let customerCredentialModel: Model<CustomerCredential>;
   let testCustomer: ReadCustomerDto;
 
   beforeAll(async () => {
@@ -23,11 +32,20 @@ describe('Customer (e2e)', () => {
     const uri = mongod.getUri();
     mongoConnection = (await connect(uri)).connection;
     customerModel = mongoConnection.model(Customer.name, CustomerSchema);
+    customerCredentialModel = mongoConnection.model(
+      CustomerCredential.name,
+      CustomerCredentialSchema,
+    );
     const moduleRef: TestingModule = await Test.createTestingModule({
       controllers: [CustomerController],
       providers: [
         CustomerService,
+        CustomerCredentialService,
         { provide: getModelToken(Customer.name), useValue: customerModel },
+        {
+          provide: getModelToken(CustomerCredential.name),
+          useValue: customerCredentialModel,
+        },
       ],
     }).compile();
 
@@ -61,7 +79,7 @@ describe('Customer (e2e)', () => {
   it('/customers (POST)', () => {
     return request(app.getHttpServer())
       .post('/customers')
-      .send({ name: 'customer-test', email: 'test@email.com' })
+      .send({ name: 'customer-test', email: 'test2@email.com' })
       .expect(201);
   });
   it('/customers/{id} (GET)', () => {

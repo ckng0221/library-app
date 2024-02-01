@@ -3,26 +3,41 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Connection, Model, Types, connect } from 'mongoose';
 import { CustomerController } from './customer.controller';
-import { CustomerService } from './customer.service';
+import { CustomerCredentialService, CustomerService } from './customer.service';
 import { CustomerDtoStub } from './dto/customer.dto.stub';
-import { Customer, CustomerSchema } from './schemas/customer.schema';
+import {
+  Customer,
+  CustomerCredential,
+  CustomerCredentialSchema,
+  CustomerSchema,
+} from './schemas/customer.schema';
 
 describe('customerController', () => {
   let customerController: CustomerController;
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let customerModel: Model<Customer>;
+  let customerCredentialModel: Model<CustomerCredential>;
 
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();
     const uri = mongod.getUri();
     mongoConnection = (await connect(uri)).connection;
     customerModel = mongoConnection.model(Customer.name, CustomerSchema);
+    customerCredentialModel = mongoConnection.model(
+      CustomerCredential.name,
+      CustomerCredentialSchema,
+    );
     const app: TestingModule = await Test.createTestingModule({
       controllers: [CustomerController],
       providers: [
         CustomerService,
+        CustomerCredentialService,
         { provide: getModelToken(Customer.name), useValue: customerModel },
+        {
+          provide: getModelToken(CustomerCredential.name),
+          useValue: customerCredentialModel,
+        },
       ],
     }).compile();
     customerController = app.get<CustomerController>(CustomerController);
