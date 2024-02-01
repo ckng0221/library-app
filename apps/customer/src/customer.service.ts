@@ -1,13 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
+  CreateCustomerCartDto,
   CreateCustomerDto,
+  CustomerCartDto,
   CustomerCredentialDto,
+  ReadCustomerCartDto,
   ReadCustomerDto,
+  UpdateCustomerCartDto,
   UpdateCustomerDto,
 } from './dto/customer.dto';
-import { Customer, CustomerCredential } from './schemas/customer.schema';
+import {
+  Customer,
+  CustomerCart,
+  CustomerCredential,
+} from './schemas/customer.schema';
 import bcrypt from 'bcrypt';
 @Injectable()
 export class CustomerService {
@@ -90,5 +98,38 @@ export class CustomerCredentialService {
 
     const customer = new this.customerCredentialModel(createCredDto);
     return customer.save();
+  }
+}
+
+@Injectable()
+export class CustomerCartService {
+  constructor(
+    @InjectModel(CustomerCart.name)
+    private customerCartModel: Model<CustomerCart>,
+  ) {}
+
+  async findAllbyCustomerId(id: string): Promise<ReadCustomerCartDto[]> {
+    return this.customerCartModel.find({
+      customer: new Types.ObjectId(id),
+    });
+  }
+
+  async findOne(id: string): Promise<ReadCustomerCartDto> {
+    return this.customerCartModel.findById(id);
+  }
+
+  async updateOne(id: string, updateCustomerCartDto: UpdateCustomerCartDto) {
+    return this.customerCartModel.findByIdAndUpdate(id, updateCustomerCartDto, {
+      new: true,
+    });
+  }
+
+  async create(createCustomerCartDto: CreateCustomerCartDto) {
+    const customerCart = new this.customerCartModel(createCustomerCartDto);
+    return customerCart.save();
+  }
+
+  async deleteOne(id: string) {
+    return this.customerCartModel.findByIdAndDelete(id);
   }
 }

@@ -5,11 +5,14 @@ import { Connection, Model, connect } from 'mongoose';
 import request from 'supertest';
 import { CustomerController } from '../src/customer.controller';
 import {
+  CustomerCartService,
   CustomerCredentialService,
   CustomerService,
 } from '../src/customer.service';
 import {
   Customer,
+  CustomerCart,
+  CustomerCartSchema,
   CustomerCredential,
   CustomerCredentialSchema,
   CustomerSchema,
@@ -25,6 +28,7 @@ describe('Customer (e2e)', () => {
   let mongoConnection: Connection;
   let customerModel: Model<Customer>;
   let customerCredentialModel: Model<CustomerCredential>;
+  let customerCartModel: Model<CustomerCart>;
   let testCustomer: ReadCustomerDto;
 
   beforeAll(async () => {
@@ -36,15 +40,24 @@ describe('Customer (e2e)', () => {
       CustomerCredential.name,
       CustomerCredentialSchema,
     );
+    customerCartModel = mongoConnection.model(
+      CustomerCart.name,
+      CustomerCartSchema,
+    );
     const moduleRef: TestingModule = await Test.createTestingModule({
       controllers: [CustomerController],
       providers: [
         CustomerService,
         CustomerCredentialService,
+        CustomerCartService,
         { provide: getModelToken(Customer.name), useValue: customerModel },
         {
           provide: getModelToken(CustomerCredential.name),
           useValue: customerCredentialModel,
+        },
+        {
+          provide: getModelToken(CustomerCart.name),
+          useValue: customerCartModel,
         },
       ],
     }).compile();
