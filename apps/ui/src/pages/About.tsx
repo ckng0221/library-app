@@ -54,6 +54,8 @@ function About() {
           <li>Payment Service</li>
           <li>Notification Service</li>
           <li>View Service</li>
+          <li>API Gateway Service</li>
+          <li>Auth Service</li>
         </ul>
       </Typography>
       <Typography align="left">

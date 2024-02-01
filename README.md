@@ -23,6 +23,7 @@ The microservice app consists of the following services:
 - Notification service
 - View service
 - API gateway service
+- Auth service
 
 ## Tech stacks
 
