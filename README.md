@@ -9,6 +9,7 @@
 [![View-CI](https://github.com/ckng0221/library-app/actions/workflows/view-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/view-ci.yml)
 [![UI-CI](https://github.com/ckng0221/library-app/actions/workflows/ui-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/ui-ci.yml)
 [![ApiGateway-CI](https://github.com/ckng0221/library-app/actions/workflows/apigateway-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/apigateway-ci.yml)
+[![Auth-CI](https://github.com/ckng0221/library-app/actions/workflows/auth-ci.yml/badge.svg)](https://github.com/ckng0221/library-app/actions/workflows/auth-ci.yml)
 
 ## Description
 
