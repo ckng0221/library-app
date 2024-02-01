@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Headers,
+  HttpCode,
   HttpStatus,
   Param,
   Patch,
@@ -206,12 +207,17 @@ export class CustomerCartController {
     @Req() request?: Request,
   ) {
     const req: any = request;
+
+    console.log(req.user);
+    console.log(createCustomerCartDto.customer);
+
     if (createCustomerCartDto.customer !== req?.user?.sub)
       throw new UnauthorizedException('customer_id does not match');
 
     return this.customerCartService.create(createCustomerCartDto);
   }
 
+  @HttpCode(204)
   @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteOne(
@@ -229,12 +235,42 @@ export class CustomerCartController {
 
     const cart = await this.customerCartService.findOne(id);
 
-    console.log(req?.user?.sub);
-    console.log(cart.customer.toString());
+    // console.log(req?.user?.sub);
+    // console.log(cart.customer.toString());
 
     if (cart.customer.toString() !== req?.user?.sub)
       throw new UnauthorizedException('customer_id does not match');
 
-    return this.customerCartService.deleteOne(id);
+    this.customerCartService.deleteOne(id);
+
+    return;
   }
+
+  //   @UseGuards(AuthGuard)
+  //   @Delete('')
+  //   async deleteMany(
+  //     @Param(
+  //       'id',
+  //       new ObjectIdValidationPipe({
+  //         errorHttpStatusCode: HttpStatus.NOT_FOUND,
+  //         errorMessage: 'ID not found',
+  //       }),
+  //     )
+  //     ids: string[],
+  //     @Req() request?: Request,
+  //   ) {
+  //     const req: any = request;
+
+  //     const cartsPromise = ids.map((id) => {
+  //       return this.customerCartService.findOne(id);
+  //     });
+  //     const carts = await Promise.all(cartsPromise);
+
+  //     carts.map((cart) => {
+  //       if (cart.customer.toString() !== req?.user?.sub)
+  //         throw new UnauthorizedException('customer_id does not match');
+  //     });
+
+  //     return this.customerCartService.deleteMany(ids);
+  //   }
 }

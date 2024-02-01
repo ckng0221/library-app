@@ -19,6 +19,7 @@ import { ICart } from '../interfaces/cart';
 import AlertComp from '../components/Alert';
 import { Link as RouterLink } from 'react-router-dom';
 import { ICustomer } from '../interfaces/customer';
+import { createCart, updateCartById } from '../api/customer-api';
 
 interface IProps {
   customer: ICustomer;
@@ -42,24 +43,35 @@ function BookDetails(props: IProps) {
     published_date: '',
   });
 
-  function addToCart(bookId: string, bookTitle: string) {
+  async function addToCart(bookId: string, bookTitle: string) {
     if (!props.customer?._id) {
       // navigate('/login');
       // console.log(prevLocation);
       navigate(`/login?redirectTo=${prevLocation.pathname}`);
     }
-    const book = props.cartItems.find((item) => item.book_id === bookId);
-    if (book) {
-      book.quantity++;
+    const cart = props.cartItems.find((item) => item.book_id === bookId);
+    console.log(cart);
+
+    if (cart?._id) {
+      cart.quantity++;
+      //
+      await updateCartById(cart?._id, { quantity: cart.quantity });
     } else {
-      props.setCartItems([
-        ...props.cartItems,
-        { book_id: bookId, book_title: bookTitle, quantity: 1 },
-      ]);
+      const cartItem = {
+        book_id: bookId,
+        book_title: bookTitle,
+        customer: props.customer?._id,
+        quantity: 1,
+      };
+      const cartItemRes = await createCart(cartItem);
+      // console.log(cartItemRes);
+
+      props.setCartItems([...props.cartItems, cartItemRes.data]);
     }
+
     setSnackOpen(true);
-    // console.log(cartItems);
   }
+  // console.log(cartItems);
 
   useEffect(() => {
     getBookById(bookId)

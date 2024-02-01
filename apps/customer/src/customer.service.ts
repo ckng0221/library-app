@@ -132,4 +132,8 @@ export class CustomerCartService {
   async deleteOne(id: string) {
     return this.customerCartModel.findByIdAndDelete(id);
   }
+
+  async deleteMany(ids: string[]) {
+    return this.customerCartModel.deleteMany({ _id: { $in: [...ids] } });
+  }
 }

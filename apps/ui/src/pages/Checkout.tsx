@@ -24,11 +24,12 @@ import { IBorrowing } from '../interfaces/borrowing';
 import { ICart } from '../interfaces/cart';
 import { ICustomer } from '../interfaces/customer';
 import { IPayment } from '../interfaces/payment';
+import { deleteCartById } from '../api/customer-api';
 
 const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
   return cartItems.map((item) => {
     return (
-      <ListItem key={item.book_id}>
+      <ListItem key={item._id}>
         <ListItemAvatar>
           <Avatar>
             <MenuBookIcon />
@@ -132,7 +133,16 @@ function Checkout(props: IProps) {
       // console.log('payments', payments);
 
       await sleep(1000);
+      // console.log('lala', props.cartItems);
+
+      props.cartItems.map((cart) => {
+        // console.log('cartid', cart._id);
+
+        if (!cart._id) return;
+        deleteCartById(cart?._id);
+      });
       props.setCartItems([]);
+      //delete cart in db
       setShowLoading(false);
       setShow(false);
       setPaymentDialogOpen(true);

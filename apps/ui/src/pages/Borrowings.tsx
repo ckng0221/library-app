@@ -35,8 +35,10 @@ const ListItems = ({ borrowings }: { borrowings: IBorrowing[] }) => {
     const borrowed_date = dayjs(borrowing.borrowed_date).format('YYYY-MM-DD');
 
     const borrowingBooks = borrowing.books.map((book, index) => {
-      return { index: index + 1, ...book };
+      return { ...book, index: index + 1, id: index + 1 };
     });
+    // console.log(borrowingBooks);
+
     const paymentStatus: IPaymentStatus<'success' | 'warning'> = {
       text: borrowing.is_payment_done ? 'Successful' : 'Pending',
       color: borrowing.is_payment_done ? 'success' : 'warning',
