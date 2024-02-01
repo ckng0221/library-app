@@ -58,6 +58,7 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['usertoken']);
 
   useEffect(() => {
+    // console.log('use effect called');
     if (cookies['usertoken']) {
       // Get customer ID from jwt verification
       tokenVerification({ token: cookies['usertoken'] }).then((res) => {
@@ -84,6 +85,7 @@ function App() {
     children?: React.ReactNode;
   }) => {
     const prevLocation = useLocation();
+    console.log('🚀 ~ App ~ prevLocation:', prevLocation);
 
     // FIXME: Not a good approach, as usertoken is not verified.
     // Need to click twice
@@ -146,8 +148,6 @@ function App() {
             />
             <Route path="about" element={<About />} />
 
-            {/* Private */}
-            <Route path="account" element={<Account customer={customer} />} />
             <Route
               path="checkout"
               element={
@@ -158,7 +158,10 @@ function App() {
                 />
               }
             />
+
+            {/* Private */}
             <Route element={<ProtectedRoute isAllowed={!!customer._id} />}>
+              <Route path="account" element={<Account customer={customer} />} />
               <Route
                 path="borrowings"
                 element={<Borrowings customer={customer} />}
