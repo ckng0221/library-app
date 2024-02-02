@@ -53,7 +53,6 @@ function App() {
     setAutoHideDuration: setAutoHideDuration,
   };
 
-  // console.log('userId', userId);
   // Cookie
   const [cookies, setCookie, removeCookie] = useCookies(['usertoken']);
 
