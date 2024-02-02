@@ -45,7 +45,6 @@ function BookDetails(props: IProps) {
 
   async function addToCart(bookId: string, bookTitle: string) {
     if (!props.customer?._id) {
-      // navigate('/login');
       // console.log(prevLocation);
       navigate(`/login?redirectTo=${prevLocation.pathname}`);
     }
