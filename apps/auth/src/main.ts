@@ -19,7 +19,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, { customSiteTitle: 'Auth' });
 
-  const PORT = process.env.PORT || 8001;
+  const PORT = process.env.PORT || 8005;
   const loggingMode =
     process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
   app.use(morgan(loggingMode));
