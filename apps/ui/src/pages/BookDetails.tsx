@@ -50,7 +50,7 @@ function BookDetails(props: IProps) {
       navigate(`/login?redirectTo=${prevLocation.pathname}`);
     }
     const cart = props.cartItems.find((item) => item.book_id === bookId);
-    console.log(cart);
+    // console.log(cart);
 
     if (cart?._id) {
       cart.quantity++;
