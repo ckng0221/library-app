@@ -14,6 +14,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-book
       - RABBIT_MQ_URI=amqp://rabbitmq:5672
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
       - rabbitmq
@@ -40,6 +41,7 @@ services:
       - ./apps/customer/.env
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-customer
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
     volumes:
@@ -65,6 +67,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-borrowing
       - RABBIT_MQ_URI=amqp://rabbitmq:5672
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
       - rabbitmq
@@ -92,6 +95,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-payment
       - RABBIT_MQ_URI=amqp://rabbitmq:5672
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
       - rabbitmq
@@ -105,6 +109,30 @@ services:
     links:
       - mongodb
       - rabbitmq
+  auth:
+    image: libraryapp-dev-auth
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.service
+      target: development
+      args:
+        service: auth
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+      - mongodb
+    ports:
+      - '8005:8005'
+    networks:
+      - node-network
+    links:
+      - book
+      - customer
+      - borrowing
+      - payment
+    command: npm run start:dev auth
+    environment:
+      - BASEURL_CUSTOMER=http://customer:8002
   notification:
     image: libraryapp-dev-notification
     build:
@@ -123,8 +151,8 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - '8005:8005'
+    # ports:
+    #   - '8005:8005'
     networks:
       - node-network
     links:
@@ -145,6 +173,7 @@ services:
       - customer
       - borrowing
       - payment
+      - auth
       - notification
     volumes:
       - .:/usr/src/app
@@ -165,8 +194,6 @@ services:
     command: npm run dev:apigateway
     env_file:
       - ./apps/apigateway/.env
-    depends_on:
-      - view
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -179,11 +206,14 @@ services:
       - customer
       - borrowing
       - payment
+      - auth
     environment:
+      - NODE_ENV=development
       - BASEURL_BOOK=http://book:8001
       - BASEURL_CUSTOMER=http://customer:8002
       - BASEURL_BORROWING=http://borrowing:8003
       - BASEURL_PAYMENT=http://payment:8004
+      - BASEURL_AUTH=http://auth:8005
 
   # Dependencies
   rabbitmq:

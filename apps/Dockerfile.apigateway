@@ -11,7 +11,7 @@ COPY . .
 RUN turbo prune ${service} --docker
 
 # Add lockfile and package.json's of isolated subworkspace
-FROM base AS installer
+FROM base AS development
 ARG service
 
 WORKDIR /app
@@ -40,7 +40,7 @@ RUN npm install --omit=dev --workspace=${service}
 
 # COPY . .
 
-COPY --from=installer /app/dist/apps/${service} ./dist
+COPY --from=development /app/dist/apps/${service} ./dist
 
 CMD ["node", "dist/server.js"]
 

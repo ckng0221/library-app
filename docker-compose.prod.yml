@@ -14,6 +14,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-book
       - RABBIT_MQ_URI=amqp://rabbitmq:5672
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
       - rabbitmq
@@ -35,6 +36,7 @@ services:
       - ./apps/customer/.env
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-customer
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
     # ports:
@@ -55,6 +57,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-borrowing
       - RABBIT_MQ_URI=amqp://rabbitmq:5672
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
       - rabbitmq
@@ -77,6 +80,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/libraryapp-payment
       - RABBIT_MQ_URI=amqp://rabbitmq:5672
+      - BASEURL_AUTH=http://auth:8005
     depends_on:
       - mongodb
       - rabbitmq
@@ -87,6 +91,28 @@ services:
     links:
       - mongodb
       - rabbitmq
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.service
+      target: production
+      args:
+        service: auth
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+      - mongodb
+    # ports:
+    #   - '8005:8005'
+    networks:
+      - node-network
+    links:
+      - book
+      - customer
+      - borrowing
+      - payment
+    environment:
+      - BASEURL_CUSTOMER=http://customer:8002
   notification:
     build:
       context: .
@@ -119,6 +145,7 @@ services:
       - customer
       - borrowing
       - payment
+      - auth
       - notification
     ports:
       - '8000:8000'
@@ -133,8 +160,6 @@ services:
         service: apigateway
     env_file:
       - ./apps/apigateway/.env
-    depends_on:
-      - view
     ports:
       - '8080:8080'
     networks:
@@ -144,11 +169,13 @@ services:
       - customer
       - borrowing
       - payment
+      - auth
     environment:
       - BASEURL_BOOK=http://book:8001
       - BASEURL_CUSTOMER=http://customer:8002
       - BASEURL_BORROWING=http://borrowing:8003
       - BASEURL_PAYMENT=http://payment:8004
+      - BASEURL_AUTH=http://auth:8005
 
   # Dependencies
   rabbitmq:

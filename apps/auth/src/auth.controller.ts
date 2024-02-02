@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -13,6 +14,12 @@ import { AuthDto, VerificationDto } from './dto/auth.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @HttpCode(HttpStatus.OK)
+  @Get('')
+  healthCheck() {
+    return 'Auth ok';
+  }
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
