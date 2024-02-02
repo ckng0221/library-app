@@ -20,14 +20,20 @@ import AlertComp from '../components/Alert';
 import { Link as RouterLink } from 'react-router-dom';
 import { ICustomer } from '../interfaces/customer';
 import { createCart, updateCartById } from '../api/customer-api';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { setCartItems } from '../app/cart/cartItem';
 
 interface IProps {
   customer: ICustomer;
-  cartItems: ICart[];
-  setCartItems: (array: ICart[]) => void;
+  // cartItems: ICart[];
+  // setCartItems: (array: ICart[]) => void;
 }
 
 function BookDetails(props: IProps) {
+  // Redux
+  const cartItems = useAppSelector((state) => state.cartitems.value);
+  const dispatch = useAppDispatch();
+
   const { bookId } = useParams();
   const [snackOpen, setSnackOpen] = useState(false);
   const navigate = useNavigate();
@@ -49,7 +55,7 @@ function BookDetails(props: IProps) {
       // console.log(prevLocation);
       navigate(`/login?redirectTo=${prevLocation.pathname}`);
     }
-    const cart = props.cartItems.find((item) => item.book_id === bookId);
+    const cart = cartItems.find((item) => item.book_id === bookId);
     console.log(cart);
 
     if (cart?._id) {
@@ -66,7 +72,7 @@ function BookDetails(props: IProps) {
       const cartItemRes = await createCart(cartItem);
       // console.log(cartItemRes);
 
-      props.setCartItems([...props.cartItems, cartItemRes.data]);
+      dispatch(setCartItems([...cartItems, cartItemRes.data]));
     }
 
     setSnackOpen(true);

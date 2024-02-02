@@ -28,9 +28,15 @@ import Home from './pages/Home';
 import Layout from './pages/Layout';
 import Login from './pages/Login';
 import SignUp from './pages/Signup';
+// Redux
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { setCartItems } from './app/cart/cartItem';
 
 function App() {
-  const [cartItems, setCartItems] = useState<ICart[]>([]);
+  // Redux
+  const cartItems = useAppSelector((state) => state.cartitems.value);
+  const dispatch = useAppDispatch();
+  // const [cartItems, setCartItems] = useState<ICart[]>([]);
   const [customer, setCustomer] = useState<ICustomer>({
     _id: '',
     name: '',
@@ -74,7 +80,7 @@ function App() {
 
         const results = await Promise.all([customerPromise, cartsPromise]);
         setCustomer(results[0].data);
-        setCartItems(results[1].data);
+        dispatch(setCartItems(results[1].data));
       }
     }
     initialLoad();
@@ -90,7 +96,6 @@ function App() {
     children?: React.ReactNode;
   }) => {
     const prevLocation = useLocation();
-    // console.log('🚀 ~ App ~ prevLocation:', prevLocation);
 
     // FIXME: Not a good approach, as usertoken is not verified.
     // Need to click twice
@@ -130,8 +135,8 @@ function App() {
               element={
                 <BookDetails
                   customer={customer}
-                  cartItems={cartItems}
-                  setCartItems={setCartItems}
+                  // cartItems={cartItems}
+                  // setCartItems={setCartItems}
                 />
               }
             />
@@ -157,15 +162,15 @@ function App() {
               path="checkout"
               element={
                 <Checkout
-                  cartItems={cartItems}
-                  setCartItems={setCartItems}
+                  // cartItems={cartItems}
+                  // setCartItems={setCartItems}
                   customer={customer}
                 />
               }
             />
-
             {/* Private */}
             <Route element={<ProtectedRoute isAllowed={!!customer._id} />}>
+              {/* TODO: put checkout path in protected route, while don't have issue */}
               <Route path="account" element={<Account customer={customer} />} />
               <Route
                 path="borrowings"

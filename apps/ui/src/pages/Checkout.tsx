@@ -27,58 +27,22 @@ import { IBorrowing } from '../interfaces/borrowing';
 import { ICart } from '../interfaces/cart';
 import { ICustomer } from '../interfaces/customer';
 import { IPayment } from '../interfaces/payment';
-
-const ListItems = ({
-  cartItems,
-  setCartItems,
-}: {
-  cartItems: IProps['cartItems'];
-  setCartItems: IProps['setCartItems'];
-}) => {
-  function handleRemoveCartItem(cartId: string) {
-    const remainingCartItems = cartItems.filter((cart) => cart._id !== cartId);
-    setCartItems(remainingCartItems);
-
-    deleteCartById(cartId);
-
-    // console.log(cartId);
-  }
-
-  return cartItems.map((item) => {
-    return (
-      <ListItem key={item._id}>
-        <ListItemAvatar>
-          <Avatar>
-            <MenuBookIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText
-          primary={item.book_title}
-          secondary={`Quantity : ${item.quantity}`}
-        />
-        <IconButton
-          aria-label="Remove cart item"
-          size="small"
-          onClick={() => {
-            handleRemoveCartItem(item._id);
-          }}
-        >
-          <DeleteIcon fontSize="inherit" color="error" />
-        </IconButton>
-      </ListItem>
-    );
-  });
-};
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { setCartItems } from '../app/cart/cartItem';
 
 interface IProps {
-  cartItems: ICart[];
-  setCartItems: React.Dispatch<React.SetStateAction<ICart[]>>;
+  // cartItems: ICart[];
+  // setCartItems: React.Dispatch<React.SetStateAction<ICart[]>>;
   customer: ICustomer;
 }
 
 // function processCheckout
 
 function Checkout(props: IProps) {
+  // Redux
+  const cartItems = useAppSelector((state) => state.cartitems.value);
+  const dispatch = useAppDispatch();
+
   const [show, setShow] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [body, setBody] = useState('Confirm to checkout your cart?');
@@ -106,7 +70,7 @@ function Checkout(props: IProps) {
   const handleConfirm = async () => {
     setShowLoading(true);
 
-    const borrowingBooks = props.cartItems.map((item) => {
+    const borrowingBooks = cartItems.map((item) => {
       return {
         id: item.book_id,
         name: item.book_title,
@@ -158,20 +122,21 @@ function Checkout(props: IProps) {
       // console.log('payment_initial', payment);
       // console.log('payments', payments);
 
-      await sleep(1000);
-      // console.log('lala', props.cartItems);
+      sleep(1000).then(() => {
+        // console.log('lala', props.cartItems);
 
-      props.cartItems.map((cart) => {
-        // console.log('cartid', cart._id);
+        cartItems.map((cart) => {
+          // console.log('cartid', cart._id);
 
-        if (!cart._id) return;
-        deleteCartById(cart?._id);
+          if (!cart._id) return;
+          deleteCartById(cart?._id);
+        });
+        dispatch(setCartItems([]));
+        //delete cart in db
+        setShowLoading(false);
+        setShow(false);
+        setPaymentDialogOpen(true);
       });
-      props.setCartItems([]);
-      //delete cart in db
-      setShowLoading(false);
-      setShow(false);
-      setPaymentDialogOpen(true);
     } catch (error) {
       console.error(error);
       setShowLoading(false);
@@ -212,14 +177,14 @@ function Checkout(props: IProps) {
           </Typography>
         </CardContent>
         <CardContent>
-          {props.cartItems.length > 0 ? (
+          {cartItems.length > 0 ? (
             <List
               sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
             >
               <ListItem>Customer Name: {props.customer.name}</ListItem>
               <ListItems
-                cartItems={props.cartItems}
-                setCartItems={props.setCartItems}
+              // cartItems={props.cartItems}
+              // setCartItems={props.setCartItems}
               />
             </List>
           ) : (
@@ -229,7 +194,7 @@ function Checkout(props: IProps) {
       </Card>
 
       <p></p>
-      {props.cartItems.length > 0 && (
+      {cartItems.length > 0 && (
         <Button variant="contained" onClick={handleShow}>
           Checkout
         </Button>
@@ -269,5 +234,46 @@ function Checkout(props: IProps) {
     </>
   );
 }
+
+const ListItems = () => {
+  // Redux
+  const cartItems = useAppSelector((state) => state.cartitems.value);
+  const dispatch = useAppDispatch();
+
+  function handleRemoveCartItem(cartId: string) {
+    const remainingCartItems = cartItems.filter((cart) => cart._id !== cartId);
+    console.log(remainingCartItems);
+    dispatch(setCartItems(remainingCartItems));
+
+    deleteCartById(cartId);
+
+    // console.log(cartId);
+  }
+
+  return cartItems.map((item) => {
+    return (
+      <ListItem key={item._id}>
+        <ListItemAvatar>
+          <Avatar>
+            <MenuBookIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={item.book_title}
+          secondary={`Quantity : ${item.quantity}`}
+        />
+        <IconButton
+          aria-label="Remove cart item"
+          size="small"
+          onClick={() => {
+            handleRemoveCartItem(item._id);
+          }}
+        >
+          <DeleteIcon fontSize="inherit" color="error" />
+        </IconButton>
+      </ListItem>
+    );
+  });
+};
 
 export default Checkout;
