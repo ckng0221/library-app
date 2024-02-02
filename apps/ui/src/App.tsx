@@ -13,7 +13,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { tokenVerification } from './api/auth-api';
-import { getCustomerById } from './api/customer-api';
+import { getCartsByCustomerId, getCustomerById } from './api/customer-api';
 import { ICart } from './interfaces/cart';
 import { ICustomer } from './interfaces/customer';
 import About from './pages/About';
@@ -58,21 +58,26 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['usertoken']);
 
   useEffect(() => {
-    // console.log('use effect called');
-    if (cookies['usertoken']) {
-      // Get customer ID from jwt verification
-      tokenVerification({ token: cookies['usertoken'] }).then((res) => {
-        const customerId = res.data.sub;
+    async function initialLoad() {
+      // console.log('use effect called');
+      if (cookies['usertoken']) {
+        // Get customer ID from jwt verification
+        const token: any = await tokenVerification({
+          token: cookies['usertoken'],
+        });
+        const customerId = token?.data?.sub;
 
-        getCustomerById(customerId)
-          .then((res) => {
-            // console.log(res.data);
+        // update customer data
+        //update cart
+        const customerPromise = getCustomerById(customerId);
+        const cartsPromise = getCartsByCustomerId(customerId);
 
-            return setCustomer(res.data);
-          })
-          .catch((error) => console.error(error));
-      });
+        const results = await Promise.all([customerPromise, cartsPromise]);
+        setCustomer(results[0].data);
+        setCartItems(results[1].data);
+      }
     }
+    initialLoad();
   }, [cookies]);
 
   const ProtectedRoute = ({
@@ -85,7 +90,7 @@ function App() {
     children?: React.ReactNode;
   }) => {
     const prevLocation = useLocation();
-    console.log('🚀 ~ App ~ prevLocation:', prevLocation);
+    // console.log('🚀 ~ App ~ prevLocation:', prevLocation);
 
     // FIXME: Not a good approach, as usertoken is not verified.
     // Need to click twice

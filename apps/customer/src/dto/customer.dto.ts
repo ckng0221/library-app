@@ -48,3 +48,29 @@ export class ReadCustomerCredentialDto extends CustomerCredentialDto {
   @ApiProperty()
   _id: Types.ObjectId;
 }
+
+export class CustomerCartDto {
+  @ApiProperty({ example: '655977ed7b831cef1b597be5' })
+  customer: Types.ObjectId;
+
+  @ApiProperty({ example: '655977ed7b831cef1b597be5' })
+  book_id: Types.ObjectId;
+
+  @ApiProperty()
+  book_title: string;
+
+  @ApiProperty({ default: 1 })
+  quantity: number;
+}
+
+export class CreateCustomerCartDto extends CustomerCartDto {}
+
+export class UpdateCustomerCartDto extends PartialType(CustomerCartDto) {}
+
+export class ReadCustomerCartDto extends CustomerCartDto {
+  @ApiProperty()
+  _id: Types.ObjectId;
+
+  create_at?: Date;
+  update_at?: Date;
+}
