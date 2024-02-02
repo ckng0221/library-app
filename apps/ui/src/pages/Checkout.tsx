@@ -1,3 +1,4 @@
+import DeleteIcon from '@mui/icons-material/Delete';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import {
   AlertColor,
@@ -6,6 +7,7 @@ import {
   Button,
   Card,
   CardContent,
+  IconButton,
   Link,
   List,
   ListItem,
@@ -14,9 +16,10 @@ import {
   Typography,
 } from '@mui/material';
 import { sleep } from '@repo/common';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { createBorrowing } from '../api/borrowing-api';
+import { deleteCartById } from '../api/customer-api';
 import { getPayments, makePaymentById } from '../api/payment-api';
 import AlertComp from '../components/Alert';
 import DialogComp from '../components/Dialog';
@@ -24,9 +27,23 @@ import { IBorrowing } from '../interfaces/borrowing';
 import { ICart } from '../interfaces/cart';
 import { ICustomer } from '../interfaces/customer';
 import { IPayment } from '../interfaces/payment';
-import { deleteCartById } from '../api/customer-api';
 
-const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
+const ListItems = ({
+  cartItems,
+  setCartItems,
+}: {
+  cartItems: IProps['cartItems'];
+  setCartItems: IProps['setCartItems'];
+}) => {
+  function handleRemoveCartItem(cartId: string) {
+    const remainingCartItems = cartItems.filter((cart) => cart._id !== cartId);
+    setCartItems(remainingCartItems);
+
+    deleteCartById(cartId);
+
+    // console.log(cartId);
+  }
+
   return cartItems.map((item) => {
     return (
       <ListItem key={item._id}>
@@ -39,6 +56,15 @@ const ListItems = ({ cartItems }: { cartItems: ICart[] }) => {
           primary={item.book_title}
           secondary={`Quantity : ${item.quantity}`}
         />
+        <IconButton
+          aria-label="Remove cart item"
+          size="small"
+          onClick={() => {
+            handleRemoveCartItem(item._id);
+          }}
+        >
+          <DeleteIcon fontSize="inherit" color="error" />
+        </IconButton>
       </ListItem>
     );
   });
@@ -191,7 +217,10 @@ function Checkout(props: IProps) {
               sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
             >
               <ListItem>Customer Name: {props.customer.name}</ListItem>
-              <ListItems cartItems={props.cartItems} />
+              <ListItems
+                cartItems={props.cartItems}
+                setCartItems={props.setCartItems}
+              />
             </List>
           ) : (
             'Your cart is empty'
