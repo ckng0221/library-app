@@ -158,7 +158,7 @@ function Checkout(props: IProps) {
       // console.log('payment_initial', payment);
       // console.log('payments', payments);
 
-      await sleep(1000);
+      // await sleep(1000);
       // console.log('lala', props.cartItems);
 
       props.cartItems.map((cart) => {
@@ -167,7 +167,7 @@ function Checkout(props: IProps) {
         if (!cart._id) return;
         deleteCartById(cart?._id);
       });
-      props.setCartItems([]);
+      props.setCartItems(() => []);
       //delete cart in db
       setShowLoading(false);
       setShow(false);

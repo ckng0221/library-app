@@ -152,7 +152,6 @@ function App() {
               }
             />
             <Route path="about" element={<About />} />
-
             <Route
               path="checkout"
               element={
@@ -163,7 +162,6 @@ function App() {
                 />
               }
             />
-
             {/* Private */}
             <Route element={<ProtectedRoute isAllowed={!!customer._id} />}>
               <Route path="account" element={<Account customer={customer} />} />
@@ -175,8 +173,8 @@ function App() {
                 path="borrowings/:borrowingId"
                 element={<BorrowingDetails />}
               />
+              <Route path="admin" element={<Admin />} />
             </Route>
-            <Route path="admin" element={<Admin />} />
           </Route>
         </Routes>
       </BrowserRouter>
